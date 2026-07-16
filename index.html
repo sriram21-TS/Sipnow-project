@@ -259,6 +259,29 @@
           min-height: 560px;
         }
       }
+      @media (max-width: 767px), (max-height: 560px) {
+        .full-bleed-hero .hero-slide.flex.items-center {
+          align-items: flex-start;
+        }
+        .hero-slide > .relative.z-10 {
+          padding-top: 96px;
+          padding-bottom: 24px;
+        }
+      }
+      @media (max-height: 560px) {
+        .full-bleed-hero {
+          height: 100svh;
+          min-height: 420px;
+        }
+        .hero-slide > .relative.z-10 {
+          padding-top: 92px;
+          padding-bottom: 16px;
+        }
+        .hero-slide .space-y-6 > .flex.flex-wrap.gap-5 button {
+          padding-top: 0.75rem;
+          padding-bottom: 0.75rem;
+        }
+      }
       .mobile-nav-panel {
         max-height: 0;
         overflow: hidden;
@@ -667,7 +690,7 @@
             <div
               class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop w-full relative z-10 grid lg:grid-cols-2 items-center gap-16"
             >
-              <div class="space-y-10">
+              <div class="space-y-6 md:space-y-10">
                 <div
                   class="inline-flex items-center gap-3 px-5 py-2 rounded-full glass-panel border border-primary/40 text-primary"
                 >
@@ -761,7 +784,7 @@
             <div
               class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop w-full relative z-10 grid lg:grid-cols-2 items-center gap-16"
             >
-              <div class="space-y-10">
+              <div class="space-y-6 md:space-y-10">
                 <div
                   class="inline-flex items-center gap-3 px-5 py-2 rounded-full glass-panel border border-primary/40 text-primary"
                 >
@@ -854,7 +877,7 @@
             <div
               class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop w-full relative z-10 grid lg:grid-cols-2 items-center gap-16"
             >
-              <div class="space-y-10">
+              <div class="space-y-6 md:space-y-10">
                 <div
                   class="inline-flex items-center gap-3 px-5 py-2 rounded-full glass-panel border border-primary/40 text-primary"
                 >
@@ -947,7 +970,7 @@
             <div
               class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop w-full relative z-10 grid lg:grid-cols-2 items-center gap-16"
             >
-              <div class="space-y-10">
+              <div class="space-y-6 md:space-y-10">
                 <div
                   class="inline-flex items-center gap-3 px-5 py-2 rounded-full glass-panel border border-primary/40 text-primary"
                 >
@@ -2428,7 +2451,7 @@
 
         function restartAutoplay() {
           clearInterval(autoplayTimer);
-          autoplayTimer = setInterval(nextSlide, 6000);
+          autoplayTimer = setInterval(nextSlide, 4000);
         }
 
         prevBtn.addEventListener("click", prevSlide);
