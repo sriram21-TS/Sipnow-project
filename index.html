@@ -227,6 +227,15 @@
         transition: none;
         cursor: grabbing;
       }
+      #bestsellers-track {
+        cursor: grab;
+        -webkit-overflow-scrolling: touch;
+      }
+      #bestsellers-track.dragging {
+        cursor: grabbing;
+        scroll-snap-type: none;
+        scroll-behavior: auto;
+      }
       .hero-slide {
         flex: 0 0 100%;
       }
@@ -1198,7 +1207,7 @@
         </div>
         <div
           id="bestsellers-track"
-          class="flex gap-6 overflow-x-auto scroll-smooth snap-x snap-mandatory scrollbar-hide pb-2 -mx-margin-mobile px-margin-mobile md:-mx-margin-desktop md:px-margin-desktop"
+          class="flex gap-6 overflow-x-auto scroll-smooth snap-x snap-proximity scrollbar-hide pb-2 -mx-margin-mobile px-margin-mobile md:-mx-margin-desktop md:px-margin-desktop"
         >
           <!-- Product Card 1 -->
           <div
@@ -2523,6 +2532,59 @@
 
         prevBtn.addEventListener("click", () => scrollByCard(-1));
         nextBtn.addEventListener("click", () => scrollByCard(1));
+
+        // Let vertical wheel/trackpad input glide the track horizontally
+        track.addEventListener(
+          "wheel",
+          (e) => {
+            if (Math.abs(e.deltaY) <= Math.abs(e.deltaX)) return;
+            e.preventDefault();
+            track.scrollLeft += e.deltaY;
+          },
+          { passive: false },
+        );
+
+        // Click-and-drag scrolling for mouse users
+        let isDown = false;
+        let dragStartX = 0;
+        let dragStartScroll = 0;
+        let dragMoved = false;
+
+        track.addEventListener("mousedown", (e) => {
+          isDown = true;
+          dragMoved = false;
+          dragStartX = e.clientX;
+          dragStartScroll = track.scrollLeft;
+          track.classList.add("dragging");
+        });
+
+        window.addEventListener("mousemove", (e) => {
+          if (!isDown) return;
+          const delta = e.clientX - dragStartX;
+          if (Math.abs(delta) > 3) dragMoved = true;
+          track.scrollLeft = dragStartScroll - delta;
+        });
+
+        function endDrag() {
+          if (!isDown) return;
+          isDown = false;
+          track.classList.remove("dragging");
+        }
+        window.addEventListener("mouseup", endDrag);
+        window.addEventListener("mouseleave", endDrag);
+
+        // Suppress the click that follows a drag (e.g. on product links inside cards)
+        track.addEventListener(
+          "click",
+          (e) => {
+            if (dragMoved) {
+              e.preventDefault();
+              e.stopPropagation();
+              dragMoved = false;
+            }
+          },
+          { capture: true },
+        );
       })();
 
       // Sommelier Quiz — modal with question flow, scoring, and result
