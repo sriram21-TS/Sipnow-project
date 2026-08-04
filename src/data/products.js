@@ -9,6 +9,7 @@ export const products = [
     icon: "wine_bar",
     badgeText: "Best in White Wine",
     category: "White Wine · 750mL",
+    categoryGroup: "wine",
     name: "Jacob's Creek Cool Harvest Sauvignon Blanc",
     rating: 4.5,
     reviewCount: 128,
@@ -20,6 +21,7 @@ export const products = [
     icon: "wine_bar",
     badgeText: "Best in Red Wine",
     category: "Red Wine · 750mL",
+    categoryGroup: "wine",
     name: "Campo Viejo Tempranillo",
     rating: 4.0,
     reviewCount: 76,
@@ -32,6 +34,7 @@ export const products = [
     icon: "liquor",
     badgeText: "Best in Vodka",
     category: "Vodka · 6 x 200mL",
+    categoryGroup: "spirits",
     name: "Absolut Vodka 6 Pack",
     rating: 5.0,
     reviewCount: 203,
@@ -43,6 +46,7 @@ export const products = [
     icon: "sports_bar",
     badgeText: "Best in Beer",
     category: "Beer · 750mL",
+    categoryGroup: "beer",
     name: "Coopers Original Pale Ale Longneck",
     rating: 4.2,
     reviewCount: 94,
@@ -54,6 +58,7 @@ export const products = [
     icon: "liquor",
     badgeText: "Best in Whiskey",
     category: "Whiskey · 10 x 375mL",
+    categoryGroup: "spirits",
     name: "Jim Beam Double Serve 6.7%",
     rating: 4.6,
     reviewCount: 57,
@@ -64,6 +69,7 @@ export const products = [
     badgeStyle: "plain",
     badgeText: "Best in Sparkling",
     category: "Sparkling · 750mL",
+    categoryGroup: "wine",
     name: "Chandon Garden Spritz",
     rating: 4.9,
     reviewCount: 312,
@@ -74,6 +80,7 @@ export const products = [
     badgeStyle: "plain",
     badgeText: "Best in Beer",
     category: "Beer · 355mL",
+    categoryGroup: "beer",
     name: "Byron Bay Brewery Premium Lager",
     rating: 4.1,
     reviewCount: 68,
@@ -84,9 +91,41 @@ export const products = [
     badgeStyle: "plain",
     badgeText: "Best in Red Wine",
     category: "Red Wine · 750mL",
+    categoryGroup: "wine",
     name: "Grant Burge Miamba Shiraz",
     rating: 4.7,
     reviewCount: 145,
     price: "$15.51",
   },
+  {
+    image: "https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?w=600",
+    BadgeStyle: "plain",
+    BadgeText: "Best in Red Wine",
+    category: "Red Wine · 750mL",
+    categoryGroup: "wine",
+    name: "19 crimes Red Blend",
+    rating: 4.3,
+    reviewCount: 89,
+    price: 31.99,
+  },
+  {
+    image:
+      "https://www.edsfinewines.com/wp-content/uploads/2021/02/Penfolds-Bin-600.jpg",
+    BadgeStyle: "plain",
+    BadgeText: "Best in Red Wine",
+    category: "Red Wine · 750mL",
+    categoryGroup: "wine",
+    name: "Pepperjack Shiraz",
+    rating: 4.3,
+    reviewCount: 89,
+    price: 31.99,
+  },
 ];
+
+export function getProductsByCategory(categoryText) {
+  return products.filter((product) =>
+    product.category?.toLowerCase().includes(categoryText.toLowerCase())
+  );
+}
+
+export const redWineProducts = getProductsByCategory("Red Wine");

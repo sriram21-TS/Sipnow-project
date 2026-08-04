@@ -2,31 +2,26 @@ import PageHero from "../components/PageHero.jsx";
 import ProductGrid from "../components/ProductGrid.jsx";
 import Reveal from "../components/Reveal.jsx";
 import { useAddToCartFeedback } from "../hooks/useAddToCartFeedback.js";
-import { inStorePromotions } from "../data/inStorePromotions.js";
+import { products } from "../data/products.js";
 
-export default function InStorePromotions({ onAddToCart, onBack }) {
+export default function ShopAll({ onAddToCart, onBack }) {
   const { addedProduct, handleAddToCart } = useAddToCartFeedback(onAddToCart);
 
   return (
     <div className="pt-32 pb-24">
       <PageHero
-        description="Exclusive discounts available at your local SipNow store this week. Prices shown apply in-store only and are subject to stock on hand."
+        description="Every bottle and can in our cellar, in one place."
         onBack={onBack}
-        tag="Offers & Services"
-        title={
-          <>
-            In-Store <span className="italic text-primary">Promotions</span>
-          </>
-        }
+        tag="Full Collection"
+        title="All Products"
       />
 
       <Reveal className="px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
         <ProductGrid
           addedProduct={addedProduct}
-          emptyMessage="New promotions are on the way. Check back soon."
+          emptyMessage="New arrivals are on the way. Check back soon."
           onAddToCart={handleAddToCart}
-          products={inStorePromotions}
-          size="lg"
+          products={products}
         />
       </Reveal>
     </div>

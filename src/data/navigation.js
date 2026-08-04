@@ -4,6 +4,7 @@ export const navMenus = [
   {
     label: "Offers & Services",
     columns: [
+      { heading: "Shop All" },
       { heading: "In-Store promotions" },
       { heading: "General promotions" },
       { heading: "Gift Cards" },
@@ -125,6 +126,13 @@ export const navMenus = [
     },
   },
 ];
+
+// Maps clickable mega-menu column headings (those without sub-items) to the
+// page key App.jsx should navigate to.
+export const HEADING_PAGES = {
+  "Shop All": "shop-all",
+  "In-Store promotions": "in-store-promotions",
+};
 
 export const mobileNavLinks = [
   "Offers & Services",

@@ -1,0 +1,25 @@
+import HeroCarousel from "../components/HeroCarousel.jsx";
+import CategoryGrid from "../components/CategoryGrid.jsx";
+import BestSellers from "../components/BestSellers.jsx";
+import NewArrivalsBanner from "../components/NewArrivalsBanner.jsx";
+import BrandSpotlight from "../components/BrandSpotlight.jsx";
+import SommelierCta from "../components/SommelierCta.jsx";
+import Newsletter from "../components/Newsletter.jsx";
+import WhySipNow from "../components/WhySipNow.jsx";
+import ResponsibleDrinking from "../components/ResponsibleDrinking.jsx";
+
+export default function Home({ onNavigate, onAddToCart, onStartQuiz }) {
+  return (
+    <>
+      <HeroCarousel />
+      <CategoryGrid onNavigate={onNavigate} />
+      <BestSellers onAddToCart={onAddToCart} />
+      <NewArrivalsBanner />
+      <BrandSpotlight />
+      <SommelierCta onStart={onStartQuiz} />
+      <Newsletter />
+      <WhySipNow />
+      <ResponsibleDrinking />
+    </>
+  );
+}

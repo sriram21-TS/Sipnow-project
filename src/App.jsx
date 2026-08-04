@@ -1,18 +1,12 @@
 import { useState } from "react";
 import AmbientBackground from "./components/AmbientBackground.jsx";
 import Navbar from "./components/Navbar.jsx";
-import HeroCarousel from "./components/HeroCarousel.jsx";
-import CategoryGrid from "./components/CategoryGrid.jsx";
-import BestSellers from "./components/BestSellers.jsx";
-import NewArrivalsBanner from "./components/NewArrivalsBanner.jsx";
-import BrandSpotlight from "./components/BrandSpotlight.jsx";
-import SommelierCta from "./components/SommelierCta.jsx";
-import Newsletter from "./components/Newsletter.jsx";
-import WhySipNow from "./components/WhySipNow.jsx";
-import ResponsibleDrinking from "./components/ResponsibleDrinking.jsx";
 import Footer from "./components/Footer.jsx";
 import QuizModal from "./components/QuizModal.jsx";
-import InStorePromotions from "./components/InStorePromotions.jsx";
+import Home from "./pages/Home.jsx";
+import CategoryPage from "./pages/CategoryPage.jsx";
+import InStorePromotions from "./pages/InStorePromotions.jsx";
+import ShopAll from "./pages/ShopAll.jsx";
 
 export default function App() {
   const [quizOpen, setQuizOpen] = useState(false);
@@ -36,18 +30,20 @@ export default function App() {
             onAddToCart={addToCart}
             onBack={() => goToPage("home")}
           />
+        ) : page === "shop-all" ? (
+          <ShopAll onAddToCart={addToCart} onBack={() => goToPage("home")} />
+        ) : page.startsWith("category:") ? (
+          <CategoryPage
+            categoryKey={page.slice("category:".length)}
+            onAddToCart={addToCart}
+            onBack={() => goToPage("home")}
+          />
         ) : (
-          <>
-            <HeroCarousel />
-            <CategoryGrid />
-            <BestSellers onAddToCart={addToCart} />
-            <NewArrivalsBanner />
-            <BrandSpotlight />
-            <SommelierCta onStart={() => setQuizOpen(true)} />
-            <Newsletter />
-            <WhySipNow />
-            <ResponsibleDrinking />
-          </>
+          <Home
+            onNavigate={goToPage}
+            onAddToCart={addToCart}
+            onStartQuiz={() => setQuizOpen(true)}
+          />
         )}
       </main>
       <Footer />

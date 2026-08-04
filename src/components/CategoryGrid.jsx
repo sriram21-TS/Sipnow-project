@@ -2,7 +2,7 @@ import Reveal from "./Reveal.jsx";
 import { categories } from "../data/categories.js";
 import { scrollToSection } from "../utils/links.js";
 
-export default function CategoryGrid() {
+export default function CategoryGrid({ onNavigate }) {
   return (
     <Reveal className="pt-20 pb-16 md:pt-32 md:pb-24 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
       <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
@@ -29,7 +29,10 @@ export default function CategoryGrid() {
             className="group relative aspect-[3/4] rounded-3xl overflow-hidden glass-panel glow-border block"
             href="#best-sellers"
             key={category.name}
-            onClick={scrollToSection("best-sellers")}
+            onClick={(e) => {
+              e.preventDefault();
+              onNavigate?.(`category:${category.key}`);
+            }}
           >
             <img
               className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 opacity-60"

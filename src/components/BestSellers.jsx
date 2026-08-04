@@ -1,11 +1,12 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import Reveal from "./Reveal.jsx";
-import StarRating from "./StarRating.jsx";
+import ProductCard from "./ProductCard.jsx";
+import { useAddToCartFeedback } from "../hooks/useAddToCartFeedback.js";
 import { products } from "../data/products.js";
 
 export default function BestSellers({ onAddToCart }) {
   const trackRef = useRef(null);
-  const [addedProduct, setAddedProduct] = useState(null);
+  const { addedProduct, handleAddToCart } = useAddToCartFeedback(onAddToCart);
 
   useEffect(() => {
     const track = trackRef.current;
@@ -68,18 +69,6 @@ export default function BestSellers({ onAddToCart }) {
     };
   }, []);
 
-  const handleAddToCart = (product) => {
-    onAddToCart(product);
-    setAddedProduct(product.name);
-    setTimeout(
-      () =>
-        setAddedProduct((current) =>
-          current === product.name ? null : current
-        ),
-      1200
-    );
-  };
-
   const scrollByCard = (direction) => {
     const track = trackRef.current;
     if (!track) return;
@@ -117,63 +106,13 @@ export default function BestSellers({ onAddToCart }) {
         ref={trackRef}
       >
         {products.map((product) => (
-          <div
-            className="group glass-panel glow-border shrink-0 snap-start w-[58vw] sm:w-[320px] rounded-2xl p-3 space-y-3 shadow-lg hover:shadow-2xl hover:-translate-y-1 transition-all duration-500"
+          <ProductCard
+            className="shrink-0 snap-start w-[42vw] sm:w-[220px]"
+            isAdded={addedProduct === product.name}
             key={product.name}
-          >
-            <div className="relative aspect-square rounded-xl overflow-hidden bg-surface-container-high">
-              <img
-                className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-[1s]"
-                src={product.image}
-              />
-              {product.badgeStyle === "glow" ? (
-                <div className="badge-glow absolute top-3 left-3 z-10 flex items-center gap-1 px-3 py-1.5 rounded-full bg-gradient-to-r from-primary to-tertiary text-on-primary font-label-sm text-[10px] font-bold uppercase tracking-wide shadow-lg">
-                  <span
-                    className="material-symbols-outlined text-[13px]"
-                    style={{ fontVariationSettings: '"FILL" 1' }}
-                  >
-                    {product.icon}
-                  </span>
-                  {product.badgeText}
-                </div>
-              ) : (
-                <div className="absolute top-3 left-3 px-3 py-1 rounded-full bg-primary text-on-primary font-label-sm text-[9px] uppercase tracking-widest">
-                  {product.badgeText}
-                </div>
-              )}
-              <button
-                aria-label={`Add ${product.name} to cart`}
-                className="absolute bottom-3 right-3 w-9 h-9 rounded-full primary-gradient text-white flex items-center justify-center opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-500 shadow-2xl"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleAddToCart(product);
-                }}
-              >
-                <span className="material-symbols-outlined text-[18px]">
-                  {addedProduct === product.name
-                    ? "check"
-                    : "add_shopping_cart"}
-                </span>
-              </button>
-            </div>
-            <div className="flex justify-between items-start px-1">
-              <div className="space-y-0.5">
-                <p className="text-on-surface-variant text-[9px] uppercase tracking-[0.2em]">
-                  {product.category}
-                </p>
-                <h4 className="font-headline-md text-sm group-hover:text-primary transition-colors">
-                  {product.name}
-                </h4>
-                <StarRating
-                  rating={product.rating}
-                  reviewCount={product.reviewCount}
-                />
-              </div>
-              <p className="font-headline-md text-sm text-primary">
-                {product.price}
-              </p>
-            </div>
-          </div>
+            onAdd={handleAddToCart}
+            product={product}
+          />
         ))}
       </div>
     </Reveal>

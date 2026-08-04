@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { navMenus, mobileNavLinks } from "../data/navigation.js";
+import { navMenus, mobileNavLinks, HEADING_PAGES } from "../data/navigation.js";
 import { LOGO_URL } from "../data/images.js";
 import { products } from "../data/products.js";
 import { preventNav } from "../utils/links.js";
@@ -195,10 +195,10 @@ export default function Navbar({ cartCount = 0, onNavigate }) {
                             className="font-headline-sm text-lg text-primary hover:opacity-80 transition-opacity"
                             href="#"
                             onClick={
-                              col.heading === "In-Store promotions"
+                              HEADING_PAGES[col.heading]
                                 ? (e) => {
                                     e.preventDefault();
-                                    onNavigate?.("in-store-promotions");
+                                    onNavigate?.(HEADING_PAGES[col.heading]);
                                   }
                                 : preventNav
                             }
