@@ -158,7 +158,7 @@ export default function HeroCarousel() {
                 </div>
               </div>
               <div className="hidden lg:block">
-                <div className="relative group">
+                <div className="relative group max-w-[380px] mx-auto">
                   <div className="absolute -inset-10 bg-primary/20 blur-[80px] rounded-full opacity-30 group-hover:opacity-50 transition-opacity"></div>
                   <div className="relative glass-panel rounded-3xl p-4 border border-white/10 shadow-[0_32px_64px_-16px_rgba(0,0,0,0.5)] transform rotate-2 group-hover:rotate-0 transition-transform duration-700">
                     <div className="aspect-[4/5] rounded-2xl overflow-hidden relative">
@@ -183,20 +183,18 @@ export default function HeroCarousel() {
           </div>
         ))}
       </div>
-      <div className="absolute bottom-6 md:bottom-12 left-margin-mobile md:left-margin-desktop z-20 flex gap-3 md:gap-4">
-        <button
-          className="w-10 h-10 md:w-12 md:h-12 rounded-full glass-panel border border-white/10 flex items-center justify-center hover:bg-primary transition-colors"
-          onClick={() => goToSlide(indexRef.current - 1)}
-        >
-          <span className="material-symbols-outlined">west</span>
-        </button>
-        <button
-          className="w-10 h-10 md:w-12 md:h-12 rounded-full glass-panel border border-white/10 flex items-center justify-center hover:bg-primary transition-colors"
-          onClick={() => goToSlide(indexRef.current + 1)}
-        >
-          <span className="material-symbols-outlined">east</span>
-        </button>
-      </div>
+      <button
+        className="hidden md:flex absolute left-3 lg:left-6 top-1/2 -translate-y-1/2 z-20 w-11 h-11 lg:w-12 lg:h-12 rounded-full glass-panel border border-white/10 items-center justify-center hover:bg-primary transition-colors"
+        onClick={() => goToSlide(indexRef.current - 1)}
+      >
+        <span className="material-symbols-outlined">west</span>
+      </button>
+      <button
+        className="hidden md:flex absolute right-3 lg:right-6 top-1/2 -translate-y-1/2 z-20 w-11 h-11 lg:w-12 lg:h-12 rounded-full glass-panel border border-white/10 items-center justify-center hover:bg-primary transition-colors"
+        onClick={() => goToSlide(indexRef.current + 1)}
+      >
+        <span className="material-symbols-outlined">east</span>
+      </button>
       <div className="absolute bottom-8 md:bottom-12 right-margin-mobile md:right-margin-desktop z-20 flex items-center gap-3">
         {heroSlides.map((slide, i) => (
           <button

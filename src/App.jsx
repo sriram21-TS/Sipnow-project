@@ -12,25 +12,43 @@ import WhySipNow from "./components/WhySipNow.jsx";
 import ResponsibleDrinking from "./components/ResponsibleDrinking.jsx";
 import Footer from "./components/Footer.jsx";
 import QuizModal from "./components/QuizModal.jsx";
+import InStorePromotions from "./components/InStorePromotions.jsx";
 
 export default function App() {
   const [quizOpen, setQuizOpen] = useState(false);
   const [cartCount, setCartCount] = useState(0);
+  const [page, setPage] = useState("home");
+
+  const addToCart = () => setCartCount((count) => count + 1);
+
+  const goToPage = (nextPage) => {
+    setPage(nextPage);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   return (
     <>
       <AmbientBackground />
-      <Navbar cartCount={cartCount} />
+      <Navbar cartCount={cartCount} onNavigate={goToPage} />
       <main className="relative z-10">
-        <HeroCarousel />
-        <CategoryGrid />
-        <BestSellers onAddToCart={() => setCartCount((count) => count + 1)} />
-        <NewArrivalsBanner />
-        <BrandSpotlight />
-        <SommelierCta onStart={() => setQuizOpen(true)} />
-        <Newsletter />
-        <WhySipNow />
-        <ResponsibleDrinking />
+        {page === "in-store-promotions" ? (
+          <InStorePromotions
+            onAddToCart={addToCart}
+            onBack={() => goToPage("home")}
+          />
+        ) : (
+          <>
+            <HeroCarousel />
+            <CategoryGrid />
+            <BestSellers onAddToCart={addToCart} />
+            <NewArrivalsBanner />
+            <BrandSpotlight />
+            <SommelierCta onStart={() => setQuizOpen(true)} />
+            <Newsletter />
+            <WhySipNow />
+            <ResponsibleDrinking />
+          </>
+        )}
       </main>
       <Footer />
       <QuizModal isOpen={quizOpen} onClose={() => setQuizOpen(false)} />

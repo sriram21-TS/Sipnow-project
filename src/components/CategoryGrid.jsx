@@ -23,7 +23,7 @@ export default function CategoryGrid() {
           </span>
         </a>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
         {categories.map((category) => (
           <a
             className="group relative aspect-[3/4] rounded-3xl overflow-hidden glass-panel glow-border block"

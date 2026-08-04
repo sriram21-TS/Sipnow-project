@@ -7,7 +7,7 @@ import { preventNav } from "../utils/links.js";
 function FeaturedPanel({ featured }) {
   if (featured.type === "image-only") {
     return (
-      <div className="bg-surface-container-high rounded-xl overflow-hidden border border-primary/20">
+      <div className="bg-surface-container-high rounded-xl border overflow-hidden border-primary/20">
         <img className="h-full w-full object-cover" src={featured.image} />
       </div>
     );
@@ -81,7 +81,7 @@ function SearchResults({ results, searched, onSelect }) {
   );
 }
 
-export default function Navbar({ cartCount = 0 }) {
+export default function Navbar({ cartCount = 0, onNavigate }) {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
@@ -145,13 +145,11 @@ export default function Navbar({ cartCount = 0 }) {
 
   return (
     <nav
-      className={`fixed top-0 w-full z-[60] transition-all duration-500 bg-surface/60 backdrop-blur-md ${
-        scrolled
-          ? "glass-panel border-b border-outline-variant/20 py-3"
-          : "py-5"
+      className={`fixed top-0 w-full z-[60] transition-all duration-500 bg-surface border-b border-primary/40 ${
+        scrolled ? "py-3 shadow-lg shadow-black/30" : "py-5"
       }`}
     >
-      <div className="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop py-5 flex justify-between items-center relative">
+      <div className="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop flex justify-between items-center relative">
         <div className="flex items-center gap-16">
           <a className="relative z-10" href="#" onClick={scrollToTop}>
             <img
@@ -170,14 +168,14 @@ export default function Navbar({ cartCount = 0 }) {
                   </span>
                 </button>
                 <div className="mega-menu absolute left-margin-desktop right-margin-desktop top-[100%] pt-4">
-                  <div className="glass-panel border border-outline-variant/30 rounded-2xl p-10 grid grid-cols-4 gap-12 shadow-2xl">
+                  <div className="mega-menu-panel glass-panel border border-outline-variant/30 rounded-2xl p-10 grid grid-cols-4 gap-12 shadow-2xl">
                     {menu.columns.map((col) =>
                       col.items ? (
-                        <div className="space-y-6" key={col.heading}>
+                        <div className="space-y-3" key={col.heading}>
                           <h4 className="font-headline-sm text-lg text-primary">
                             {col.heading}
                           </h4>
-                          <ul className="space-y-4 text-sm text-on-surface-variant">
+                          <ul className="space-y-3 text-sm text-on-surface-variant">
                             {col.items.map((item) => (
                               <li key={item}>
                                 <a
@@ -192,11 +190,18 @@ export default function Navbar({ cartCount = 0 }) {
                           </ul>
                         </div>
                       ) : (
-                        <div className="space-y-6" key={col.heading}>
+                        <div className="space-y-3" key={col.heading}>
                           <a
                             className="font-headline-sm text-lg text-primary hover:opacity-80 transition-opacity"
                             href="#"
-                            onClick={preventNav}
+                            onClick={
+                              col.heading === "In-Store promotions"
+                                ? (e) => {
+                                    e.preventDefault();
+                                    onNavigate?.("in-store-promotions");
+                                  }
+                                : preventNav
+                            }
                           >
                             {col.heading}
                           </a>

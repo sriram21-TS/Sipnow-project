@@ -40,17 +40,97 @@ export const navMenus = [
     },
   },
   {
-    label: "Wine",
+    label: "Spirits",
     columns: [
-      { heading: "Red", items: ["Shiraz", "Pinot Noir", "Merlot"] },
-      { heading: "White", items: ["Chardonnay", "Sauvignon Blanc"] },
-      { heading: "Sparkling", items: ["Champagne", "Prosecco"] },
+      {
+        heading: "Spirits",
+        items: [
+          "Gin",
+          "Rum",
+          "Vodka",
+          "Bourbon",
+          "Tequilla",
+          "Liquerus",
+          "Brandy & cognac",
+          "Other Spirits",
+        ],
+      },
+      {
+        heading: "Whisky",
+        items: [
+          "Other Whisky",
+          "Scotch Whisky",
+          "Japanese Whisky",
+          "Irish Whisky",
+          "American Whisky",
+          "Austrialian Whisky",
+        ],
+      },
     ],
     featured: {
       type: "image-only",
       image: WINE_FEATURED_URL,
     },
   },
+  {
+    label: "Wine",
+    columns: [
+      {
+        heading: "RED WINE",
+        items: [
+          "Shiraz",
+          "Cabernet Sauvignon",
+          "Pinot Noir",
+          "Rosé",
+          "Red Blends",
+          "Merlot",
+          "Cabernet Merlot",
+          "Shiraz Cabernet",
+          "Grenache",
+          "Other Red Wine",
+        ],
+      },
+      {
+        heading: "WHITE WINE",
+        items: [
+          "Chardonnay",
+          "Sauvignon Blanc",
+          "Pinot Grigio",
+          "Riesling",
+          "Semillon Sauv Blanc",
+          "Moscato",
+          "Other White Wine",
+        ],
+      },
+      {
+        heading: "SPARKLING WINE",
+        items: [
+          "Champagne",
+          "Prosecco",
+          "Sparkling White Wine",
+          "Sparkling Rose Wine",
+          "Other Sparkling Wine",
+        ],
+      },
+      {
+        heading: "Other Wine",
+        items: ["Fortified Wine", "Zero%* Alcohol Wine*"],
+      },
+    ],
+    featured: {
+      type: "icon",
+      icon: "auto_awesome",
+      tag: "Summer Hits",
+      title: "Ready-to-drink Classics",
+    },
+  },
 ];
 
-export const mobileNavLinks = ["Beer & Cider", "Premix", "Wine", "My Account"];
+export const mobileNavLinks = [
+  "Offers & Services",
+  "Beer & Cider",
+  "Premix",
+  "Wine",
+  "Spirits",
+  "My Account",
+];
