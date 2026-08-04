@@ -26,7 +26,6 @@ export default function InStorePromotions({ onAddToCart, onBack }) {
           emptyMessage="New promotions are on the way. Check back soon."
           onAddToCart={handleAddToCart}
           products={inStorePromotions}
-          size="lg"
         />
       </Reveal>
     </div>

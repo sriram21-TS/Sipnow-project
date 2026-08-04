@@ -107,7 +107,7 @@ export default function BestSellers({ onAddToCart }) {
       >
         {products.map((product) => (
           <ProductCard
-            className="shrink-0 snap-start w-[42vw] sm:w-[220px]"
+            className="shrink-0 snap-start w-[var(--card-min-width)]"
             isAdded={addedProduct === product.name}
             key={product.name}
             onAdd={handleAddToCart}

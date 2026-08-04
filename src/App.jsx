@@ -7,13 +7,46 @@ import Home from "./pages/Home.jsx";
 import CategoryPage from "./pages/CategoryPage.jsx";
 import InStorePromotions from "./pages/InStorePromotions.jsx";
 import ShopAll from "./pages/ShopAll.jsx";
+import Cart from "./pages/Cart.jsx";
 
 export default function App() {
   const [quizOpen, setQuizOpen] = useState(false);
-  const [cartCount, setCartCount] = useState(0);
+  const [cartItems, setCartItems] = useState([]);
   const [page, setPage] = useState("home");
 
-  const addToCart = () => setCartCount((count) => count + 1);
+  const cartCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+
+  const addToCart = (product, quantity = 1) => {
+    setCartItems((current) => {
+      const existing = current.find(
+        (item) => item.product.name === product.name
+      );
+      if (existing) {
+        return current.map((item) =>
+          item.product.name === product.name
+            ? { ...item, quantity: item.quantity + quantity }
+            : item
+        );
+      }
+      return [...current, { product, quantity }];
+    });
+  };
+
+  const updateCartQuantity = (productName, quantity) => {
+    setCartItems((current) =>
+      quantity <= 0
+        ? current.filter((item) => item.product.name !== productName)
+        : current.map((item) =>
+            item.product.name === productName ? { ...item, quantity } : item
+          )
+    );
+  };
+
+  const removeFromCart = (productName) => {
+    setCartItems((current) =>
+      current.filter((item) => item.product.name !== productName)
+    );
+  };
 
   const goToPage = (nextPage) => {
     setPage(nextPage);
@@ -25,7 +58,15 @@ export default function App() {
       <AmbientBackground />
       <Navbar cartCount={cartCount} onNavigate={goToPage} />
       <main className="relative z-10">
-        {page === "in-store-promotions" ? (
+        {page === "cart" ? (
+          <Cart
+            cartItems={cartItems}
+            onBack={() => goToPage("home")}
+            onRemove={removeFromCart}
+            onShopAll={() => goToPage("shop-all")}
+            onUpdateQuantity={updateCartQuantity}
+          />
+        ) : page === "in-store-promotions" ? (
           <InStorePromotions
             onAddToCart={addToCart}
             onBack={() => goToPage("home")}

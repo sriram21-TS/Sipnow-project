@@ -1,14 +1,11 @@
 import ProductCard from "./ProductCard.jsx";
 
-const GRID_CLASSES = {
-  sm: "grid grid-cols-3 sm:grid-cols-3 lg:grid-cols-4 gap-2",
-  lg: "grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-6",
-};
+const GRID_CLASSES =
+  "grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-[repeat(auto-fill,minmax(var(--card-min-width),1fr))] gap-3";
 
 /** Product grid with empty state, shared by ShopAll, CategoryPage and InStorePromotions. */
 export default function ProductGrid({
   products,
-  size = "sm",
   emptyMessage,
   addedProduct,
   onAddToCart,
@@ -22,14 +19,13 @@ export default function ProductGrid({
   }
 
   return (
-    <div className={GRID_CLASSES[size]}>
+    <div className={GRID_CLASSES}>
       {products.map((product) => (
         <ProductCard
           isAdded={addedProduct === product.name}
           key={product.name}
           onAdd={onAddToCart}
           product={product}
-          size={size}
         />
       ))}
     </div>

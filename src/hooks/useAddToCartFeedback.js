@@ -4,8 +4,8 @@ import { useState } from "react";
 export function useAddToCartFeedback(onAddToCart) {
   const [addedProduct, setAddedProduct] = useState(null);
 
-  const handleAddToCart = (product) => {
-    onAddToCart(product);
+  const handleAddToCart = (product, quantity = 1) => {
+    onAddToCart(product, quantity);
     setAddedProduct(product.name);
     setTimeout(
       () =>

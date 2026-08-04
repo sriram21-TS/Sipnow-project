@@ -48,15 +48,15 @@ function SearchResults({ results, searched, onSelect }) {
           No products match your search.
         </p>
       ) : (
-        <ul className="max-h-80 overflow-y-auto scrollbar-hide">
+        <ul className="max-h-96 overflow-y-auto scrollbar-hide">
           {results.map((product) => (
             <li key={product.name}>
               <button
-                className="w-full flex items-center gap-4 px-5 py-3 text-left hover:bg-primary/10 transition-colors"
+                className="w-full flex items-center gap-4 px-5 py-4 text-left hover:bg-primary/10 transition-colors"
                 onClick={() => onSelect(product)}
                 type="button"
               >
-                <span className="w-10 h-10 rounded-lg overflow-hidden bg-surface-container-high shrink-0">
+                <span className="w-16 h-16 rounded-lg overflow-hidden bg-surface-container-high shrink-0">
                   <img
                     alt=""
                     className="w-full h-full object-contain"
@@ -64,12 +64,14 @@ function SearchResults({ results, searched, onSelect }) {
                   />
                 </span>
                 <span className="flex-grow min-w-0">
-                  <span className="block text-sm truncate">{product.name}</span>
-                  <span className="block text-[10px] text-on-surface-variant uppercase tracking-widest">
+                  <span className="block text-base leading-snug line-clamp-2">
+                    {product.name}
+                  </span>
+                  <span className="block text-xs text-on-surface-variant uppercase tracking-widest mt-1">
                     {product.category}
                   </span>
                 </span>
-                <span className="text-primary text-sm font-headline-md shrink-0">
+                <span className="text-primary text-base font-headline-md shrink-0">
                   {product.price}
                 </span>
               </button>
@@ -124,9 +126,12 @@ export default function Navbar({ cartCount = 0, onNavigate }) {
     setSearchFocused(false);
     setSearchTerm("");
     setMobileOpen(false);
-    document
-      .getElementById("best-sellers")
-      ?.scrollIntoView({ behavior: "smooth", block: "start" });
+    onNavigate?.("home");
+    requestAnimationFrame(() => {
+      document
+        .getElementById("best-sellers")
+        ?.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
   };
 
   const focusSearch = () => {
@@ -249,6 +254,8 @@ export default function Navbar({ cartCount = 0, onNavigate }) {
           <button
             aria-label={cartCount > 0 ? `Cart, ${cartCount} items` : "Cart"}
             className="relative material-symbols-outlined hover:text-primary transition-colors"
+            onClick={() => onNavigate?.("cart")}
+            type="button"
           >
             shopping_bag
             {cartCount > 0 && (
