@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { quizQuestions, quizResults } from "../data/quiz.js";
+import { scrollToSection } from "../utils/links.js";
 
 function computeResult(answers) {
   const totals = {};
@@ -150,7 +151,11 @@ export default function QuizModal({ isOpen, onClose }) {
             <div className="flex flex-wrap justify-center gap-4 pt-2">
               <a
                 className="primary-gradient px-10 py-4 rounded-full font-label-md shadow-xl shadow-primary/30 hover:scale-105 transition-transform"
-                href="#"
+                href="#best-sellers"
+                onClick={(e) => {
+                  scrollToSection("best-sellers")(e);
+                  onClose();
+                }}
               >
                 Shop {result.title}
               </a>

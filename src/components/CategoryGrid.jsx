@@ -1,5 +1,6 @@
 import Reveal from "./Reveal.jsx";
 import { categories } from "../data/categories.js";
+import { scrollToSection } from "../utils/links.js";
 
 export default function CategoryGrid() {
   return (
@@ -13,7 +14,8 @@ export default function CategoryGrid() {
         </div>
         <a
           className="text-primary font-label-md flex items-center gap-2 group border-b border-primary/30 pb-1"
-          href="#"
+          href="#best-sellers"
+          onClick={scrollToSection("best-sellers")}
         >
           View Full Collection
           <span className="material-symbols-outlined text-[18px] group-hover:translate-x-1 transition-transform">
@@ -25,8 +27,9 @@ export default function CategoryGrid() {
         {categories.map((category) => (
           <a
             className="group relative aspect-[3/4] rounded-3xl overflow-hidden glass-panel glow-border block"
-            href="#"
+            href="#best-sellers"
             key={category.name}
+            onClick={scrollToSection("best-sellers")}
           >
             <img
               className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 opacity-60"

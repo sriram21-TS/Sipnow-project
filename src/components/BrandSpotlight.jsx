@@ -1,5 +1,6 @@
 import Reveal from "./Reveal.jsx";
 import { PENFOLDS_URL } from "../data/images.js";
+import { scrollToSection } from "../utils/links.js";
 
 export default function BrandSpotlight() {
   return (
@@ -23,7 +24,8 @@ export default function BrandSpotlight() {
           </p>
           <a
             className="inline-flex items-center gap-3 text-primary font-label-md group"
-            href="#"
+            href="#best-sellers"
+            onClick={scrollToSection("best-sellers")}
           >
             Shop Penfolds Collection
             <span className="material-symbols-outlined group-hover:translate-x-2 transition-transform">

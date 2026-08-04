@@ -1,10 +1,11 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Reveal from "./Reveal.jsx";
 import StarRating from "./StarRating.jsx";
 import { products } from "../data/products.js";
 
-export default function BestSellers() {
+export default function BestSellers({ onAddToCart }) {
   const trackRef = useRef(null);
+  const [addedProduct, setAddedProduct] = useState(null);
 
   useEffect(() => {
     const track = trackRef.current;
@@ -67,6 +68,18 @@ export default function BestSellers() {
     };
   }, []);
 
+  const handleAddToCart = (product) => {
+    onAddToCart(product);
+    setAddedProduct(product.name);
+    setTimeout(
+      () =>
+        setAddedProduct((current) =>
+          current === product.name ? null : current
+        ),
+      1200
+    );
+  };
+
   const scrollByCard = (direction) => {
     const track = trackRef.current;
     if (!track) return;
@@ -77,7 +90,10 @@ export default function BestSellers() {
   };
 
   return (
-    <Reveal className="py-24 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
+    <Reveal
+      className="py-24 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto scroll-mt-28"
+      id="best-sellers"
+    >
       <div className="flex justify-between items-end mb-16">
         <h2 className="font-display-lg text-4xl">Best Sellers</h2>
         <div className="flex gap-4">
@@ -125,9 +141,18 @@ export default function BestSellers() {
                   {product.badgeText}
                 </div>
               )}
-              <button className="absolute bottom-3 right-3 w-9 h-9 rounded-full primary-gradient text-white flex items-center justify-center opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-500 shadow-2xl">
+              <button
+                aria-label={`Add ${product.name} to cart`}
+                className="absolute bottom-3 right-3 w-9 h-9 rounded-full primary-gradient text-white flex items-center justify-center opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-500 shadow-2xl"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleAddToCart(product);
+                }}
+              >
                 <span className="material-symbols-outlined text-[18px]">
-                  add_shopping_cart
+                  {addedProduct === product.name
+                    ? "check"
+                    : "add_shopping_cart"}
                 </span>
               </button>
             </div>

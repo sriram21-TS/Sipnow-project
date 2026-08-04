@@ -15,15 +15,16 @@ import QuizModal from "./components/QuizModal.jsx";
 
 export default function App() {
   const [quizOpen, setQuizOpen] = useState(false);
+  const [cartCount, setCartCount] = useState(0);
 
   return (
     <>
       <AmbientBackground />
-      <Navbar />
+      <Navbar cartCount={cartCount} />
       <main className="relative z-10">
         <HeroCarousel />
         <CategoryGrid />
-        <BestSellers />
+        <BestSellers onAddToCart={() => setCartCount((count) => count + 1)} />
         <NewArrivalsBanner />
         <BrandSpotlight />
         <SommelierCta onStart={() => setQuizOpen(true)} />
