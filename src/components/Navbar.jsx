@@ -171,27 +171,41 @@ export default function Navbar({ cartCount = 0 }) {
                 </button>
                 <div className="mega-menu absolute left-margin-desktop right-margin-desktop top-[100%] pt-4">
                   <div className="glass-panel border border-outline-variant/30 rounded-2xl p-10 grid grid-cols-4 gap-12 shadow-2xl">
-                    {menu.columns.map((col) => (
-                      <div className="space-y-6" key={col.heading}>
-                        <h4 className="font-headline-sm text-lg text-primary">
-                          {col.heading}
-                        </h4>
-                        <ul className="space-y-4 text-sm text-on-surface-variant">
-                          {col.items.map((item) => (
-                            <li key={item}>
-                              <a
-                                className="hover:text-primary transition-colors"
-                                href="#"
-                                onClick={preventNav}
-                              >
-                                {item}
-                              </a>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    ))}
-                    <FeaturedPanel featured={menu.featured} />
+                    {menu.columns.map((col) =>
+                      col.items ? (
+                        <div className="space-y-6" key={col.heading}>
+                          <h4 className="font-headline-sm text-lg text-primary">
+                            {col.heading}
+                          </h4>
+                          <ul className="space-y-4 text-sm text-on-surface-variant">
+                            {col.items.map((item) => (
+                              <li key={item}>
+                                <a
+                                  className="hover:text-primary transition-colors"
+                                  href="#"
+                                  onClick={preventNav}
+                                >
+                                  {item}
+                                </a>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      ) : (
+                        <div className="space-y-6" key={col.heading}>
+                          <a
+                            className="font-headline-sm text-lg text-primary hover:opacity-80 transition-opacity"
+                            href="#"
+                            onClick={preventNav}
+                          >
+                            {col.heading}
+                          </a>
+                        </div>
+                      )
+                    )}
+                    {menu.featured && (
+                      <FeaturedPanel featured={menu.featured} />
+                    )}
                   </div>
                 </div>
               </div>

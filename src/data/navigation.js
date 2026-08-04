@@ -2,6 +2,16 @@ import { BEER_FEATURED_URL, WINE_FEATURED_URL } from "./images.js";
 
 export const navMenus = [
   {
+    label: "Offers & Services",
+    columns: [
+      { heading: "In-Store promotions" },
+      { heading: "General promotions" },
+      { heading: "Gift Cards" },
+      { heading: "Members" },
+      { heading: "Clearance" },
+    ],
+  },
+  {
     label: "Beer & Cider",
     columns: [
       { heading: "Lager", items: ["Pilsner", "Dark Lager", "Helles"] },
