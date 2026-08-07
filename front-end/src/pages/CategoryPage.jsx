@@ -2,7 +2,7 @@ import PageHero from "../components/PageHero.jsx";
 import ProductGrid from "../components/ProductGrid.jsx";
 import Reveal from "../components/Reveal.jsx";
 import { useAddToCartFeedback } from "../hooks/useAddToCartFeedback.js";
-import { categories } from "../data/categories.js";
+import { useCategories } from "../hooks/useContent.js";
 
 export default function CategoryPage({
   categoryKey,
@@ -11,6 +11,7 @@ export default function CategoryPage({
   products = [],
 }) {
   const { addedProduct, handleAddToCart } = useAddToCartFeedback(onAddToCart);
+  const { data: categories } = useCategories();
   const category = categories.find((item) => item.key === categoryKey);
   const categoryProducts = products.filter(
     (product) => product.categoryGroup === categoryKey

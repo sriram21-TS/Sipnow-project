@@ -1,13 +1,18 @@
 import Reveal from "./Reveal.jsx";
-import { PENFOLDS_URL } from "../data/images.js";
+import { useSiteAssets } from "../hooks/useContent.js";
 import { scrollToSection } from "../utils/links.js";
 
 export default function BrandSpotlight() {
+  const { data: siteAssets } = useSiteAssets();
+
   return (
     <Reveal className="py-24 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
       <div className="grid lg:grid-cols-2 gap-px bg-outline-variant/20 rounded-[3rem] overflow-hidden border border-outline-variant/20">
         <div className="relative min-h-[500px]">
-          <img className="w-full h-full object-cover" src={PENFOLDS_URL} />
+          <img
+            className="w-full h-full object-cover"
+            src={siteAssets.PENFOLDS_URL}
+          />
         </div>
         <div className="bg-surface-container flex flex-col justify-center p-12 lg:p-24 space-y-8">
           <p className="text-primary font-label-md uppercase tracking-[0.3em] mb-4">

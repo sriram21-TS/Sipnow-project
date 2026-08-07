@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { quizQuestions, quizResults } from "../data/quiz.js";
+import { useQuiz } from "../hooks/useContent.js";
 import { scrollToSection } from "../utils/links.js";
 
-function computeResult(answers) {
+function computeResult(answers, quizResults) {
   const totals = {};
   answers.forEach((opt) => {
     Object.entries(opt.scores).forEach(([key, val]) => {
@@ -24,6 +24,9 @@ export default function QuizModal({ isOpen, onClose }) {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [answers, setAnswers] = useState([]);
   const [wasOpen, setWasOpen] = useState(isOpen);
+  const {
+    data: { quizQuestions, quizResults },
+  } = useQuiz();
 
   if (isOpen !== wasOpen) {
     setWasOpen(isOpen);
@@ -49,7 +52,7 @@ export default function QuizModal({ isOpen, onClose }) {
     return () => document.removeEventListener("keydown", onKeyDown);
   }, [isOpen, onClose]);
 
-  if (!isOpen) return null;
+  if (!isOpen || quizQuestions.length === 0) return null;
 
   const isResult = answers.length === quizQuestions.length;
   const question = quizQuestions[currentQuestion];
@@ -68,7 +71,7 @@ export default function QuizModal({ isOpen, onClose }) {
     setAnswers([]);
   };
 
-  const result = isResult ? computeResult(answers) : null;
+  const result = isResult ? computeResult(answers, quizResults) : null;
 
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-8">

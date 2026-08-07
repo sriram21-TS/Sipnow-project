@@ -1,7 +1,22 @@
 import { useEffect, useRef, useState } from "react";
-import { navMenus, mobileNavLinks, HEADING_PAGES } from "../data/navigation.js";
-import { LOGO_URL } from "../data/images.js";
+import { useNavMenus, useSiteAssets } from "../hooks/useContent.js";
 import { preventNav } from "../utils/links.js";
+
+// Maps clickable mega-menu column headings (those without sub-items) to the
+// page key App.jsx should navigate to.
+const HEADING_PAGES = {
+  "Shop All": "shop-all",
+  "In-Store promotions": "in-store-promotions",
+};
+
+const mobileNavLinks = [
+  "Offers & Services",
+  "Beer & Cider",
+  "Premix",
+  "Wine",
+  "Spirits",
+  "My Account",
+];
 
 function FeaturedPanel({ featured }) {
   if (featured.type === "image-only") {
@@ -92,6 +107,9 @@ export default function Navbar({ cartCount = 0, onNavigate, products = [] }) {
   const mobileSearchRef = useRef(null);
   const blurTimeoutRef = useRef(null);
 
+  const { data: navMenus } = useNavMenus();
+  const { data: siteAssets } = useSiteAssets();
+
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 50);
     window.addEventListener("scroll", onScroll);
@@ -159,7 +177,7 @@ export default function Navbar({ cartCount = 0, onNavigate, products = [] }) {
             <img
               alt="SipNow Logo"
               className="h-8 md:h-10 object-contain brightness-110"
-              src={LOGO_URL}
+              src={siteAssets.LOGO_URL}
             />
           </a>
           <div className="hidden lg:flex gap-10">
@@ -174,7 +192,7 @@ export default function Navbar({ cartCount = 0, onNavigate, products = [] }) {
                 <div className="mega-menu absolute left-margin-desktop right-margin-desktop top-[100%] pt-4">
                   <div className="mega-menu-panel glass-panel border border-outline-variant/30 rounded-2xl p-10 grid grid-cols-4 gap-12 shadow-2xl">
                     {menu.columns.map((col) =>
-                      col.items ? (
+                      col.items?.length > 0 ? (
                         <div className="space-y-3" key={col.heading}>
                           <h4 className="font-headline-sm text-lg text-primary">
                             {col.heading}

@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from "react";
-import { heroSlides } from "../data/heroSlides.js";
+import { useHeroSlides } from "../hooks/useContent.js";
 
 export default function HeroCarousel() {
+  const { data: heroSlides } = useHeroSlides();
   const sectionRef = useRef(null);
   const trackRef = useRef(null);
   const indexRef = useRef(0);
@@ -41,7 +42,7 @@ export default function HeroCarousel() {
   useEffect(() => {
     const section = sectionRef.current;
     const track = trackRef.current;
-    if (!section || !track) return;
+    if (!section || !track || heroSlides.length === 0) return;
 
     const dragStart = (e) => {
       drag.current.isDragging = true;
@@ -102,7 +103,7 @@ export default function HeroCarousel() {
       clearInterval(autoplayRef.current);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [heroSlides.length]);
 
   return (
     <section

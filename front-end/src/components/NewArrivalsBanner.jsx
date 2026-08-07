@@ -1,13 +1,15 @@
 import Reveal from "./Reveal.jsx";
-import { PRESTIGE_COLLECTION_URL } from "../data/images.js";
+import { useSiteAssets } from "../hooks/useContent.js";
 
 export default function NewArrivalsBanner() {
+  const { data: siteAssets } = useSiteAssets();
+
   return (
     <Reveal className="py-24 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
       <div className="relative rounded-[3rem] overflow-hidden group h-[420px] md:h-[600px] flex items-center">
         <img
           className="absolute inset-0 w-full h-full object-cover transition-transform duration-[2s] group-hover:scale-110"
-          src={PRESTIGE_COLLECTION_URL}
+          src={siteAssets.PRESTIGE_COLLECTION_URL}
         />
         <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/40 to-transparent"></div>
         <div className="relative p-8 md:p-24 max-w-2xl space-y-6 md:space-y-8">

@@ -1,16 +1,17 @@
-import { footerColumns } from "../data/footerLinks.js";
-import { LOGO_URL } from "../data/images.js";
+import { useFooterColumns, useSiteAssets } from "../hooks/useContent.js";
 import { useNewsletterForm } from "../hooks/useNewsletterForm.js";
 import { preventNav } from "../utils/links.js";
 
 export default function Footer() {
   const { email, status, handleChange, handleSubmit } = useNewsletterForm();
+  const { data: footerColumns } = useFooterColumns();
+  const { data: siteAssets } = useSiteAssets();
 
   return (
     <footer className="bg-surface-container-lowest pt-24 pb-12 relative overflow-hidden">
       <div className="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-16 mb-24 relative z-10">
         <div className="space-y-8">
-          <img className="h-10 brightness-110" src={LOGO_URL} />
+          <img className="h-10 brightness-110" src={siteAssets.LOGO_URL} />
           <p className="text-on-surface-variant leading-relaxed">
             Elevating the drinking experience with curated excellence and
             unparalleled delivery service since our cellar doors first opened.

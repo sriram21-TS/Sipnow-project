@@ -1,8 +1,10 @@
 import Reveal from "./Reveal.jsx";
-import { categories } from "../data/categories.js";
+import { useCategories } from "../hooks/useContent.js";
 import { scrollToSection } from "../utils/links.js";
 
 export default function CategoryGrid({ onNavigate }) {
+  const { data: categories } = useCategories();
+
   return (
     <Reveal className="pt-20 pb-16 md:pt-32 md:pb-24 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
       <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">

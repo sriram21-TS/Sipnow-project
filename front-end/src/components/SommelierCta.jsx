@@ -1,7 +1,9 @@
 import Reveal from "./Reveal.jsx";
-import { PRESTIGE_COLLECTION_URL } from "../data/images.js";
+import { useSiteAssets } from "../hooks/useContent.js";
 
 export default function SommelierCta({ onStart }) {
+  const { data: siteAssets } = useSiteAssets();
+
   return (
     <Reveal className="py-24 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
       <div className="glass-panel border border-outline-variant/20 rounded-[3.5rem] overflow-hidden grid lg:grid-cols-12 min-h-[600px] shadow-2xl">
@@ -33,7 +35,7 @@ export default function SommelierCta({ onStart }) {
         <div className="lg:col-span-5 relative hidden lg:block overflow-hidden">
           <img
             className="w-full h-full object-cover"
-            src={PRESTIGE_COLLECTION_URL}
+            src={siteAssets.PRESTIGE_COLLECTION_URL}
           />
           <div className="absolute inset-0 bg-gradient-to-r from-surface-container to-transparent"></div>
         </div>
