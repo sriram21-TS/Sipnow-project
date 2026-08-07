@@ -3,9 +3,13 @@ import ProductGrid from "../components/ProductGrid.jsx";
 import Reveal from "../components/Reveal.jsx";
 import { useAddToCartFeedback } from "../hooks/useAddToCartFeedback.js";
 import { categories } from "../data/categories.js";
-import { products } from "../data/products.js";
 
-export default function CategoryPage({ categoryKey, onAddToCart, onBack }) {
+export default function CategoryPage({
+  categoryKey,
+  onAddToCart,
+  onBack,
+  products = [],
+}) {
   const { addedProduct, handleAddToCart } = useAddToCartFeedback(onAddToCart);
   const category = categories.find((item) => item.key === categoryKey);
   const categoryProducts = products.filter(

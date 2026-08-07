@@ -1,4 +1,5 @@
-import { getSubtype, products } from "../data/products.js";
+import { useMemo } from "react";
+import { getSubtype } from "../utils/productHelpers.js";
 
 const GROUP_LABELS = { wine: "Wine", spirits: "Spirits", beer: "Beer" };
 const GROUP_ORDER = ["wine", "spirits", "beer"];
@@ -17,7 +18,7 @@ const RATING_OPTIONS = [
   { key: "3", label: "3 Stars & Up" },
 ];
 
-function buildTypeTree() {
+function buildTypeTree(products) {
   const tree = new Map();
   for (const product of products) {
     if (!tree.has(product.categoryGroup)) {
@@ -30,10 +31,9 @@ function buildTypeTree() {
   return tree;
 }
 
-const TYPE_TREE = buildTypeTree();
-
 /** Left-hand filter sidebar for ShopAll: alcohol type/subtype, price and rating. */
 export default function ProductFilters({
+  products,
   selectedSubtypes,
   onToggleSubtype,
   priceRange,
@@ -43,6 +43,7 @@ export default function ProductFilters({
   onClearAll,
   resultCount,
 }) {
+  const TYPE_TREE = useMemo(() => buildTypeTree(products), [products]);
   const hasActiveFilters =
     selectedSubtypes.length > 0 || priceRange !== "all" || rating !== "all";
 

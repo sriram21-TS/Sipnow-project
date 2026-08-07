@@ -2,9 +2,8 @@ import { useEffect, useRef } from "react";
 import Reveal from "./Reveal.jsx";
 import ProductCard from "./ProductCard.jsx";
 import { useAddToCartFeedback } from "../hooks/useAddToCartFeedback.js";
-import { products } from "../data/products.js";
 
-export default function BestSellers({ onAddToCart }) {
+export default function BestSellers({ onAddToCart, products = [] }) {
   const trackRef = useRef(null);
   const { addedProduct, handleAddToCart } = useAddToCartFeedback(onAddToCart);
 

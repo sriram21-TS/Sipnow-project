@@ -1,6 +1,6 @@
 import PageHero from "../components/PageHero.jsx";
 import Reveal from "../components/Reveal.jsx";
-import { formatCurrency, parsePrice } from "../data/products.js";
+import { formatCurrency, parsePrice } from "../utils/productHelpers.js";
 
 function CartRow({ item, onUpdateQuantity, onRemove }) {
   const { product, quantity } = item;

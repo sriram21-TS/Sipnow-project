@@ -8,11 +8,13 @@ import CategoryPage from "./pages/CategoryPage.jsx";
 import InStorePromotions from "./pages/InStorePromotions.jsx";
 import ShopAll from "./pages/ShopAll.jsx";
 import Cart from "./pages/Cart.jsx";
+import { useProducts } from "./hooks/useProducts.js";
 
 export default function App() {
   const [quizOpen, setQuizOpen] = useState(false);
   const [cartItems, setCartItems] = useState([]);
   const [page, setPage] = useState("home");
+  const { products, loading: productsLoading } = useProducts();
 
   const cartCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
 
@@ -56,7 +58,7 @@ export default function App() {
   return (
     <>
       <AmbientBackground />
-      <Navbar cartCount={cartCount} onNavigate={goToPage} />
+      <Navbar cartCount={cartCount} onNavigate={goToPage} products={products} />
       <main className="relative z-10">
         {page === "cart" ? (
           <Cart
@@ -72,18 +74,25 @@ export default function App() {
             onBack={() => goToPage("home")}
           />
         ) : page === "shop-all" ? (
-          <ShopAll onAddToCart={addToCart} onBack={() => goToPage("home")} />
+          <ShopAll
+            onAddToCart={addToCart}
+            onBack={() => goToPage("home")}
+            products={products}
+            productsLoading={productsLoading}
+          />
         ) : page.startsWith("category:") ? (
           <CategoryPage
             categoryKey={page.slice("category:".length)}
             onAddToCart={addToCart}
             onBack={() => goToPage("home")}
+            products={products}
           />
         ) : (
           <Home
             onNavigate={goToPage}
             onAddToCart={addToCart}
             onStartQuiz={() => setQuizOpen(true)}
+            products={products}
           />
         )}
       </main>

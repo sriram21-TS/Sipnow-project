@@ -4,7 +4,7 @@ import ProductFilters from "../components/ProductFilters.jsx";
 import ProductGrid from "../components/ProductGrid.jsx";
 import Reveal from "../components/Reveal.jsx";
 import { useAddToCartFeedback } from "../hooks/useAddToCartFeedback.js";
-import { getSubtype, parsePrice, products } from "../data/products.js";
+import { getSubtype, parsePrice } from "../utils/productHelpers.js";
 
 const SORT_OPTIONS = [
   { key: "featured", label: "Featured" },
@@ -23,7 +23,12 @@ const PRICE_RANGE_BOUNDS = {
 
 const RATING_THRESHOLDS = { all: 0, 4: 4, 3: 3 };
 
-export default function ShopAll({ onAddToCart, onBack }) {
+export default function ShopAll({
+  onAddToCart,
+  onBack,
+  products = [],
+  productsLoading = false,
+}) {
   const { addedProduct, handleAddToCart } = useAddToCartFeedback(onAddToCart);
   const [selectedSubtypes, setSelectedSubtypes] = useState([]);
   const [priceRange, setPriceRange] = useState("all");
@@ -70,7 +75,7 @@ export default function ShopAll({ onAddToCart, onBack }) {
       sorted.sort((a, b) => b.rating - a.rating);
     }
     return sorted;
-  }, [selectedSubtypes, priceRange, rating, sort]);
+  }, [products, selectedSubtypes, priceRange, rating, sort]);
 
   return (
     <div className="pt-32 pb-24">
@@ -102,6 +107,7 @@ export default function ShopAll({ onAddToCart, onBack }) {
                 onRatingChange={setRating}
                 onToggleSubtype={toggleSubtype}
                 priceRange={priceRange}
+                products={products}
                 rating={rating}
                 resultCount={filteredProducts.length}
                 selectedSubtypes={selectedSubtypes}
@@ -112,7 +118,9 @@ export default function ShopAll({ onAddToCart, onBack }) {
           <div className="flex-1 min-w-0">
             <div className="flex items-center justify-between mb-6">
               <p className="text-sm text-on-surface-variant">
-                Showing {filteredProducts.length} of {products.length} products
+                {productsLoading
+                  ? "Loading products…"
+                  : `Showing ${filteredProducts.length} of ${products.length} products`}
               </p>
               <label className="flex items-center gap-2 text-sm text-on-surface-variant">
                 Sort by

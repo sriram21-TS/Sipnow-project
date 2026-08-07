@@ -8,12 +8,17 @@ import Newsletter from "../components/Newsletter.jsx";
 import WhySipNow from "../components/WhySipNow.jsx";
 import ResponsibleDrinking from "../components/ResponsibleDrinking.jsx";
 
-export default function Home({ onNavigate, onAddToCart, onStartQuiz }) {
+export default function Home({
+  onNavigate,
+  onAddToCart,
+  onStartQuiz,
+  products,
+}) {
   return (
     <>
       <HeroCarousel />
       <CategoryGrid onNavigate={onNavigate} />
-      <BestSellers onAddToCart={onAddToCart} />
+      <BestSellers onAddToCart={onAddToCart} products={products} />
       <NewArrivalsBanner />
       <BrandSpotlight />
       <SommelierCta onStart={onStartQuiz} />

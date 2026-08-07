@@ -5,7 +5,7 @@ import {
   formatCurrency,
   formatPackSize,
   parsePrice,
-} from "../data/products.js";
+} from "../utils/productHelpers.js";
 
 const SIZE = {
   card: "rounded-xl p-3 space-y-3",

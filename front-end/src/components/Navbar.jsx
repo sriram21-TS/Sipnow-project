@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { navMenus, mobileNavLinks, HEADING_PAGES } from "../data/navigation.js";
 import { LOGO_URL } from "../data/images.js";
-import { products } from "../data/products.js";
 import { preventNav } from "../utils/links.js";
 
 function FeaturedPanel({ featured }) {
@@ -83,7 +82,7 @@ function SearchResults({ results, searched, onSelect }) {
   );
 }
 
-export default function Navbar({ cartCount = 0, onNavigate }) {
+export default function Navbar({ cartCount = 0, onNavigate, products = [] }) {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
