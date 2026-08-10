@@ -109,6 +109,15 @@ function getMenuItemRoute(menuLabel, columnHeading, item) {
   }
 
   // ======================================
+  // ZERO %
+  // ======================================
+
+  if (menuLabel === "Zero %" || menuLabel.toLowerCase().includes("zero")) {
+    const sub = itemSlug.replace("zero-alcohol-", "").replace("zero-", "");
+    return `/zero-alcohol/${sub}`;
+  }
+
+  // ======================================
   // DEFAULT
   // ======================================
 
