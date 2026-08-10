@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AmbientBackground from "./components/AmbientBackground.jsx";
 import Navbar from "./components/Navbar.jsx";
 import Footer from "./components/Footer.jsx";
@@ -19,6 +19,14 @@ export default function App() {
   const [cartItems, setCartItems] = useState([]);
   const [page, setPage] = useState("home");
   const { products, loading: productsLoading } = useProducts();
+  const [backendStatus, setBackendStatus] = useState("checking");
+
+  useEffect(() => {
+    const apiUrl = import.meta.env.VITE_API_URL;
+    fetch(`${apiUrl}/api/health`)
+      .then((res) => setBackendStatus(res.ok ? "connected" : "offline"))
+      .catch(() => setBackendStatus("offline"));
+  }, []);
 
   const cartCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
 
@@ -111,6 +119,19 @@ export default function App() {
       </main>
       <Footer />
       <QuizModal isOpen={quizOpen} onClose={() => setQuizOpen(false)} />
+      {import.meta.env.DEV && (
+        <div
+          className={`fixed bottom-3 right-3 z-50 rounded-full px-3 py-1 text-xs font-medium text-white ${
+            backendStatus === "connected"
+              ? "bg-green-600"
+              : backendStatus === "offline"
+                ? "bg-red-600"
+                : "bg-gray-500"
+          }`}
+        >
+          Backend: {backendStatus}
+        </div>
+      )}
     </>
   );
 }
