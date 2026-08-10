@@ -121,11 +121,11 @@ export default function ZeroCategoryPage({
   const selectedSort =
     SORT_OPTIONS.find((option) => option.key === sortBy) || SORT_OPTIONS[0];
 
-  /* FILTER + SORT PRODUCTS */
+  /* STRICT ZERO % FILTERING - NO FALLBACK TO REGULAR ALCOHOLIC PRODUCTS */
   const filteredProducts = useMemo(() => {
     const [minPrice, maxPrice] = PRICE_BOUNDS[priceRange];
 
-    let filtered = products.filter((product) => {
+    const filtered = products.filter((product) => {
       const text = `${product.name || ""} ${product.category || ""} ${product.categoryGroup || ""}`.toLowerCase();
 
       const isZero = text.includes("zero") || text.includes("0%") || text.includes("non-alcoholic") || text.includes("zeroproof");
@@ -143,27 +143,6 @@ export default function ZeroCategoryPage({
       const minimumRating = rating === "all" ? 0 : Number(rating);
       return (product.rating || 0) >= minimumRating;
     });
-
-    /* Fallback: if no zero-tagged item exists in static dataset, match subcategory items so page is not empty */
-    if (filtered.length === 0) {
-      filtered = products.filter((product) => {
-        const text = `${product.name || ""} ${product.category || ""} ${product.categoryGroup || ""}`.toLowerCase();
-        let match = false;
-        if (config.keyword === "spirits") {
-          match = text.includes("spirit") || text.includes("spirits") || product.categoryGroup === "spirits";
-        } else {
-          match = text.includes(config.keyword) || product.categoryGroup === config.keyword;
-        }
-
-        if (!match) return false;
-
-        const price = parsePrice(product.price);
-        if (price < minPrice || price > maxPrice) return false;
-
-        const minimumRating = rating === "all" ? 0 : Number(rating);
-        return (product.rating || 0) >= minimumRating;
-      });
-    }
 
     const sorted = [...filtered];
 
@@ -352,13 +331,37 @@ export default function ZeroCategoryPage({
               </div>
             </div>
 
-            {/* PRODUCT GRID */}
-            <ProductGrid
-              addedProduct={addedProduct}
-              onAddToCart={handleAddToCart}
-              products={filteredProducts}
-              emptyMessage={config.emptyMessage}
-            />
+            {/* PRODUCT GRID OR BLANK GRID PLACEHOLDERS */}
+            {filteredProducts.length === 0 ? (
+              <div className="space-y-6">
+                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+                  {Array.from({ length: 8 }).map((_, idx) => (
+                    <div
+                      key={idx}
+                      className="h-64 rounded-2xl border border-primary/10 bg-surface-container-high/20 flex flex-col items-center justify-center p-6 text-center"
+                    >
+                      <div className="w-12 h-12 rounded-full bg-primary/5 border border-primary/10 flex items-center justify-center mb-3">
+                        <span className="material-symbols-outlined text-primary/20 text-xl">
+                          no_drinks
+                        </span>
+                      </div>
+                      <div className="w-20 h-2.5 rounded bg-primary/10 mb-2" />
+                      <div className="w-12 h-2 rounded bg-primary/5" />
+                    </div>
+                  ))}
+                </div>
+                <p className="text-on-surface-variant text-center py-4 text-sm font-medium">
+                  {config.emptyMessage}
+                </p>
+              </div>
+            ) : (
+              <ProductGrid
+                addedProduct={addedProduct}
+                onAddToCart={handleAddToCart}
+                products={filteredProducts}
+                emptyMessage={config.emptyMessage}
+              />
+            )}
           </div>
         </div>
       </Reveal>
