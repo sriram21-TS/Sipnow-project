@@ -1,7 +1,12 @@
 import { useMemo } from "react";
 import { getSubtype } from "../utils/productHelpers.js";
 
-const GROUP_LABELS = { wine: "Wine", spirits: "Spirits", beer: "Beer" };
+const GROUP_LABELS = {
+  wine: "Wine",
+  spirits: "Spirits",
+  beer: "Beer",
+};
+
 const GROUP_ORDER = ["wine", "spirits", "beer"];
 
 const PRICE_RANGES = [
@@ -20,14 +25,18 @@ const RATING_OPTIONS = [
 
 function buildTypeTree(products) {
   const tree = new Map();
+
   for (const product of products) {
     if (!tree.has(product.categoryGroup)) {
       tree.set(product.categoryGroup, new Map());
     }
+
     const group = tree.get(product.categoryGroup);
     const subtype = getSubtype(product);
+
     group.set(subtype, (group.get(subtype) ?? 0) + 1);
   }
+
   return tree;
 }
 
@@ -44,16 +53,23 @@ export default function ProductFilters({
   resultCount,
 }) {
   const TYPE_TREE = useMemo(() => buildTypeTree(products), [products]);
+
   const hasActiveFilters =
-    selectedSubtypes.length > 0 || priceRange !== "all" || rating !== "all";
+    selectedSubtypes.length > 0 ||
+    priceRange !== "all" ||
+    rating !== "all";
 
   return (
-    <div className="glass-panel glow-border rounded-2xl p-6 space-y-7">
+    <div className="glass-panel rounded-2xl border border-primary/20 p-6 space-y-6">
+      {/* FILTER HEADER */}
       <div className="flex items-center justify-between">
-        <h3 className="font-headline-md text-lg">Filters</h3>
+        <h3 className="font-headline-sm text-lg text-on-surface">
+          Filters
+        </h3>
+
         {hasActiveFilters && (
           <button
-            className="text-[11px] uppercase tracking-widest text-primary hover:underline"
+            className="text-xs text-primary hover:underline"
             onClick={onClearAll}
             type="button"
           >
@@ -62,18 +78,23 @@ export default function ProductFilters({
         )}
       </div>
 
+      {/* TYPE OF ALCOHOL */}
       <div className="space-y-5">
         <p className="font-label-md uppercase tracking-[0.15em] text-[11px] text-on-surface-variant">
           Type of Alcohol
         </p>
+
         {GROUP_ORDER.map((groupKey) => {
           const subtypes = TYPE_TREE.get(groupKey);
+
           if (!subtypes) return null;
+
           return (
             <div className="space-y-2" key={groupKey}>
               <p className="text-sm font-medium text-on-surface">
                 {GROUP_LABELS[groupKey]}
               </p>
+
               <div className="space-y-1.5 pl-1">
                 {[...subtypes.entries()].map(([subtype, count]) => (
                   <label
@@ -82,11 +103,13 @@ export default function ProductFilters({
                   >
                     <input
                       checked={selectedSubtypes.includes(subtype)}
-                      className="w-4 h-4 rounded border-primary/30 bg-transparent accent-primary"
+                      className="w-4 h-4 rounded-sm border border-primary/30 bg-transparent accent-primary cursor-pointer"
                       onChange={() => onToggleSubtype(subtype)}
                       type="checkbox"
                     />
+
                     <span className="flex-1">{subtype}</span>
+
                     <span className="text-xs text-on-surface-variant/60">
                       {count}
                     </span>
@@ -98,12 +121,15 @@ export default function ProductFilters({
         })}
       </div>
 
+      {/* DIVIDER */}
       <div className="h-px bg-primary/10" />
 
+      {/* PRICE */}
       <div className="space-y-3">
         <p className="font-label-md uppercase tracking-[0.15em] text-[11px] text-on-surface-variant">
           Price
         </p>
+
         <div className="space-y-1.5">
           {PRICE_RANGES.map((option) => (
             <label
@@ -112,23 +138,27 @@ export default function ProductFilters({
             >
               <input
                 checked={priceRange === option.key}
-                className="w-4 h-4 accent-primary"
+                className="w-4 h-4 rounded-sm border border-primary/30 bg-transparent accent-primary cursor-pointer"
                 name="price-range"
                 onChange={() => onPriceRangeChange(option.key)}
-                type="radio"
+                type="checkbox"
               />
+
               {option.label}
             </label>
           ))}
         </div>
       </div>
 
+      {/* DIVIDER */}
       <div className="h-px bg-primary/10" />
 
+      {/* RATING */}
       <div className="space-y-3">
         <p className="font-label-md uppercase tracking-[0.15em] text-[11px] text-on-surface-variant">
           Rating
         </p>
+
         <div className="space-y-1.5">
           {RATING_OPTIONS.map((option) => (
             <label
@@ -137,17 +167,19 @@ export default function ProductFilters({
             >
               <input
                 checked={rating === option.key}
-                className="w-4 h-4 accent-primary"
+                className="w-4 h-4 rounded-sm border border-primary/30 bg-transparent accent-primary cursor-pointer"
                 name="rating"
                 onChange={() => onRatingChange(option.key)}
-                type="radio"
+                type="checkbox"
               />
+
               {option.label}
             </label>
           ))}
         </div>
       </div>
 
+      {/* RESULT COUNT */}
       {typeof resultCount === "number" && (
         <p className="text-xs text-on-surface-variant/70 pt-3 border-t border-primary/10">
           {resultCount} product{resultCount === 1 ? "" : "s"} found

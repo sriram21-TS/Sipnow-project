@@ -7,6 +7,11 @@ import Home from "./pages/Home.jsx";
 import CategoryPage from "./pages/CategoryPage.jsx";
 import InStorePromotions from "./pages/InStorePromotions.jsx";
 import ShopAll from "./pages/ShopAll.jsx";
+import ZeroWine from "./pages/ZeroWine.jsx";
+import ZeroBeer from "./pages/ZeroBeer.jsx";
+import ZeroSpirits from "./pages/ZeroSpirits.jsx";
+import ZeroPremix from "./pages/ZeroPremix.jsx";
+import ZeroCider from "./pages/ZeroCider.jsx";
 import Cart from "./pages/Cart.jsx";
 import { useProducts } from "./hooks/useProducts.js";
 
@@ -14,22 +19,31 @@ export default function App() {
   const [quizOpen, setQuizOpen] = useState(false);
   const [cartItems, setCartItems] = useState([]);
   const [page, setPage] = useState("home");
+
   const { products, loading: productsLoading } = useProducts();
 
-  const cartCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+  const cartCount = cartItems.reduce(
+    (sum, item) => sum + item.quantity,
+    0
+  );
 
   const addToCart = (product, quantity = 1) => {
     setCartItems((current) => {
       const existing = current.find(
         (item) => item.product.name === product.name
       );
+
       if (existing) {
         return current.map((item) =>
           item.product.name === product.name
-            ? { ...item, quantity: item.quantity + quantity }
+            ? {
+                ...item,
+                quantity: item.quantity + quantity,
+              }
             : item
         );
       }
+
       return [...current, { product, quantity }];
     });
   };
@@ -37,28 +51,44 @@ export default function App() {
   const updateCartQuantity = (productName, quantity) => {
     setCartItems((current) =>
       quantity <= 0
-        ? current.filter((item) => item.product.name !== productName)
+        ? current.filter(
+            (item) => item.product.name !== productName
+          )
         : current.map((item) =>
-            item.product.name === productName ? { ...item, quantity } : item
+            item.product.name === productName
+              ? { ...item, quantity }
+              : item
           )
     );
   };
 
   const removeFromCart = (productName) => {
     setCartItems((current) =>
-      current.filter((item) => item.product.name !== productName)
+      current.filter(
+        (item) => item.product.name !== productName
+      )
     );
   };
 
   const goToPage = (nextPage) => {
     setPage(nextPage);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
   };
 
   return (
     <>
       <AmbientBackground />
-      <Navbar cartCount={cartCount} onNavigate={goToPage} products={products} />
+
+      <Navbar
+        cartCount={cartCount}
+        onNavigate={goToPage}
+        products={products}
+      />
+
       <main className="relative z-10">
         {page === "cart" ? (
           <Cart
@@ -80,6 +110,41 @@ export default function App() {
             products={products}
             productsLoading={productsLoading}
           />
+        ) : page === "zero-wine" ? (
+          <ZeroWine
+            onAddToCart={addToCart}
+            onBack={() => goToPage("home")}
+            products={products}
+            productsLoading={productsLoading}
+          />
+        ) : page === "zero-beer" ? (
+          <ZeroBeer
+            onAddToCart={addToCart}
+            onBack={() => goToPage("home")}
+            products={products}
+            productsLoading={productsLoading}
+          />
+        ) : page === "zero-spirits" ? (
+          <ZeroSpirits
+            onAddToCart={addToCart}
+            onBack={() => goToPage("home")}
+            products={products}
+            productsLoading={productsLoading}
+          />
+        ) : page === "zero-premix" ? (
+          <ZeroPremix
+            onAddToCart={addToCart}
+            onBack={() => goToPage("home")}
+            products={products}
+            productsLoading={productsLoading}
+          />
+        ) : page === "zero-cider" ? (
+  <ZeroCider
+    onAddToCart={addToCart}
+    onBack={() => goToPage("home")}
+    products={products}
+    productsLoading={productsLoading}
+  />
         ) : page.startsWith("category:") ? (
           <CategoryPage
             categoryKey={page.slice("category:".length)}
@@ -96,8 +161,13 @@ export default function App() {
           />
         )}
       </main>
+
       <Footer />
-      <QuizModal isOpen={quizOpen} onClose={() => setQuizOpen(false)} />
+
+      <QuizModal
+        isOpen={quizOpen}
+        onClose={() => setQuizOpen(false)}
+      />
     </>
   );
 }
