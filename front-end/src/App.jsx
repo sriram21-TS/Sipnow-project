@@ -12,7 +12,6 @@ import Footer from "./components/Footer.jsx";
 import Navbar from "./components/Navbar.jsx";
 import QuizModal from "./components/QuizModal.jsx";
 import { useProducts } from "./hooks/useProducts.js";
-import WineSubcategoryPage from "./pages/wine/WineSubcategoryPage.jsx";
 
 import Auth from "./pages/Auth.jsx";
 import Cart from "./pages/Cart.jsx";
@@ -335,27 +334,8 @@ export default function App() {
               />
             }
           />
-          <Route
-            path="/wine"
-            element={
-              <CategoryPage
-                categoryKey="wine"
-                onAddToCart={addToCart}
-                onBack={goHome}
-                products={products}
-              />
-            }
-          />
-          <Route
-            path="/wine/:categoryKey"
-            element={
-              <CategoryPage
-                onAddToCart={addToCart}
-                onBack={goHome}
-                products={products}
-              />
-            }
-          />
+          
+
 
           <Route path="*" element={<Navigate replace to="/" />} />
         </Routes>
