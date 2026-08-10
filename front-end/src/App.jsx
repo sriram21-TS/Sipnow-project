@@ -3,6 +3,7 @@ import AmbientBackground from "./components/AmbientBackground.jsx";
 import Navbar from "./components/Navbar.jsx";
 import Footer from "./components/Footer.jsx";
 import QuizModal from "./components/QuizModal.jsx";
+import AgeVerification from "./components/AgeVerification.jsx";
 import Home from "./pages/Home.jsx";
 import CategoryPage from "./pages/CategoryPage.jsx";
 import InStorePromotions from "./pages/InStorePromotions.jsx";
@@ -11,6 +12,9 @@ import Cart from "./pages/Cart.jsx";
 import { useProducts } from "./hooks/useProducts.js";
 
 export default function App() {
+  const [ageVerified, setAgeVerified] = useState(
+    () => localStorage.getItem("sipnow-age-verified") === "true"
+  );
   const [quizOpen, setQuizOpen] = useState(false);
   const [cartItems, setCartItems] = useState([]);
   const [page, setPage] = useState("home");
@@ -54,6 +58,15 @@ export default function App() {
     setPage(nextPage);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
+
+  const confirmAge = () => {
+    localStorage.setItem("sipnow-age-verified", "true");
+    setAgeVerified(true);
+  };
+
+  if (!ageVerified) {
+    return <AgeVerification onConfirm={confirmAge} />;
+  }
 
   return (
     <>
