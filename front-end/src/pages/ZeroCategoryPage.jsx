@@ -76,17 +76,19 @@ export default function ZeroCategoryPage({
   const params = useParams();
   const location = useLocation();
 
-  let rawSub = subcategoryProp || params.subcategory || params.categoryKey || "";
+  let rawSub =
+    subcategoryProp || params.subcategory || params.categoryKey || "";
   if (!rawSub && location.pathname) {
     const parts = location.pathname.split("/").filter(Boolean);
     rawSub = parts[parts.length - 1] || "wine";
   }
 
-  const subKey = (rawSub || "wine")
-    .toLowerCase()
-    .replace(/^zero-alcohol-?/, "")
-    .replace(/^zero-?/, "")
-    .trim() || "wine";
+  const subKey =
+    (rawSub || "wine")
+      .toLowerCase()
+      .replace(/^zero-alcohol-?/, "")
+      .replace(/^zero-?/, "")
+      .trim() || "wine";
 
   const config = SUBCATEGORIES[subKey] || {
     title: `Zero % Alcohol ${subKey.charAt(0).toUpperCase() + subKey.slice(1)}`,
@@ -126,14 +128,27 @@ export default function ZeroCategoryPage({
     const [minPrice, maxPrice] = PRICE_BOUNDS[priceRange];
 
     const filtered = products.filter((product) => {
-      const text = `${product.name || ""} ${product.category || ""} ${product.categoryGroup || ""}`.toLowerCase();
+      const text =
+        `${product.name || ""} ${product.category || ""} ${product.categoryGroup || ""}`.toLowerCase();
 
-      const isZero = text.includes("zero") || text.includes("0%") || text.includes("non-alcoholic") || text.includes("zeroproof");
+      const isZero =
+        text.includes("zero") ||
+        text.includes("0%") ||
+        text.includes("non-alcoholic") ||
+        text.includes("zeroproof");
       if (!isZero) return false;
 
       if (config.keyword === "spirits") {
-        if (!text.includes("spirit") && !text.includes("spirits") && product.categoryGroup !== "spirits") return false;
-      } else if (!text.includes(config.keyword) && product.categoryGroup !== config.keyword) {
+        if (
+          !text.includes("spirit") &&
+          !text.includes("spirits") &&
+          product.categoryGroup !== "spirits"
+        )
+          return false;
+      } else if (
+        !text.includes(config.keyword) &&
+        product.categoryGroup !== config.keyword
+      ) {
         return false;
       }
 
@@ -232,7 +247,9 @@ export default function ZeroCategoryPage({
                         type="checkbox"
                         checked={priceRange === option.key}
                         onChange={() =>
-                          setPriceRange(priceRange === option.key ? "all" : option.key)
+                          setPriceRange(
+                            priceRange === option.key ? "all" : option.key
+                          )
                         }
                         className="w-4 h-4 rounded-sm border border-primary/40 bg-transparent accent-primary cursor-pointer"
                       />
