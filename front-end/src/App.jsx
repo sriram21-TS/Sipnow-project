@@ -1,11 +1,11 @@
 import Whisky from "./pages/Whisky.jsx";
-import OtherWhisky from "./pages/OtherWhisky.jsx";
-import ScotchWhisky from "./pages/ScotchWhisky.jsx";
-import JapaneseWhisky from "./pages/JapaneseWhisky.jsx";
-import IrishWhisky from "./pages/IrishWhisky.jsx";
-import AmericanWhisky from "./pages/AmericanWhisky.jsx";
-import AustralianWhisky from "./pages/AustralianWhisky.jsx";
-import { useState } from "react";
+import OtherWhisky from "./pages/Otherwhisky.jsx";
+import ScotchWhisky from "./pages/Scotchwhisky.jsx";
+import JapaneseWhisky from "./pages/Japanesewhisky.jsx";
+import IrishWhisky from "./pages/Irishwhisky.jsx";
+import AmericanWhisky from "./pages/Americanwhisky.jsx";
+import AustralianWhisky from "./pages/Australianwhisky.jsx";
+import { useState, useEffect } from "react";
 import AmbientBackground from "./components/AmbientBackground.jsx";
 import Footer from "./components/Footer.jsx";
 import Navbar from "./components/Navbar.jsx";
@@ -13,7 +13,6 @@ import QuizModal from "./components/QuizModal.jsx";
 import Home from "./pages/Home.jsx";
 import CategoryPage from "./pages/CategoryPage.jsx";
 import Checkout from "./pages/Checkout.jsx";
-import Home from "./pages/Home.jsx";
 import InStorePromotions from "./pages/InStorePromotions.jsx";
 import Profile from "./pages/Profile.jsx";
 import ShopAll from "./pages/ShopAll.jsx";
@@ -57,7 +56,6 @@ export default function App() {
       }
       return [...current, { product, quantity }];
     });
-  };
 
   const updateCartQuantity = (productName, quantity) => {
     setCartItems((current) =>
@@ -84,11 +82,6 @@ export default function App() {
           item.product.name !== productName
       )
     );
-  };
-
-  const goToPage = (nextPage) => {
-    setPage(nextPage);
-    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   return (
