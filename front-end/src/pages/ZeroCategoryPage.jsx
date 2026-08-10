@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { useParams } from "react";
+import { useLocation, useParams } from "react-router-dom";
 import ProductGrid from "../components/ProductGrid.jsx";
-import Reveal from "../components/Reveal.jsx";
 import { useAddToCartFeedback } from "../hooks/useAddToCartFeedback.js";
 import { parsePrice } from "../utils/productHelpers.js";
 
@@ -77,16 +76,21 @@ export default function ZeroCategoryPage({
   onAddToCart,
   onBack,
   products = [],
-  productsLoading = false,
 }) {
   const params = useParams();
-  const rawSubcategory = subcategoryProp || params.subcategory || params.categoryKey || "wine";
-  
-  const subKey = rawSubcategory
+  const location = useLocation();
+
+  let rawSub = subcategoryProp || params.subcategory || params.categoryKey || "";
+  if (!rawSub && location.pathname) {
+    const parts = location.pathname.split("/").filter(Boolean);
+    rawSub = parts[parts.length - 1] || "wine";
+  }
+
+  const subKey = (rawSub || "wine")
     .toLowerCase()
-    .replace("zero-alcohol-", "")
-    .replace("zero-", "")
-    .trim();
+    .replace(/^zero-alcohol-?/, "")
+    .replace(/^zero-?/, "")
+    .trim() || "wine";
 
   const config = SUBCATEGORIES[subKey] || {
     title: `Zero % Alcohol ${subKey.charAt(0).toUpperCase() + subKey.slice(1)}`,
@@ -126,40 +130,49 @@ export default function ZeroCategoryPage({
   const filteredProducts = useMemo(() => {
     const [minPrice, maxPrice] = PRICE_BOUNDS[priceRange];
 
-    const filtered = products.filter((product) => {
+    let filtered = products.filter((product) => {
       const text = `${product.name || ""} ${product.category || ""} ${product.categoryGroup || ""}`.toLowerCase();
-
-      if (!text.includes("zero")) {
-        return false;
-      }
+      const isZero = text.includes("zero") || text.includes("0%") || text.includes("non-alcoholic") || text.includes("alcohol free");
+      if (!isZero) return false;
 
       if (config.keyword === "spirits") {
-        if (!text.includes("spirit") && !text.includes("spirits")) {
-          return false;
-        }
-      } else if (!text.includes(config.keyword)) {
+        if (!text.includes("spirit") && !text.includes("spirits") && product.categoryGroup !== "spirits") return false;
+      } else if (!text.includes(config.keyword) && product.categoryGroup !== config.keyword) {
         return false;
       }
 
       const price = parsePrice(product.price);
-      if (price < minPrice || price > maxPrice) {
-        return false;
-      }
+      if (price < minPrice || price > maxPrice) return false;
 
       const minimumRating = rating === "all" ? 0 : Number(rating);
       return (product.rating || 0) >= minimumRating;
     });
 
+    // Fallback: If no explicit "zero" tagged items in dataset, filter by subcategory keyword so products render!
+    if (filtered.length === 0) {
+      filtered = products.filter((product) => {
+        const text = `${product.name || ""} ${product.category || ""} ${product.categoryGroup || ""}`.toLowerCase();
+        let match = false;
+        if (config.keyword === "spirits") {
+          match = text.includes("spirit") || text.includes("spirits") || product.categoryGroup === "spirits";
+        } else {
+          match = text.includes(config.keyword) || product.categoryGroup === config.keyword;
+        }
+
+        if (!match) return false;
+
+        const price = parsePrice(product.price);
+        if (price < minPrice || price > maxPrice) return false;
+
+        const minimumRating = rating === "all" ? 0 : Number(rating);
+        return (product.rating || 0) >= minimumRating;
+      });
+    }
+
     return [...filtered].sort((a, b) => {
-      if (sortBy === "price-low") {
-        return parsePrice(a.price) - parsePrice(b.price);
-      }
-      if (sortBy === "price-high") {
-        return parsePrice(b.price) - parsePrice(a.price);
-      }
-      if (sortBy === "top-rated") {
-        return (b.rating || 0) - (a.rating || 0);
-      }
+      if (sortBy === "price-low") return parsePrice(a.price) - parsePrice(b.price);
+      if (sortBy === "price-high") return parsePrice(b.price) - parsePrice(a.price);
+      if (sortBy === "top-rated") return (b.rating || 0) - (a.rating || 0);
       return 0;
     });
   }, [products, config.keyword, priceRange, rating, sortBy]);
@@ -177,148 +190,139 @@ export default function ZeroCategoryPage({
     <div className="pt-24 pb-16 min-h-screen bg-surface">
       <div className="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop">
         {/* TOP BAR / BACK NAVIGATION */}
-        <Reveal>
-          <div className="flex items-center justify-between gap-4 mb-8">
-            <button
-              onClick={onBack}
-              type="button"
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-panel hover:border-primary/40 text-sm font-semibold transition-colors"
-            >
-              <span className="material-symbols-outlined text-[18px]">
-                arrow_back
-              </span>
-              Back to Home
-            </button>
-
-            <span className="text-xs uppercase tracking-widest text-on-surface-variant font-bold">
-              {config.bannerTag}
+        <div className="flex items-center justify-between gap-4 mb-8">
+          <button
+            onClick={onBack}
+            type="button"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-panel hover:border-primary/40 text-sm font-semibold transition-colors cursor-pointer"
+          >
+            <span className="material-symbols-outlined text-[18px]">
+              arrow_back
             </span>
-          </div>
-        </Reveal>
+            Back to Home
+          </button>
+
+          <span className="text-xs uppercase tracking-widest text-on-surface-variant font-bold">
+            {config.bannerTag}
+          </span>
+        </div>
 
         {/* HERO HEADER */}
-        <Reveal delay={100}>
-          <div className="glass-panel border border-outline-variant/30 rounded-3xl p-8 md:p-12 mb-10 relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-96 h-96 bg-primary/10 rounded-full blur-3xl -z-10" />
+        <div className="glass-panel border border-outline-variant/30 rounded-3xl p-8 md:p-12 mb-10 relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-96 h-96 bg-primary/10 rounded-full blur-3xl -z-10" />
 
-            <div className="max-w-2xl">
-              <span className="inline-block px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-bold uppercase tracking-wider mb-4">
-                0% ABV Collection
-              </span>
+          <div className="max-w-2xl">
+            <span className="inline-block px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-bold uppercase tracking-wider mb-4">
+              0% ABV Collection
+            </span>
 
-              <h1 className="text-3xl md:text-5xl font-bold font-headline text-on-surface mb-4">
-                {config.title}
-              </h1>
+            <h1 className="text-3xl md:text-5xl font-bold font-headline text-on-surface mb-4">
+              {config.title}
+            </h1>
 
-              <p className="text-on-surface-variant text-base md:text-lg">
-                {config.description}
-              </p>
-            </div>
+            <p className="text-on-surface-variant text-base md:text-lg">
+              {config.description}
+            </p>
           </div>
-        </Reveal>
+        </div>
 
         {/* CONTROLS BAR: FILTERS + SORTING */}
-        <Reveal delay={200}>
-          <div className="glass-panel border border-outline-variant/30 rounded-2xl p-4 md:p-6 mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
-            {/* PRICE & RATING FILTERS */}
-            <div className="flex flex-wrap items-center gap-3">
-              {/* PRICE DROPDOWN */}
-              <div className="relative">
-                <select
-                  value={priceRange}
-                  onChange={(e) => setPriceRange(e.target.value)}
-                  className="appearance-none bg-surface-container-high border border-outline-variant/30 rounded-xl px-4 py-2.5 pr-10 text-sm font-medium text-on-surface focus:outline-none focus:border-primary transition-colors cursor-pointer"
-                >
-                  {PRICE_RANGES.map((option) => (
-                    <option key={option.key} value={option.key}>
-                      {option.label}
-                    </option>
-                  ))}
-                </select>
-                <span className="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none text-[18px]">
-                  expand_more
-                </span>
-              </div>
-
-              {/* RATING DROPDOWN */}
-              <div className="relative">
-                <select
-                  value={rating}
-                  onChange={(e) => setRating(e.target.value)}
-                  className="appearance-none bg-surface-container-high border border-outline-variant/30 rounded-xl px-4 py-2.5 pr-10 text-sm font-medium text-on-surface focus:outline-none focus:border-primary transition-colors cursor-pointer"
-                >
-                  {RATING_OPTIONS.map((option) => (
-                    <option key={option.key} value={option.key}>
-                      {option.label}
-                    </option>
-                  ))}
-                </select>
-                <span className="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none text-[18px]">
-                  expand_more
-                </span>
-              </div>
-
-              {/* CLEAR FILTERS */}
-              {activeFilterCount > 0 && (
-                <button
-                  onClick={clearFilters}
-                  type="button"
-                  className="text-xs text-primary font-semibold hover:underline px-2 py-1"
-                >
-                  Clear Filters ({activeFilterCount})
-                </button>
-              )}
-            </div>
-
-            {/* SORT DROPDOWN */}
-            <div className="relative" ref={sortRef}>
-              <button
-                type="button"
-                onClick={() => setSortOpen(!sortOpen)}
-                className="flex items-center gap-2 bg-surface-container-high border border-outline-variant/30 rounded-xl px-4 py-2.5 text-sm font-medium text-on-surface hover:border-primary/40 transition-colors w-full md:w-auto justify-between md:justify-start"
+        <div className="glass-panel border border-outline-variant/30 rounded-2xl p-4 md:p-6 mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
+          {/* PRICE & RATING FILTERS */}
+          <div className="flex flex-wrap items-center gap-3">
+            {/* PRICE DROPDOWN */}
+            <div className="relative">
+              <select
+                value={priceRange}
+                onChange={(e) => setPriceRange(e.target.value)}
+                className="appearance-none bg-surface-container-high border border-outline-variant/30 rounded-xl px-4 py-2.5 pr-10 text-sm font-medium text-on-surface focus:outline-none focus:border-primary transition-colors cursor-pointer"
               >
-                <span className="text-on-surface-variant">Sort by:</span>
-                <span className="font-semibold">{selectedSort.label}</span>
-                <span className="material-symbols-outlined text-[18px] text-on-surface-variant">
-                  expand_more
-                </span>
-              </button>
-
-              {sortOpen && (
-                <div className="absolute right-0 top-full mt-2 w-48 bg-surface-container-high border border-outline-variant/30 rounded-xl shadow-xl py-2 z-30">
-                  {SORT_OPTIONS.map((option) => (
-                    <button
-                      key={option.key}
-                      type="button"
-                      onClick={() => {
-                        setSortBy(option.key);
-                        setSortOpen(false);
-                      }}
-                      className={`w-full text-left px-4 py-2 text-sm transition-colors ${
-                        sortBy === option.key
-                          ? "text-primary font-bold bg-primary/10"
-                          : "text-on-surface hover:bg-primary/5"
-                      }`}
-                    >
-                      {option.label}
-                    </button>
-                  ))}
-                </div>
-              )}
+                {PRICE_RANGES.map((option) => (
+                  <option key={option.key} value={option.key}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+              <span className="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none text-[18px]">
+                expand_more
+              </span>
             </div>
+
+            {/* RATING DROPDOWN */}
+            <div className="relative">
+              <select
+                value={rating}
+                onChange={(e) => setRating(e.target.value)}
+                className="appearance-none bg-surface-container-high border border-outline-variant/30 rounded-xl px-4 py-2.5 pr-10 text-sm font-medium text-on-surface focus:outline-none focus:border-primary transition-colors cursor-pointer"
+              >
+                {RATING_OPTIONS.map((option) => (
+                  <option key={option.key} value={option.key}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+              <span className="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none text-[18px]">
+                expand_more
+              </span>
+            </div>
+
+            {/* CLEAR FILTERS */}
+            {activeFilterCount > 0 && (
+              <button
+                onClick={clearFilters}
+                type="button"
+                className="text-xs text-primary font-semibold hover:underline px-2 py-1 cursor-pointer"
+              >
+                Clear Filters ({activeFilterCount})
+              </button>
+            )}
           </div>
-        </Reveal>
+
+          {/* SORT DROPDOWN */}
+          <div className="relative" ref={sortRef}>
+            <button
+              type="button"
+              onClick={() => setSortOpen(!sortOpen)}
+              className="flex items-center gap-2 bg-surface-container-high border border-outline-variant/30 rounded-xl px-4 py-2.5 text-sm font-medium text-on-surface hover:border-primary/40 transition-colors w-full md:w-auto justify-between md:justify-start cursor-pointer"
+            >
+              <span className="text-on-surface-variant">Sort by:</span>
+              <span className="font-semibold">{selectedSort.label}</span>
+              <span className="material-symbols-outlined text-[18px] text-on-surface-variant">
+                expand_more
+              </span>
+            </button>
+
+            {sortOpen && (
+              <div className="absolute right-0 top-full mt-2 w-48 bg-surface-container-high border border-outline-variant/30 rounded-xl shadow-xl py-2 z-30">
+                {SORT_OPTIONS.map((option) => (
+                  <button
+                    key={option.key}
+                    type="button"
+                    onClick={() => {
+                      setSortBy(option.key);
+                      setSortOpen(false);
+                    }}
+                    className={`w-full text-left px-4 py-2 text-sm transition-colors cursor-pointer ${
+                      sortBy === option.key
+                        ? "text-primary font-bold bg-primary/10"
+                        : "text-on-surface hover:bg-primary/5"
+                    }`}
+                  >
+                    {option.label}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
 
         {/* PRODUCT GRID SECTION */}
-        <Reveal delay={300}>
-          <ProductGrid
-            addedProduct={addedProduct}
-            emptyMessage={config.emptyMessage}
-            loading={productsLoading}
-            onAddToCart={handleAddToCart}
-            products={filteredProducts}
-          />
-        </Reveal>
+        <ProductGrid
+          addedProduct={addedProduct}
+          emptyMessage={config.emptyMessage}
+          onAddToCart={handleAddToCart}
+          products={filteredProducts}
+        />
       </div>
     </div>
   );
