@@ -32,6 +32,17 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.get("/api/health", (req, res) => res.json({ status: "ok" }));
 
+app.get("/api/v1/admin/stats", (req, res) => {
+  res.json({
+    totalUsers: 0,
+    totalProducts: 0,
+    totalOrders: 0,
+    totalRevenue: 0,
+    lowStockProducts: 0,
+    ordersByStatus: {},
+  });
+});
+
 app.use("/api/auth", authRoutes);
 app.use("/api/cart", cartRoutes);
 
