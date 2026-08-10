@@ -6,9 +6,23 @@ import {
   PENFOLDS_URL,
   YAMAZAKI_URL,
   PRESTIGE_COLLECTION_URL,
+  NEW_BANNER_URL,
 } from "./images.js";
-
 export const heroSlides = [
+  {
+    bgImage: NEW_BANNER_URL,
+    bgAlt: "SipNow promotional banner",
+    badge: "Featured Promotion",
+    titleLines: ["Discover", "SipNow."],
+    description: "Discover our latest collection and exclusive offers.",
+    primaryCta: "Shop Now",
+    secondaryCta: "Explore",
+    card: {
+      image: NEW_BANNER_URL,
+      tag: "Featured",
+      title: "SipNow Collection",
+    },
+  },
   {
     bgImage: CELLAR_HIGHLIGHT_URL,
     bgAlt: "Rare vintage wine cellar",
