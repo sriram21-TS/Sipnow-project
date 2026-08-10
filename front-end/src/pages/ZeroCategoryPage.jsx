@@ -40,35 +40,40 @@ const SUBCATEGORIES = {
     keyword: "wine",
     emptyMessage: "No zero % alcohol wine products found.",
     bannerTag: "Zero Alcohol Cellar",
-    description: "Explore our premium range of non-alcoholic wines, crafted for rich taste without the alcohol.",
+    description:
+      "Explore our premium range of non-alcoholic wines, crafted for rich taste without the alcohol.",
   },
   beer: {
     title: "Zero % Alcohol Beer",
     keyword: "beer",
     emptyMessage: "No zero % alcohol beer products found.",
     bannerTag: "Zero Alcohol Brews",
-    description: "Refresh yourself with crisp, non-alcoholic craft and classic beers.",
+    description:
+      "Refresh yourself with crisp, non-alcoholic craft and classic beers.",
   },
   spirits: {
     title: "Zero % Alcohol Spirits",
     keyword: "spirits",
     emptyMessage: "No zero % alcohol spirits products found.",
     bannerTag: "Zero Alcohol Spirits",
-    description: "Sophisticated non-alcoholic botanical spirits and alternatives for mixology.",
+    description:
+      "Sophisticated non-alcoholic botanical spirits and alternatives for mixology.",
   },
   premix: {
     title: "Zero % Alcohol Premix",
     keyword: "premix",
     emptyMessage: "No zero % alcohol premix products found.",
     bannerTag: "Zero Alcohol Premix & RTD",
-    description: "Convenient, ready-to-drink zero alcohol cocktails and mixed drinks.",
+    description:
+      "Convenient, ready-to-drink zero alcohol cocktails and mixed drinks.",
   },
   cider: {
     title: "Zero % Alcohol Cider",
     keyword: "cider",
     emptyMessage: "No zero % alcohol cider products found.",
     bannerTag: "Zero Alcohol Ciders",
-    description: "Fruity and crisp zero alcohol ciders packed with natural flavours.",
+    description:
+      "Fruity and crisp zero alcohol ciders packed with natural flavours.",
   },
 };
 
@@ -80,8 +85,9 @@ export default function ZeroCategoryPage({
   productsLoading = false,
 }) {
   const params = useParams();
-  const rawSubcategory = subcategoryProp || params.subcategory || params.categoryKey || "wine";
-  
+  const rawSubcategory =
+    subcategoryProp || params.subcategory || params.categoryKey || "wine";
+
   const subKey = rawSubcategory
     .toLowerCase()
     .replace("zero-alcohol-", "")
@@ -127,7 +133,8 @@ export default function ZeroCategoryPage({
     const [minPrice, maxPrice] = PRICE_BOUNDS[priceRange];
 
     const filtered = products.filter((product) => {
-      const text = `${product.name || ""} ${product.category || ""} ${product.categoryGroup || ""}`.toLowerCase();
+      const text =
+        `${product.name || ""} ${product.category || ""} ${product.categoryGroup || ""}`.toLowerCase();
 
       if (!text.includes("zero")) {
         return false;

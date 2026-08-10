@@ -92,7 +92,14 @@ export const BEER_CIDER_SUBCATEGORIES = {
     tag: "Cider Collection",
     description:
       "Juicy and refreshing hard ciders made from fresh apples, perry pears, and wild berries.",
-    subtypes: ["Apple Cider", "Apple", "Pear Cider", "Pear", "Fruit Cider", "Cider"],
+    subtypes: [
+      "Apple Cider",
+      "Apple",
+      "Pear Cider",
+      "Pear",
+      "Fruit Cider",
+      "Cider",
+    ],
   },
   pilsner: {
     key: "pilsner",
@@ -422,7 +429,8 @@ const TEMPORARY_FALLBACK_PRODUCTS = {
 TEMPORARY_FALLBACK_PRODUCTS.apple = TEMPORARY_FALLBACK_PRODUCTS["apple-cider"];
 TEMPORARY_FALLBACK_PRODUCTS.pear = TEMPORARY_FALLBACK_PRODUCTS["pear-cider"];
 TEMPORARY_FALLBACK_PRODUCTS.stout = TEMPORARY_FALLBACK_PRODUCTS["stout-porter"];
-TEMPORARY_FALLBACK_PRODUCTS.porter = TEMPORARY_FALLBACK_PRODUCTS["stout-porter"];
+TEMPORARY_FALLBACK_PRODUCTS.porter =
+  TEMPORARY_FALLBACK_PRODUCTS["stout-porter"];
 TEMPORARY_FALLBACK_PRODUCTS["stout-and-porter"] =
   TEMPORARY_FALLBACK_PRODUCTS["stout-porter"];
 

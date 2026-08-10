@@ -33,7 +33,6 @@ function readStored(key, fallback) {
   }
 }
 
-
 export default function App() {
   const [quizOpen, setQuizOpen] = useState(false);
   const [cartItems, setCartItems] = useState(() =>
@@ -137,7 +136,6 @@ export default function App() {
     setUser(null);
     goHome();
   };
-
 
   return (
     <>

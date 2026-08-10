@@ -123,7 +123,7 @@ export const products = [
   // =========================
   // TEMPORARY PILSNER PRODUCTS
   // =========================
-    {
+  {
     image: cooper,
     badgeStyle: "glow",
     icon: "sports_bar",
@@ -235,7 +235,7 @@ export const products = [
     price: "$7.15",
   },
   {
-    image:"",
+    image: "",
     badgeStyle: "plain",
     badgeText: "Pilsner",
     category: "Pilsner · 375mL",
@@ -256,7 +256,7 @@ export const products = [
     reviewCount: 134,
     price: "$7.99",
   },
-    // =========================
+  // =========================
   // DARK LAGER
   // =========================
 
