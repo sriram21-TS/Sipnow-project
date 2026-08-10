@@ -28,115 +28,154 @@ const RATING_THRESHOLDS = {
   3: 3,
 };
 
+const KEY_ALIASES = {
+  apple: "apple-cider",
+  pear: "pear-cider",
+  stout: "stout-porter",
+  porter: "stout-porter",
+  "stout-and-porter": "stout-porter",
+  darklager: "dark-lager",
+  paleale: "pale-ale",
+  fruitcider: "fruit-cider",
+};
+
 export const BEER_CIDER_SUBCATEGORIES = {
   all: {
     key: "all",
     title: "All Beer & Cider",
     group: "All",
     tag: "Beer & Cider Collection",
-    description: "Explore our complete collection of craft lagers, rich ales, and refreshing ciders.",
-    subtypes: ["Pilsner", "Dark Lager", "Helles", "Pale Ale", "IPA", "Stout & Porter", "Stout", "Porter", "Apple Cider", "Pear Cider", "Fruit Cider", "Lager", "Ale", "Beer", "Cider"]
+    description:
+      "Explore our complete collection of craft lagers, rich ales, and refreshing ciders.",
+    subtypes: [
+      "Pilsner",
+      "Dark Lager",
+      "Helles",
+      "Pale Ale",
+      "IPA",
+      "Stout & Porter",
+      "Stout",
+      "Porter",
+      "Apple Cider",
+      "Apple",
+      "Pear Cider",
+      "Pear",
+      "Fruit Cider",
+      "Lager",
+      "Ale",
+      "Beer",
+      "Cider",
+    ],
+  },
+  lager: {
+    key: "lager",
+    title: "Lager",
+    group: "Lager",
+    tag: "Lager Collection",
+    description:
+      "Crisp, refreshing, and golden lagers from classic German Helles to dark Czech Dunkels.",
+    subtypes: ["Pilsner", "Dark Lager", "Helles", "Lager"],
+  },
+  ale: {
+    key: "ale",
+    title: "Ale",
+    group: "Ale",
+    tag: "Ale Collection",
+    description:
+      "Flavorful top-fermented craft ales spanning aromatic Pale Ales, bold IPAs, and rich Stouts.",
+    subtypes: ["Pale Ale", "IPA", "Stout & Porter", "Stout", "Porter", "Ale"],
+  },
+  cider: {
+    key: "cider",
+    title: "Cider",
+    group: "Cider",
+    tag: "Cider Collection",
+    description:
+      "Juicy and refreshing hard ciders made from fresh apples, perry pears, and wild berries.",
+    subtypes: ["Apple Cider", "Apple", "Pear Cider", "Pear", "Fruit Cider", "Cider"],
   },
   pilsner: {
     key: "pilsner",
     title: "Pilsner",
     group: "Lager",
     tag: "Lager Collection",
-    description: "Crisp, clean, and refreshingly golden lagers brewed with fine noble hops.",
-    subtypes: ["Pilsner"]
+    description:
+      "Crisp, clean, and refreshingly golden lagers brewed with fine noble hops.",
+    subtypes: ["Pilsner"],
   },
   "dark-lager": {
     key: "dark-lager",
     title: "Dark Lager",
     group: "Lager",
     tag: "Lager Collection",
-    description: "Smooth roasted malt flavors with rich dark amber hues and balanced bitterness.",
-    subtypes: ["Dark Lager"]
+    description:
+      "Smooth roasted malt flavors with rich dark amber hues and balanced bitterness.",
+    subtypes: ["Dark Lager"],
   },
   helles: {
     key: "helles",
     title: "Helles",
     group: "Lager",
     tag: "Lager Collection",
-    description: "Bavarian-style light lagers with subtle malt sweetness and a clean finish.",
-    subtypes: ["Helles"]
+    description:
+      "Bavarian-style light lagers with subtle malt sweetness and a clean finish.",
+    subtypes: ["Helles"],
   },
   "pale-ale": {
     key: "pale-ale",
     title: "Pale Ale",
     group: "Ale",
     tag: "Ale Collection",
-    description: "Aromatic hop-forward pale ales with bright citrus, pine, and floral notes.",
-    subtypes: ["Pale Ale"]
+    description:
+      "Aromatic hop-forward pale ales with bright citrus, pine, and floral notes.",
+    subtypes: ["Pale Ale"],
   },
   ipa: {
     key: "ipa",
     title: "IPA",
     group: "Ale",
     tag: "Ale Collection",
-    description: "Bold India Pale Ales bursting with tropical hop aromas, haziness, and character.",
-    subtypes: ["IPA"]
+    description:
+      "Bold India Pale Ales bursting with tropical hop aromas, haziness, and character.",
+    subtypes: ["IPA"],
   },
   "stout-porter": {
     key: "stout-porter",
     title: "Stout & Porter",
     group: "Ale",
     tag: "Ale Collection",
-    description: "Deep, dark roasted malt brews featuring espresso, dark chocolate, and caramel notes.",
-    subtypes: ["Stout & Porter", "Stout", "Porter"]
+    description:
+      "Deep, dark roasted malt brews featuring espresso, dark chocolate, and caramel notes.",
+    subtypes: ["Stout & Porter", "Stout", "Porter"],
   },
   "apple-cider": {
     key: "apple-cider",
     title: "Apple Cider",
     group: "Cider",
     tag: "Cider Collection",
-    description: "Crisp and juicy hard ciders crafted from freshly pressed heritage apples.",
-    subtypes: ["Apple Cider", "Apple"]
+    description:
+      "Crisp and juicy hard ciders crafted from freshly pressed heritage apples.",
+    subtypes: ["Apple Cider", "Apple"],
   },
   "pear-cider": {
     key: "pear-cider",
     title: "Pear Cider",
     group: "Cider",
     tag: "Cider Collection",
-    description: "Delicately sweet and aromatic Perry ciders made from premium Australian pears.",
-    subtypes: ["Pear Cider", "Pear"]
+    description:
+      "Delicately sweet and aromatic Perry ciders made from premium Australian pears.",
+    subtypes: ["Pear Cider", "Pear"],
   },
   "fruit-cider": {
     key: "fruit-cider",
     title: "Fruit Cider",
     group: "Cider",
     tag: "Cider Collection",
-    description: "Vibrant ciders infused with wild berries, passionfruit, and summer garden fruits.",
-    subtypes: ["Fruit Cider"]
-  }
+    description:
+      "Vibrant ciders infused with wild berries, passionfruit, and summer garden fruits.",
+    subtypes: ["Fruit Cider"],
+  },
 };
-
-const NAV_GROUPS = [
-  {
-    name: "Lager",
-    items: [
-      { key: "pilsner", label: "Pilsner" },
-      { key: "dark-lager", label: "Dark Lager" },
-      { key: "helles", label: "Helles" }
-    ]
-  },
-  {
-    name: "Ale",
-    items: [
-      { key: "pale-ale", label: "Pale Ale" },
-      { key: "ipa", label: "IPA" },
-      { key: "stout-porter", label: "Stout & Porter" }
-    ]
-  },
-  {
-    name: "Cider",
-    items: [
-      { key: "apple-cider", label: "Apple" },
-      { key: "pear-cider", label: "Pear" },
-      { key: "fruit-cider", label: "Fruit Cider" }
-    ]
-  }
-];
 
 const TEMPORARY_FALLBACK_PRODUCTS = {
   pilsner: [
@@ -150,7 +189,7 @@ const TEMPORARY_FALLBACK_PRODUCTS = {
       badgeStyle: "glow",
       icon: "sports_bar",
       badgeText: "Best Pilsner",
-      image: "https://media.sipnow.com.au/sipnow/products/60281-1.png"
+      image: "https://media.sipnow.com.au/sipnow/products/60281-1.png",
     },
     {
       name: "Pilsner Urquell 330mL Bottled",
@@ -161,7 +200,7 @@ const TEMPORARY_FALLBACK_PRODUCTS = {
       reviewCount: 140,
       badgeStyle: "plain",
       badgeText: "Czech Classic",
-      image: "https://media.sipnow.com.au/sipnow/products/cooper.png"
+      image: "https://media.sipnow.com.au/sipnow/products/cooper.png",
     },
     {
       name: "Bitburger Premium Pils 500mL Can",
@@ -173,8 +212,8 @@ const TEMPORARY_FALLBACK_PRODUCTS = {
       badgeStyle: "glow",
       icon: "sports_bar",
       badgeText: "Imported",
-      image: "https://media.sipnow.com.au/sipnow/products/60281-1.png"
-    }
+      image: "https://media.sipnow.com.au/sipnow/products/60281-1.png",
+    },
   ],
   "dark-lager": [
     {
@@ -187,7 +226,7 @@ const TEMPORARY_FALLBACK_PRODUCTS = {
       badgeStyle: "glow",
       icon: "sports_bar",
       badgeText: "Top Dark Lager",
-      image: "https://media.sipnow.com.au/sipnow/products/cooper.png"
+      image: "https://media.sipnow.com.au/sipnow/products/cooper.png",
     },
     {
       name: "Weltenburger Kloster Dunkel 500mL",
@@ -198,8 +237,8 @@ const TEMPORARY_FALLBACK_PRODUCTS = {
       reviewCount: 45,
       badgeStyle: "plain",
       badgeText: "Traditional",
-      image: "https://media.sipnow.com.au/sipnow/products/60281-1.png"
-    }
+      image: "https://media.sipnow.com.au/sipnow/products/60281-1.png",
+    },
   ],
   helles: [
     {
@@ -212,7 +251,7 @@ const TEMPORARY_FALLBACK_PRODUCTS = {
       badgeStyle: "glow",
       icon: "sports_bar",
       badgeText: "Bavarian Choice",
-      image: "https://media.sipnow.com.au/sipnow/products/60281-1.png"
+      image: "https://media.sipnow.com.au/sipnow/products/60281-1.png",
     },
     {
       name: "Paulaner Munchner Helles 500mL",
@@ -223,8 +262,8 @@ const TEMPORARY_FALLBACK_PRODUCTS = {
       reviewCount: 112,
       badgeStyle: "plain",
       badgeText: "Classic Helles",
-      image: "https://media.sipnow.com.au/sipnow/products/cooper.png"
-    }
+      image: "https://media.sipnow.com.au/sipnow/products/cooper.png",
+    },
   ],
   "pale-ale": [
     {
@@ -237,7 +276,7 @@ const TEMPORARY_FALLBACK_PRODUCTS = {
       badgeStyle: "glow",
       icon: "sports_bar",
       badgeText: "Aussie Icon",
-      image: "https://media.sipnow.com.au/sipnow/products/cooper.png"
+      image: "https://media.sipnow.com.au/sipnow/products/cooper.png",
     },
     {
       name: "Sierra Nevada Pale Ale 355mL",
@@ -248,8 +287,8 @@ const TEMPORARY_FALLBACK_PRODUCTS = {
       reviewCount: 210,
       badgeStyle: "plain",
       badgeText: "Craft Favorite",
-      image: "https://media.sipnow.com.au/sipnow/products/60281-1.png"
-    }
+      image: "https://media.sipnow.com.au/sipnow/products/60281-1.png",
+    },
   ],
   ipa: [
     {
@@ -262,7 +301,7 @@ const TEMPORARY_FALLBACK_PRODUCTS = {
       badgeStyle: "glow",
       icon: "sports_bar",
       badgeText: "Top Rated IPA",
-      image: "https://media.sipnow.com.au/sipnow/products/60281-1.png"
+      image: "https://media.sipnow.com.au/sipnow/products/60281-1.png",
     },
     {
       name: "Balter Hazy IPA Can 375mL",
@@ -274,8 +313,8 @@ const TEMPORARY_FALLBACK_PRODUCTS = {
       badgeStyle: "glow",
       icon: "sports_bar",
       badgeText: "Hazy Favorite",
-      image: "https://media.sipnow.com.au/sipnow/products/cooper.png"
-    }
+      image: "https://media.sipnow.com.au/sipnow/products/cooper.png",
+    },
   ],
   "stout-porter": [
     {
@@ -288,7 +327,7 @@ const TEMPORARY_FALLBACK_PRODUCTS = {
       badgeStyle: "glow",
       icon: "sports_bar",
       badgeText: "Irish Legend",
-      image: "https://media.sipnow.com.au/sipnow/products/cooper.png"
+      image: "https://media.sipnow.com.au/sipnow/products/cooper.png",
     },
     {
       name: "Coopers Best Extra Stout 375mL",
@@ -299,8 +338,8 @@ const TEMPORARY_FALLBACK_PRODUCTS = {
       reviewCount: 88,
       badgeStyle: "plain",
       badgeText: "Rich & Dark",
-      image: "https://media.sipnow.com.au/sipnow/products/60281-1.png"
-    }
+      image: "https://media.sipnow.com.au/sipnow/products/60281-1.png",
+    },
   ],
   "apple-cider": [
     {
@@ -313,7 +352,7 @@ const TEMPORARY_FALLBACK_PRODUCTS = {
       badgeStyle: "glow",
       icon: "sports_bar",
       badgeText: "Best Apple Cider",
-      image: "https://media.sipnow.com.au/sipnow/products/60281-1.png"
+      image: "https://media.sipnow.com.au/sipnow/products/60281-1.png",
     },
     {
       name: "Strongbow Crisp Apple Cider 355mL",
@@ -324,8 +363,8 @@ const TEMPORARY_FALLBACK_PRODUCTS = {
       reviewCount: 125,
       badgeStyle: "plain",
       badgeText: "Crisp Finish",
-      image: "https://media.sipnow.com.au/sipnow/products/cooper.png"
-    }
+      image: "https://media.sipnow.com.au/sipnow/products/cooper.png",
+    },
   ],
   "pear-cider": [
     {
@@ -338,7 +377,7 @@ const TEMPORARY_FALLBACK_PRODUCTS = {
       badgeStyle: "glow",
       icon: "sports_bar",
       badgeText: "Top Pear Cider",
-      image: "https://media.sipnow.com.au/sipnow/products/60281-1.png"
+      image: "https://media.sipnow.com.au/sipnow/products/60281-1.png",
     },
     {
       name: "Rekorderlig Pear Cider 500mL",
@@ -349,8 +388,8 @@ const TEMPORARY_FALLBACK_PRODUCTS = {
       reviewCount: 190,
       badgeStyle: "plain",
       badgeText: "Swedish Craft",
-      image: "https://media.sipnow.com.au/sipnow/products/cooper.png"
-    }
+      image: "https://media.sipnow.com.au/sipnow/products/cooper.png",
+    },
   ],
   "fruit-cider": [
     {
@@ -363,7 +402,7 @@ const TEMPORARY_FALLBACK_PRODUCTS = {
       badgeStyle: "glow",
       icon: "sports_bar",
       badgeText: "Wild Berry",
-      image: "https://media.sipnow.com.au/sipnow/products/60281-1.png"
+      image: "https://media.sipnow.com.au/sipnow/products/60281-1.png",
     },
     {
       name: "Somersby Blackberry Fruit Cider 330mL",
@@ -374,10 +413,18 @@ const TEMPORARY_FALLBACK_PRODUCTS = {
       reviewCount: 98,
       badgeStyle: "plain",
       badgeText: "Refreshing",
-      image: "https://media.sipnow.com.au/sipnow/products/cooper.png"
-    }
-  ]
+      image: "https://media.sipnow.com.au/sipnow/products/cooper.png",
+    },
+  ],
 };
+
+// Aliases for fallback products
+TEMPORARY_FALLBACK_PRODUCTS.apple = TEMPORARY_FALLBACK_PRODUCTS["apple-cider"];
+TEMPORARY_FALLBACK_PRODUCTS.pear = TEMPORARY_FALLBACK_PRODUCTS["pear-cider"];
+TEMPORARY_FALLBACK_PRODUCTS.stout = TEMPORARY_FALLBACK_PRODUCTS["stout-porter"];
+TEMPORARY_FALLBACK_PRODUCTS.porter = TEMPORARY_FALLBACK_PRODUCTS["stout-porter"];
+TEMPORARY_FALLBACK_PRODUCTS["stout-and-porter"] =
+  TEMPORARY_FALLBACK_PRODUCTS["stout-porter"];
 
 export default function BeerCiderCategoryPage({
   categoryKey: categoryKeyProp,
@@ -387,14 +434,17 @@ export default function BeerCiderCategoryPage({
   productsLoading = false,
 }) {
   const { categoryKey: categoryKeyParam } = useParams();
-  const navigate = useNavigate();
 
-  // Selected subcategory key from URL parameter or prop (defaults to 'all')
-  const activeSubcategoryKey =
-    categoryKeyProp || categoryKeyParam || "all";
+  // Normalize key from param or prop
+  const rawKey = (categoryKeyProp || categoryKeyParam || "all")
+    .toLowerCase()
+    .trim();
+
+  const activeSubcategoryKey = KEY_ALIASES[rawKey] || rawKey;
 
   const activeConfig =
     BEER_CIDER_SUBCATEGORIES[activeSubcategoryKey] ||
+    BEER_CIDER_SUBCATEGORIES[rawKey] ||
     BEER_CIDER_SUBCATEGORIES.all;
 
   const { addedProduct, handleAddToCart } = useAddToCartFeedback(onAddToCart);
@@ -404,16 +454,6 @@ export default function BeerCiderCategoryPage({
   const [rating, setRating] = useState("all");
   const [sort, setSort] = useState("featured");
   const [filtersOpen, setFiltersOpen] = useState(false);
-
-  const handleSubcategoryChange = (key) => {
-    setSelectedSubtypes([]);
-    if (key === "all") {
-      navigate("/beer-cider");
-    } else {
-      navigate(`/beer-cider/${key}`);
-    }
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
 
   const toggleSubtype = (subtype) => {
     setSelectedSubtypes((current) =>
@@ -432,30 +472,35 @@ export default function BeerCiderCategoryPage({
   // Base products for Beer & Cider
   const categoryProducts = useMemo(() => {
     const isAll = activeSubcategoryKey === "all";
-    const allowedSubtypes = activeConfig.subtypes;
+    const allowedSubtypes = activeConfig.subtypes || [];
 
     // Filter real products from store/db
     const matched = products.filter((product) => {
       const isBeerOrCider =
         product.categoryGroup === "beer" || product.categoryGroup === "cider";
+
       if (!isBeerOrCider) return false;
       if (isAll) return true;
+
       const subtype = getSubtype(product);
+
       return allowedSubtypes.some(
         (st) => st.toLowerCase() === subtype.toLowerCase()
       );
     });
 
-    // If matching products are empty or few, incorporate temporary sample products
+    // If matching products are empty, incorporate temporary sample products
     const fallbacks =
-      TEMPORARY_FALLBACK_PRODUCTS[activeSubcategoryKey] || [];
+      TEMPORARY_FALLBACK_PRODUCTS[activeSubcategoryKey] ||
+      TEMPORARY_FALLBACK_PRODUCTS[rawKey] ||
+      [];
 
     if (matched.length === 0) {
       return fallbacks;
     }
 
     return matched;
-  }, [products, activeSubcategoryKey, activeConfig]);
+  }, [products, activeSubcategoryKey, rawKey, activeConfig]);
 
   const filteredProducts = useMemo(() => {
     const [minPrice, maxPrice] = PRICE_RANGE_BOUNDS[priceRange];
@@ -500,17 +545,13 @@ export default function BeerCiderCategoryPage({
       />
 
       <Reveal className="px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
-
-
         {/* MOBILE FILTER TOGGLE BUTTON */}
         <button
           className="lg:hidden w-full flex items-center justify-center gap-2 glass-panel rounded-lg px-4 py-3 mb-6 text-sm font-label-md uppercase tracking-widest border border-primary/20"
           onClick={() => setFiltersOpen((open) => !open)}
           type="button"
         >
-          <span className="material-symbols-outlined text-[18px]">
-            tune
-          </span>
+          <span className="material-symbols-outlined text-[18px]">tune</span>
           {filtersOpen ? "Hide Filters" : "Show Filters"}
         </button>
 
@@ -533,7 +574,7 @@ export default function BeerCiderCategoryPage({
                 rating={rating}
                 resultCount={filteredProducts.length}
                 selectedSubtypes={selectedSubtypes}
-                hideAlcoholType={true}
+                hideAlcoholType={false}
               />
             </div>
           </aside>
