@@ -8,19 +8,20 @@ export default function AgeVerification({ onConfirm }) {
   const handleVerify = (e) => {
     e.preventDefault();
     const year = Number(birthYear);
+    const currentYear = new Date().getFullYear();
 
     if (!/^\d{4}$/.test(birthYear)) {
       setError("Please enter a valid four-digit birth year.");
       return;
     }
 
-    if (year <= 1900 || year >= 2026) {
-      setError("Please enter a birth year between 1901 and 2025.");
+    if (year <= 1900 || year > currentYear) {
+      setError("Please enter a valid birth year.");
       return;
     }
 
-    if (2026 - year < 18) {
-      setError("Sorry, you must be at least 18 years old to enter.");
+    if (currentYear - year < 18) {
+      setError("You must be 18 years or older to enter this website");
       return;
     }
 
