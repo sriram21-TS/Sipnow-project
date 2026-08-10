@@ -1,67 +1,58 @@
-import { useEffect, useState } from "react";
+import { categories } from "../data/categories.js";
+import { footerColumns } from "../data/footerLinks.js";
+import { heroSlides } from "../data/heroSlides.js";
+import { inStorePromotions } from "../data/inStorePromotions.js";
+import { navMenus } from "../data/navigation.js";
+import { quizQuestions, quizResults } from "../data/quiz.js";
 import {
-  fetchCategories,
-  fetchFooterColumns,
-  fetchHeroSlides,
-  fetchInStorePromotions,
-  fetchNavMenus,
-  fetchQuiz,
-  fetchSiteAssets,
-} from "../utils/api.js";
+  LOGO_URL,
+  BEER_FEATURED_URL,
+  WINE_FEATURED_URL,
+  SPIRITS_FEATURED_URL,
+  ZERO_PROOF_URL,
+  CELLAR_HIGHLIGHT_URL,
+  PENFOLDS_URL,
+  YAMAZAKI_URL,
+  PRESTIGE_COLLECTION_URL,
+} from "../data/images.js";
 
-/** Loads a piece of backend-hosted site content once on mount. */
-function useContent(fetcher, initialValue) {
-  const [data, setData] = useState(initialValue);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+const siteAssets = {
+  LOGO_URL,
+  BEER_FEATURED_URL,
+  WINE_FEATURED_URL,
+  SPIRITS_FEATURED_URL,
+  ZERO_PROOF_URL,
+  CELLAR_HIGHLIGHT_URL,
+  PENFOLDS_URL,
+  YAMAZAKI_URL,
+  PRESTIGE_COLLECTION_URL,
+};
 
-  useEffect(() => {
-    let cancelled = false;
-
-    fetcher()
-      .then((result) => {
-        if (!cancelled) setData(result);
-      })
-      .catch((err) => {
-        if (!cancelled) setError(err);
-      })
-      .finally(() => {
-        if (!cancelled) setLoading(false);
-      });
-
-    return () => {
-      cancelled = true;
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  return { data, loading, error };
-}
-
+/** Site content is bundled with the front-end as static data, so these are synchronous. */
 export function useCategories() {
-  return useContent(fetchCategories, []);
+  return { data: categories, loading: false, error: null };
 }
 
 export function useFooterColumns() {
-  return useContent(fetchFooterColumns, []);
+  return { data: footerColumns, loading: false, error: null };
 }
 
 export function useHeroSlides() {
-  return useContent(fetchHeroSlides, []);
+  return { data: heroSlides, loading: false, error: null };
 }
 
 export function useInStorePromotions() {
-  return useContent(fetchInStorePromotions, []);
+  return { data: inStorePromotions, loading: false, error: null };
 }
 
 export function useNavMenus() {
-  return useContent(fetchNavMenus, []);
+  return { data: navMenus, loading: false, error: null };
 }
 
 export function useQuiz() {
-  return useContent(fetchQuiz, { quizQuestions: [], quizResults: {} });
+  return { data: { quizQuestions, quizResults }, loading: false, error: null };
 }
 
 export function useSiteAssets() {
-  return useContent(fetchSiteAssets, {});
+  return { data: siteAssets, loading: false, error: null };
 }

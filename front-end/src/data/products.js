@@ -1,9 +1,10 @@
-// Transcribed from front-end/src/data/products.js, with prices normalized to numbers.
-// The three local asset images (jacob-greek, campo, cooper) are referenced by their
-// front-end asset path — update these once product images are served from the backend/CDN.
-module.exports = [
+import jacobGreek from "../assets/products/jacob-greek.png";
+import campo from "../assets/products/campo.png";
+import cooper from "../assets/products/cooper.png";
+
+export const products = [
   {
-    image: "/assets/products/jacob-greek.png",
+    image: jacobGreek,
     badgeStyle: "glow",
     icon: "wine_bar",
     badgeText: "Best in White Wine",
@@ -12,10 +13,10 @@ module.exports = [
     name: "Jacob's Creek Cool Harvest Sauvignon Blanc",
     rating: 4.5,
     reviewCount: 128,
-    price: 10.13,
+    price: "$10.13",
   },
   {
-    image: "/assets/products/campo.png",
+    image: campo,
     badgeStyle: "glow",
     icon: "wine_bar",
     badgeText: "Best in Red Wine",
@@ -24,7 +25,7 @@ module.exports = [
     name: "Campo Viejo Tempranillo",
     rating: 4.0,
     reviewCount: 76,
-    price: 12.57,
+    price: "$12.57",
   },
   {
     image:
@@ -37,10 +38,10 @@ module.exports = [
     name: "Absolut Vodka 6 Pack",
     rating: 5.0,
     reviewCount: 203,
-    price: 17.98,
+    price: "$17.98",
   },
   {
-    image: "/assets/products/cooper.png",
+    image: cooper,
     badgeStyle: "glow",
     icon: "sports_bar",
     badgeText: "Best in Beer",
@@ -49,7 +50,7 @@ module.exports = [
     name: "Coopers Original Pale Ale Longneck",
     rating: 4.2,
     reviewCount: 94,
-    price: 6.09,
+    price: "$6.09",
   },
   {
     image: "https://media.sipnow.com.au/sipnow/products/001.webp",
@@ -61,7 +62,7 @@ module.exports = [
     name: "Jim Beam Double Serve 6.7%",
     rating: 4.6,
     reviewCount: 57,
-    price: 5.22,
+    price: "$5.22",
   },
   {
     image: "https://media.sipnow.com.au/sipnow/products/180729-1.webp",
@@ -72,7 +73,7 @@ module.exports = [
     name: "Chandon Garden Spritz",
     rating: 4.9,
     reviewCount: 312,
-    price: 27.73,
+    price: "$27.73",
   },
   {
     image: "https://media.sipnow.com.au/sipnow/products/60281-1.png",
@@ -83,7 +84,7 @@ module.exports = [
     name: "Byron Bay Brewery Premium Lager",
     rating: 4.1,
     reviewCount: 68,
-    price: 2.83,
+    price: "$2.83",
   },
   {
     image: "https://media.sipnow.com.au/sipnow/products/901870-1.png",
@@ -94,7 +95,7 @@ module.exports = [
     name: "Grant Burge Miamba Shiraz",
     rating: 4.7,
     reviewCount: 145,
-    price: 15.51,
+    price: "$15.51",
   },
   {
     image: "https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?w=600",
@@ -105,10 +106,11 @@ module.exports = [
     name: "19 Crimes Red Blend",
     rating: 4.3,
     reviewCount: 89,
-    price: 31.99,
+    price: "$31.99",
   },
   {
-    image: "https://www.edsfinewines.com/wp-content/uploads/2021/02/Penfolds-Bin-600.jpg",
+    image:
+      "https://www.edsfinewines.com/wp-content/uploads/2021/02/Penfolds-Bin-600.jpg",
     badgeStyle: "plain",
     badgeText: "Best in Red Wine",
     category: "Red Wine · 750mL",
@@ -116,6 +118,6 @@ module.exports = [
     name: "Pepperjack Shiraz",
     rating: 4.3,
     reviewCount: 89,
-    price: 31.99,
+    price: "$31.99",
   },
 ];

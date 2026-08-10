@@ -1,30 +1,6 @@
-import { useEffect, useState } from "react";
-import { fetchProducts } from "../utils/api.js";
+import { products } from "../data/products.js";
 
-/** Loads the product catalog from the backend once on mount. */
+/** Product catalog is bundled with the front-end as static data. */
 export function useProducts() {
-  const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    let cancelled = false;
-
-    fetchProducts()
-      .then((data) => {
-        if (!cancelled) setProducts(data);
-      })
-      .catch((err) => {
-        if (!cancelled) setError(err);
-      })
-      .finally(() => {
-        if (!cancelled) setLoading(false);
-      });
-
-    return () => {
-      cancelled = true;
-    };
-  }, []);
-
-  return { products, loading, error };
+  return { products, loading: false, error: null };
 }

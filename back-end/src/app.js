@@ -3,9 +3,7 @@ const cors = require("cors");
 const path = require("path");
 
 const authRoutes = require("./routes/auth.routes");
-const productsRoutes = require("./routes/products.routes");
 const cartRoutes = require("./routes/cart.routes");
-const contentRoutes = require("./routes/content.routes");
 const { notFound, errorHandler } = require("./middleware/errorHandler");
 
 const app = express();
@@ -22,9 +20,7 @@ app.use(express.static(path.join(__dirname, "public")));
 app.get("/api/health", (req, res) => res.json({ status: "ok" }));
 
 app.use("/api/auth", authRoutes);
-app.use("/api/products", productsRoutes);
 app.use("/api/cart", cartRoutes);
-app.use("/api/content", contentRoutes);
 
 app.use(notFound);
 app.use(errorHandler);
