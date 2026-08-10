@@ -1,0 +1,128 @@
+import { BEER_FEATURED_URL, WINE_FEATURED_URL } from "./images.js";
+
+export const navMenus = [
+  {
+    label: "Offers & Services",
+    columns: [
+      { heading: "Shop All" },
+      { heading: "In-Store promotions" },
+      { heading: "General promotions" },
+      { heading: "Gift Cards" },
+      { heading: "Members" },
+      { heading: "Clearance" },
+    ],
+  },
+  {
+    label: "Beer & Cider",
+    columns: [
+      { heading: "Lager", items: ["Pilsner", "Dark Lager", "Helles"] },
+      { heading: "Ale", items: ["Pale Ale", "IPA", "Stout & Porter"] },
+      { heading: "Cider", items: ["Apple", "Pear", "Fruit Cider"] },
+    ],
+    featured: {
+      type: "image",
+      image: BEER_FEATURED_URL,
+      tag: "Featured Craft",
+      title: "Balter XPA Collection",
+    },
+  },
+  {
+    label: "Premix",
+    columns: [
+      { heading: "Vodka Mixers", items: ["Hard Seltzer", "Lemonade"] },
+      { heading: "Dark Spirits", items: ["Whiskey & Cola", "Rum & Ginger"] },
+      { heading: "Cocktails", items: ["Margarita", "Espresso Martini"] },
+    ],
+    featured: {
+      type: "icon",
+      icon: "auto_awesome",
+      tag: "Summer Hits",
+      title: "Ready-to-drink Classics",
+    },
+  },
+  {
+    label: "Spirits",
+    columns: [
+      {
+        heading: "Spirits",
+        items: [
+          "Gin",
+          "Rum",
+          "Vodka",
+          "Bourbon",
+          "Tequilla",
+          "Liquerus",
+          "Brandy & cognac",
+          "Other Spirits",
+        ],
+      },
+      {
+        heading: "Whisky",
+        items: [
+          "Other Whisky",
+          "Scotch Whisky",
+          "Japanese Whisky",
+          "Irish Whisky",
+          "American Whisky",
+          "Austrialian Whisky",
+        ],
+      },
+    ],
+    featured: {
+      type: "image-only",
+      image: WINE_FEATURED_URL,
+    },
+  },
+  {
+    label: "Wine",
+    columns: [
+      {
+        heading: "RED WINE",
+        items: [
+          "Shiraz",
+          "Cabernet Sauvignon",
+          "Pinot Noir",
+          "Rosé",
+          "Red Blends",
+          "Merlot",
+          "Cabernet Merlot",
+          "Shiraz Cabernet",
+          "Grenache",
+          "Other Red Wine",
+        ],
+      },
+      {
+        heading: "WHITE WINE",
+        items: [
+          "Chardonnay",
+          "Sauvignon Blanc",
+          "Pinot Grigio",
+          "Riesling",
+          "Semillon Sauv Blanc",
+          "Moscato",
+          "Other White Wine",
+        ],
+      },
+      {
+        heading: "SPARKLING WINE",
+        items: [
+          "Champagne",
+          "Prosecco",
+          "Sparkling White Wine",
+          "Sparkling Rose Wine",
+          "Other Sparkling Wine",
+        ],
+      },
+      {
+        heading: "Other Wine",
+        items: ["Fortified Wine", "Zero%* Alcohol Wine*"],
+      },
+    ],
+    featured: {
+      type: "icon",
+      icon: "auto_awesome",
+      tag: "Summer Hits",
+      title: "Ready-to-drink Classics",
+    },
+  },
+];
