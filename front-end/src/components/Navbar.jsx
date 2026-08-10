@@ -9,6 +9,17 @@ const HEADING_PAGES = {
   "In-Store promotions": "in-store-promotions",
 };
 
+// Maps wine menu labels to the wine category key used by App.jsx.
+const WINE_ITEM_PAGES = {
+  Champagne: "champagne",
+  Prosecco: "prosecco",
+  "Sparkling White Wine": "sparkling-white-wine",
+  "Sparkling Rose Wine": "sparkling-rose-wine",
+  "Other Sparkling Wine": "other-sparkling-wine",
+  "Fortified Wine": "fortified-wine",
+  "Zero%* Alcohol Wine*": "zero-alcohol-wine",
+};
+
 const mobileNavLinks = [
   "Offers & Services",
   "Beer & Cider",
@@ -18,6 +29,7 @@ const mobileNavLinks = [
   "My Account",
 ];
 
+// Renders the promotional/featured card displayed inside a mega menu.
 function FeaturedPanel({ featured }) {
   if (featured.type === "image-only") {
     return (
@@ -53,6 +65,7 @@ function FeaturedPanel({ featured }) {
   );
 }
 
+// Displays matching products while the user is typing in the search field.
 function SearchResults({ results, searched, onSelect }) {
   if (!searched) return null;
   return (
@@ -97,7 +110,12 @@ function SearchResults({ results, searched, onSelect }) {
   );
 }
 
-export default function Navbar({ cartCount = 0, onNavigate, products = [] }) {
+export default function Navbar({
+  cartCount = 0,
+  onNavigate,
+  products = [],
+  user,
+}) {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
@@ -118,7 +136,9 @@ export default function Navbar({ cartCount = 0, onNavigate, products = [] }) {
 
   useEffect(() => () => clearTimeout(blurTimeoutRef.current), []);
 
+  // Normalize the search term so matching is case-insensitive.
   const normalizedTerm = searchTerm.trim().toLowerCase();
+  // Limit search results to six products to keep the dropdown compact.
   const searchResults = normalizedTerm
     ? products
         .filter(
@@ -138,6 +158,7 @@ export default function Navbar({ cartCount = 0, onNavigate, products = [] }) {
     blurTimeoutRef.current = setTimeout(() => setSearchFocused(false), 150);
   };
 
+  // Selecting a result returns to the home page and scrolls to Best Sellers.
   const handleSelectResult = () => {
     clearTimeout(blurTimeoutRef.current);
     setSearchFocused(false);
@@ -203,7 +224,16 @@ export default function Navbar({ cartCount = 0, onNavigate, products = [] }) {
                                 <a
                                   className="hover:text-primary transition-colors"
                                   href="#"
-                                  onClick={preventNav}
+                                  onClick={
+                                    WINE_ITEM_PAGES[item]
+                                      ? (event) => {
+                                          event.preventDefault();
+                                          onNavigate?.(
+                                            `wine:${WINE_ITEM_PAGES[item]}`
+                                          );
+                                        }
+                                      : preventNav
+                                  }
                                 >
                                   {item}
                                 </a>
@@ -281,7 +311,12 @@ export default function Navbar({ cartCount = 0, onNavigate, products = [] }) {
               </span>
             )}
           </button>
-          <button className="hidden sm:inline material-symbols-outlined hover:text-primary transition-colors">
+          <button
+            aria-label={user ? "Your profile" : "Sign in or create an account"}
+            className="hidden sm:inline material-symbols-outlined hover:text-primary transition-colors"
+            onClick={() => onNavigate?.(user ? "profile" : "login")}
+            type="button"
+          >
             person
           </button>
           <button
@@ -305,7 +340,15 @@ export default function Navbar({ cartCount = 0, onNavigate, products = [] }) {
               className="block font-label-md text-label-md text-on-surface/80 hover:text-primary transition-colors tracking-wide"
               href="#"
               key={link}
-              onClick={preventNav}
+              onClick={
+                link === "My Account"
+                  ? (event) => {
+                      event.preventDefault();
+                      setMobileOpen(false);
+                      onNavigate?.(user ? "profile" : "login");
+                    }
+                  : preventNav
+              }
             >
               {link}
             </a>
