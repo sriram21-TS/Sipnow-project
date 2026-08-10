@@ -38,6 +38,7 @@ export default function App() {
   const [cartItems, setCartItems] = useState(() =>
     readStored("sipnow-cart", [])
   );
+  const [page, setPage] = useState("home");
   const [user, setUser] = useState(() => readStored("sipnow-session", null));
   const [authDestination, setAuthDestination] = useState("profile");
   const { products, loading: productsLoading } = useProducts();
