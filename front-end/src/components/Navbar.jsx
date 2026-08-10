@@ -8,7 +8,14 @@ const HEADING_PAGES = {
   "Shop All": "shop-all",
   "In-Store promotions": "in-store-promotions",
 };
-
+const ITEM_PAGES = {
+  "Other Whisky": "other-whisky",
+  "Scotch Whisky": "scotch-whisky",
+  "Japanese Whisky": "japanese-whisky",
+  "Irish Whisky": "irish-whisky",
+  "American Whisky": "american-whisky",
+  "Australian Whisky": "australian-whisky",
+};
 const mobileNavLinks = [
   "Offers & Services",
   "Beer & Cider",
@@ -203,7 +210,13 @@ export default function Navbar({ cartCount = 0, onNavigate, products = [] }) {
                                 <a
                                   className="hover:text-primary transition-colors"
                                   href="#"
-                                  onClick={preventNav}
+                                  onClick={(e) => {
+                                    e.preventDefault();
+
+                                    if (ITEM_PAGES[item]) {
+                                      onNavigate?.(ITEM_PAGES[item]);
+                                    }
+                                  }}
                                 >
                                   {item}
                                 </a>

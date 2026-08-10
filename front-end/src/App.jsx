@@ -1,3 +1,10 @@
+import Whisky from "./pages/Whisky.jsx";
+import OtherWhisky from "./pages/OtherWhisky.jsx";
+import ScotchWhisky from "./pages/ScotchWhisky.jsx";
+import JapaneseWhisky from "./pages/JapaneseWhisky.jsx";
+import IrishWhisky from "./pages/IrishWhisky.jsx";
+import AmericanWhisky from "./pages/AmericanWhisky.jsx";
+import AustralianWhisky from "./pages/AustralianWhisky.jsx";
 import { useState } from "react";
 import AmbientBackground from "./components/AmbientBackground.jsx";
 import Navbar from "./components/Navbar.jsx";
@@ -80,6 +87,20 @@ export default function App() {
             products={products}
             productsLoading={productsLoading}
           />
+        ) : page === "whisky" ? (
+          <Whisky />
+        ) : page === "other-whisky" ? (
+          <OtherWhisky />
+        ) : page === "scotch-whisky" ? (
+          <ScotchWhisky />
+        ) : page === "japanese-whisky" ? (
+          <JapaneseWhisky />
+        ) : page === "irish-whisky" ? (
+          <IrishWhisky />
+        ) : page === "american-whisky" ? (
+          <AmericanWhisky />
+        ) : page === "australian-whisky" ? (
+          <AustralianWhisky />
         ) : page.startsWith("category:") ? (
           <CategoryPage
             categoryKey={page.slice("category:".length)}
