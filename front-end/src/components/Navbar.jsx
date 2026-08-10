@@ -81,44 +81,7 @@ function getMenuItemRoute(menuLabel, columnHeading, item) {
   // ======================================
 
   if (menuLabel === "Spirits") {
-    if (columnSlug === "spirits") {
-      switch (item.toLowerCase().trim()) {
-        case "gin":
-          return "/spirits/gin";
-
-        case "rum":
-          return "/spirits/rum";
-
-        case "vodka":
-          return "/spirits/vodka";
-
-        case "bourbon":
-          return "/spirits/bourbon";
-
-        case "tequila":
-        case "tequilla":
-          return "/spirits/tequilla";
-
-        case "liqueurs":
-        case "liquerus":
-          return "/spirits/liquerus";
-
-        case "brandy & cognac":
-          return "/spirits/brandy-and-cognac";
-
-        case "other spirits":
-          return "/spirits/other-spirits";
-
-        default:
-          return `/spirits/${itemSlug}`;
-      }
-    }
-
-    if (columnSlug === "whisky") {
-      return `/spirits/whisky/${itemSlug}`;
-    }
-
-    return `/spirits/${itemSlug}`;
+    return `/spirits?type=${encodeURIComponent(item.toLowerCase().trim())}`;
   }
 
   // ======================================
@@ -143,6 +106,15 @@ function getMenuItemRoute(menuLabel, columnHeading, item) {
 
   if (menuLabel === "Wine") {
     return `/wine/${itemSlug}`;
+  }
+
+  // ======================================
+  // ZERO %
+  // ======================================
+
+  if (menuLabel === "Zero %" || menuLabel.toLowerCase().includes("zero")) {
+    const sub = itemSlug.replace("zero-alcohol-", "").replace("zero-", "");
+    return `/zero-alcohol/${sub}`;
   }
 
   // ======================================
