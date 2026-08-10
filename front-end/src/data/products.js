@@ -647,9 +647,7 @@ export const products = [
     reviewCount: 68,
     price: "$6.75",
   },
-
 ];
-
 
 // import jacobGreek from "../assets/products/jacob-greek.png";
 // import campo from "../assets/products/campo.png";
@@ -782,4 +780,3 @@ export const products = [
 // price: "$31.99",
 // },
 // ];
-

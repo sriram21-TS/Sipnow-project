@@ -21,6 +21,7 @@ import Home from "./pages/Home.jsx";
 import InStorePromotions from "./pages/InStorePromotions.jsx";
 import Profile from "./pages/Profile.jsx";
 import ShopAll from "./pages/ShopAll.jsx";
+import ZeroCategoryPage from "./pages/ZeroCategoryPage.jsx";
 
 // Safely read JSON data from localStorage. If the key is missing or
 // contains invalid JSON, return the provided fallback value.
@@ -236,6 +237,30 @@ export default function App() {
             path="/in-store-promotions"
             element={
               <InStorePromotions onAddToCart={addToCart} onBack={goHome} />
+            }
+          />
+
+          {/* Zero % Alcohol Subcategories - Single Unified Component */}
+          <Route
+            path="/zero-alcohol/:subcategory"
+            element={
+              <ZeroCategoryPage
+                onAddToCart={addToCart}
+                onBack={goHome}
+                products={products}
+                productsLoading={productsLoading}
+              />
+            }
+          />
+          <Route
+            path="/zero/:subcategory"
+            element={
+              <ZeroCategoryPage
+                onAddToCart={addToCart}
+                onBack={goHome}
+                products={products}
+                productsLoading={productsLoading}
+              />
             }
           />
 

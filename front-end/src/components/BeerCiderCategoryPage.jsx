@@ -500,57 +500,7 @@ export default function BeerCiderCategoryPage({
       />
 
       <Reveal className="px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
-        {/* SUBCATEGORY NAVIGATION TABS / PILLS */}
-        <div className="mb-8 p-4 glass-panel rounded-2xl border border-primary/20 bg-surface-container-high/60 shadow-xl">
-          <div className="flex items-center justify-between gap-4 mb-3 pb-2 border-b border-primary/10">
-            <h3 className="text-sm font-label-md uppercase tracking-widest text-primary flex items-center gap-2">
-              <span className="material-symbols-outlined text-[18px]">
-                sports_bar
-              </span>
-              Beer & Cider Subcategories
-            </h3>
-            <button
-              className={`px-3 py-1 text-xs rounded-full transition-all ${
-                activeSubcategoryKey === "all"
-                  ? "bg-primary text-on-primary font-bold shadow-md"
-                  : "bg-surface-container-highest text-on-surface-variant hover:text-primary"
-              }`}
-              onClick={() => handleSubcategoryChange("all")}
-              type="button"
-            >
-              All Beer & Cider
-            </button>
-          </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {NAV_GROUPS.map((group) => (
-              <div key={group.name} className="space-y-2">
-                <h4 className="font-headline-sm text-sm text-primary/90 font-bold border-b border-primary/10 pb-1">
-                  {group.name}
-                </h4>
-                <div className="flex flex-wrap gap-1.5 pt-1">
-                  {group.items.map((item) => {
-                    const isActive = activeSubcategoryKey === item.key;
-                    return (
-                      <button
-                        key={item.key}
-                        className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
-                          isActive
-                            ? "bg-primary text-on-primary font-semibold shadow-lg scale-105"
-                            : "glass-panel text-on-surface/80 hover:text-primary hover:border-primary/40 bg-surface-container-highest/40"
-                        }`}
-                        onClick={() => handleSubcategoryChange(item.key)}
-                        type="button"
-                      >
-                        {item.label}
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
 
         {/* MOBILE FILTER TOGGLE BUTTON */}
         <button
