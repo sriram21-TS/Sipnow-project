@@ -429,7 +429,7 @@ export default function Navbar({ cartCount = 0, products = [], user }) {
           <div className="hidden lg:flex gap-10">
             {navMenus.map((menu) => (
               <div
-                className="nav-item py-2 relative"
+                className="nav-item py-2"
                 key={menu.label}
                 onMouseEnter={() => {
                   setOpenMenu(menu.label);
