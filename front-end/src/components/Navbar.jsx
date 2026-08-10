@@ -44,7 +44,6 @@ function slugify(text) {
 // ========================================
 
 function getMenuItemRoute(menuLabel, columnHeading, item) {
-  const columnSlug = slugify(columnHeading);
   const itemSlug = slugify(item);
 
   // ======================================
