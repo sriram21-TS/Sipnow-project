@@ -1,9 +1,12 @@
+import sipNowLogo from "../assets/sipnow-logo.png";
+import sipNowHeroBanner from "../assets/sipnow-hero-banner.png";
+
 // Remote design-tool image URLs carried over unchanged from the original page.
 // Grouped here once so the data files below can reference them by name
 // instead of repeating long URLs.
 
-export const LOGO_URL =
-  "https://lh3.googleusercontent.com/aida/AP1WRLsSmFBBF0536R4l4HB29SUykDMUwNMnYj1hoS4_KkXkhXs3O_IYnSjqvOqxkEJEicS6wD4GoTIU0KgLGOXTnIhve8BMlXmxn_u_xBQT4fWKtPa-DF5iQf5oznl8Slu5mfbxBVzBtjOEjMmu_dAxHhdNNoEhZonYmz2Q-A8KMDULXpE406Qme32OEsXuCSXxQH7kpcJxixmCxVVd8HUYY8kdnmCK8qQnNuS5CtpqjlIwMnK2ik4qaebgIQ";
+export const LOGO_URL = sipNowLogo;
+export const SIPNOW_HERO_BANNER_URL = sipNowHeroBanner;
 
 export const BEER_FEATURED_URL =
   "https://lh3.googleusercontent.com/aida/AP1WRLumnwRbPmAbWR1WbU6c85EIvxQkUlJwPYBvDYs43oD3f0Kz-4cZM9ylIJL7JHg11vmzJ3u0_Op2Dt48MC0A_dduSt59UdiYoyxuKKKHgJgEk8QK3omKf34s5oHdJwilIZ9lXnwbsynJD01n8XbDDps6cYf6GeYUd1TmPjlCnnaFAhI3ihD_OjjI55SF_EPQvCpnS11RsIhPp8JTYvEqgfnf5PIc5cWbsgBGsRfdWgoAfam14sSNPtbBknc";
@@ -28,3 +31,4 @@ export const YAMAZAKI_URL =
 
 export const PRESTIGE_COLLECTION_URL =
   "https://lh3.googleusercontent.com/aida-public/AB6AXuDaw1mUTvg2Opc2VIHqIRzcxWex9CznO6Z-cpJAjD5F24P33mKnq9kjDRycSE3SN6lYV7IYl1KEQCAKRgneP0tlRGQmgwKc5vfuXZCMyh0CQrYE13M_gRrMl20vd5IJWFF0qSFC1swa_hf7rje2ez7ct2G9z88oM5sxOU1rdqs3ghTtfAXXZ-KUjGrgVwlJVmovV0XQsF69ku7st3vyONyug_8CadSo6q4DQw4tUuA3Ou-MAJeCj3GTZNnqcTGwJTx6_aDffMKTs2A";
+export const NEW_BANNER_URL = "/images/new-banner.jpg";

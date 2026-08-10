@@ -7,6 +7,17 @@ const HEADING_PAGES = {
   "In-Store promotions": "in-store-promotions",
 };
 
+// Maps wine menu labels to the wine category key used by App.jsx.
+const WINE_ITEM_PAGES = {
+  Champagne: "champagne",
+  Prosecco: "prosecco",
+  "Sparkling White Wine": "sparkling-white-wine",
+  "Sparkling Rose Wine": "sparkling-rose-wine",
+  "Other Sparkling Wine": "other-sparkling-wine",
+  "Fortified Wine": "fortified-wine",
+  "Zero%* Alcohol Wine*": "zero-alcohol-wine",
+};
+
 const mobileNavLinks = [
   "Offers & Services",
   "Beer & Cider",
@@ -17,6 +28,7 @@ const mobileNavLinks = [
   "My Account",
 ];
 
+// Renders the promotional/featured card displayed inside a mega menu.
 function FeaturedPanel({ featured }) {
   if (featured.type === "image-only") {
     return (
@@ -67,6 +79,7 @@ function FeaturedPanel({ featured }) {
   );
 }
 
+// Displays matching products while the user is typing in the search field.
 function SearchResults({ results, searched, onSelect }) {
   if (!searched) return null;
 
@@ -119,6 +132,7 @@ export default function Navbar({
   cartCount = 0,
   onNavigate,
   products = [],
+  user,
 }) {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -148,8 +162,9 @@ export default function Navbar({
     return () => clearTimeout(blurTimeoutRef.current);
   }, []);
 
+  // Normalize the search term so matching is case-insensitive.
   const normalizedTerm = searchTerm.trim().toLowerCase();
-
+  // Limit search results to six products to keep the dropdown compact.
   const searchResults = normalizedTerm
     ? products
         .filter(
@@ -172,6 +187,7 @@ export default function Navbar({
     );
   };
 
+  // Selecting a result returns to the home page and scrolls to Best Sellers.
   const handleSelectResult = () => {
     clearTimeout(blurTimeoutRef.current);
 
@@ -278,9 +294,7 @@ export default function Navbar({
               src={siteAssets.LOGO_URL}
             />
           </a>
-
           <div className="hidden lg:flex items-center gap-5">
-
             {navMenus.map((menu) => {
               const isZeroMenu =
                 menu.label.toLowerCase().includes("zero");
@@ -290,7 +304,6 @@ export default function Navbar({
                   className="nav-item group py-2"
                   key={menu.label}
                 >
-
                   {/* MENU TITLE */}
                   <button
                     type="button"
@@ -307,25 +320,20 @@ export default function Navbar({
 
                   {/* MEGA MENU */}
                   <div className="mega-menu absolute left-margin-desktop right-margin-desktop top-[100%] pt-4">
-
                     <div className="mega-menu-panel glass-panel border border-outline-variant/30 rounded-2xl p-10 grid grid-cols-4 gap-12 shadow-2xl">
-
                       {menu.columns.map((col) =>
                         col.items?.length > 0 ? (
                           <div
                             className="space-y-3"
                             key={col.heading}
                           >
-
                             <h4 className="font-headline-sm text-lg text-primary">
                               {col.heading}
                             </h4>
 
                             <ul className="space-y-3 text-sm text-on-surface-variant">
-
                               {col.items.map((item) => (
                                 <li key={item}>
-
                                   <a
                                     className="hover:text-primary transition-colors"
                                     href="#"
@@ -335,6 +343,13 @@ export default function Navbar({
                                           e,
                                           item
                                         );
+                                      } else if (
+                                        WINE_ITEM_PAGES[item]
+                                      ) {
+                                        e.preventDefault();
+                                        onNavigate?.(
+                                          `wine:${WINE_ITEM_PAGES[item]}`
+                                        );
                                       } else {
                                         preventNav(e);
                                       }
@@ -342,10 +357,8 @@ export default function Navbar({
                                   >
                                     {item}
                                   </a>
-
                                 </li>
                               ))}
-
                             </ul>
                           </div>
                         ) : (
@@ -353,7 +366,6 @@ export default function Navbar({
                             className="space-y-3"
                             key={col.heading}
                           >
-
                             <a
                               className="font-headline-sm text-lg text-primary hover:opacity-80 transition-opacity"
                               href="#"
@@ -361,7 +373,6 @@ export default function Navbar({
                                 HEADING_PAGES[col.heading]
                                   ? (e) => {
                                       e.preventDefault();
-
                                       onNavigate?.(
                                         HEADING_PAGES[
                                           col.heading
@@ -373,7 +384,6 @@ export default function Navbar({
                             >
                               {col.heading}
                             </a>
-
                           </div>
                         )
                       )}
@@ -383,14 +393,11 @@ export default function Navbar({
                           featured={menu.featured}
                         />
                       )}
-
                     </div>
                   </div>
-
                 </div>
               );
             })}
-
           </div>
         </div>
 
@@ -460,11 +467,12 @@ export default function Navbar({
               </span>
             )}
           </button>
-
           {/* ACCOUNT */}
           <button
-            type="button"
+            aria-label={user ? "Your profile" : "Sign in or create an account"}
             className="hidden sm:inline material-symbols-outlined hover:text-primary transition-colors"
+            onClick={() => onNavigate?.(user ? "profile" : "login")}
+            type="button"
           >
             person
           </button>
@@ -501,13 +509,16 @@ export default function Navbar({
               className="block font-label-md text-label-md text-on-surface/80 hover:text-primary transition-colors tracking-wide"
               href="#"
               key={link}
-              onClick={(e) => {
-                if (link === "Zero %") {
-                  e.preventDefault();
-                  return;
+              onClick={(event) => {
+                if (link === "My Account") {
+                  event.preventDefault();
+                  setMobileOpen(false);
+                  onNavigate?.(user ? "profile" : "login");
+                } else if (link === "Zero %") {
+                  event.preventDefault();
+                } else {
+                  preventNav(event);
                 }
-
-                preventNav(e);
               }}
             >
               {link}
