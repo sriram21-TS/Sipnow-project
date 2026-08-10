@@ -9,7 +9,17 @@ import InStorePromotions from "./pages/InStorePromotions.jsx";
 import ShopAll from "./pages/ShopAll.jsx";
 import Cart from "./pages/Cart.jsx";
 import { useProducts } from "./hooks/useProducts.js";
+import Pilsner from "./pages/beer-cider/lager/Pilsner.jsx";
+import DarkLager from "./pages/beer-cider/lager/DarkLager.jsx";
+import Helles from "./pages/beer-cider/lager/Helles.jsx";
 
+import PaleAle from "./pages/beer-cider/ale/PaleAle.jsx";
+import IPA from "./pages/beer-cider/ale/IPA.jsx";
+import StoutPorter from "./pages/beer-cider/ale/StoutPorter.jsx";
+
+import Apple from "./pages/beer-cider/cider/Apple.jsx";
+import Pear from "./pages/beer-cider/cider/Pear.jsx";
+import FruitCider from "./pages/beer-cider/cider/FruitCider.jsx";
 export default function App() {
   const [quizOpen, setQuizOpen] = useState(false);
   const [cartItems, setCartItems] = useState([]);
@@ -60,7 +70,71 @@ export default function App() {
       <AmbientBackground />
       <Navbar cartCount={cartCount} onNavigate={goToPage} products={products} />
       <main className="relative z-10">
-        {page === "cart" ? (
+                {page === "pilsner" ? (
+                    <Pilsner
+                      onAddToCart={addToCart}
+                      onBack={() => goToPage("home")}
+                      products={products}
+                      productsLoading={productsLoading}
+                    />
+                  ) : page === "dark-lager" ? (
+                    <DarkLager
+                      onAddToCart={addToCart}
+                      onBack={() => goToPage("home")}
+                      products={products}
+                      productsLoading={productsLoading}
+                    />
+                  ) : page === "helles" ? (
+                    <Helles
+                      onAddToCart={addToCart}
+                      onBack={() => goToPage("home")}
+                      products={products}
+                      productsLoading={productsLoading}
+                    />
+                  ) : page === "pale-ale" ? (
+                    <PaleAle
+                      onAddToCart={addToCart}
+                      onBack={() => goToPage("home")}
+                      products={products}
+                      productsLoading={productsLoading}
+                    />
+                  ) : page === "ipa" ? (
+                    <IPA
+                      onAddToCart={addToCart}
+                      onBack={() => goToPage("home")}
+                      products={products}
+                      productsLoading={productsLoading}
+                    />
+                  ) : page === "stout-porter" ? (
+                    <StoutPorter
+                      onAddToCart={addToCart}
+                      onBack={() => goToPage("home")}
+                      products={products}
+                      productsLoading={productsLoading}
+                    />
+                  ) : page === "apple-cider" ? (
+                    <Apple
+                      onAddToCart={addToCart}
+                      onBack={() => goToPage("home")}
+                      products={products}
+                      productsLoading={productsLoading}
+                    />
+                  ) : page === "pear-cider" ? (
+                    <Pear
+                      onAddToCart={addToCart}
+                      onBack={() => goToPage("home")}
+                      products={products}
+                      productsLoading={productsLoading}
+                    />
+                  ) : page === "fruit-cider" ? (
+                    <FruitCider
+                      onAddToCart={addToCart}
+                      onBack={() => goToPage("home")}
+                      products={products}
+                      productsLoading={productsLoading}
+                    />
+                  ) 
+        :page === "cart" ? (
           <Cart
             cartItems={cartItems}
             onBack={() => goToPage("home")}

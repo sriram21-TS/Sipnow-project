@@ -1,8 +1,8 @@
 import { useMemo, useState } from "react";
-import PageHero from "../components/PageHero.jsx";
-import ProductFilters from "../components/ProductFilters.jsx";
-import ProductGrid from "../components/ProductGrid.jsx";
-import Reveal from "../components/Reveal.jsx";
+import PageHero from "./PageHero.jsx";
+import ProductFilters from "./ProductFilters.jsx";
+import ProductGrid from "./ProductGrid.jsx";
+import Reveal from "./Reveal.jsx";
 import { useAddToCartFeedback } from "../hooks/useAddToCartFeedback.js";
 import { getSubtype, parsePrice } from "../utils/productHelpers.js";
 
@@ -21,15 +21,24 @@ const PRICE_RANGE_BOUNDS = {
   over30: [30, Infinity],
 };
 
-const RATING_THRESHOLDS = { all: 0, 4: 4, 3: 3 };
+const RATING_THRESHOLDS = {
+  all: 0,
+  4: 4,
+  3: 3,
+};
 
-export default function ShopAll({
+export default function BeerCiderCategoryPage({
+  title,
+  description,
+  subtypes = [],
   onAddToCart,
   onBack,
   products = [],
   productsLoading = false,
 }) {
-  const { addedProduct, handleAddToCart } = useAddToCartFeedback(onAddToCart);
+  const { addedProduct, handleAddToCart } =
+    useAddToCartFeedback(onAddToCart);
+
   const [selectedSubtypes, setSelectedSubtypes] = useState([]);
   const [priceRange, setPriceRange] = useState("all");
   const [rating, setRating] = useState("all");
@@ -50,54 +59,83 @@ export default function ShopAll({
     setRating("all");
   };
 
+  const categoryProducts = useMemo(() => {
+    return products.filter((product) =>
+      subtypes.includes(getSubtype(product))
+    );
+  }, [products, subtypes]);
+
   const filteredProducts = useMemo(() => {
     const [minPrice, maxPrice] = PRICE_RANGE_BOUNDS[priceRange];
     const minRating = RATING_THRESHOLDS[rating];
 
-    const filtered = products.filter((product) => {
+    const filtered = categoryProducts.filter((product) => {
       if (
         selectedSubtypes.length > 0 &&
         !selectedSubtypes.includes(getSubtype(product))
       ) {
         return false;
       }
+
       const price = parsePrice(product.price);
-      if (price < minPrice || price > maxPrice) return false;
+
+      if (price < minPrice || price > maxPrice) {
+        return false;
+      }
+
       return product.rating >= minRating;
     });
 
     const sorted = [...filtered];
+
     if (sort === "price-asc") {
-      sorted.sort((a, b) => parsePrice(a.price) - parsePrice(b.price));
+      sorted.sort(
+        (a, b) => parsePrice(a.price) - parsePrice(b.price)
+      );
     } else if (sort === "price-desc") {
-      sorted.sort((a, b) => parsePrice(b.price) - parsePrice(a.price));
+      sorted.sort(
+        (a, b) => parsePrice(b.price) - parsePrice(a.price)
+      );
     } else if (sort === "rating") {
       sorted.sort((a, b) => b.rating - a.rating);
     }
+
     return sorted;
-  }, [products, selectedSubtypes, priceRange, rating, sort]);
+  }, [
+    categoryProducts,
+    selectedSubtypes,
+    priceRange,
+    rating,
+    sort,
+  ]);
+
   return (
     <div className="pt-32 pb-24">
       <PageHero
-        description="Every bottle and can in our cellar, in one place."
+        description={description}
         onBack={onBack}
-        tag="Full Collection"
-        title="All Products"
+        tag="Beer & Cider"
+        title={title}
       />
 
-      <div className="px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
+      <Reveal className="px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
         <button
           className="lg:hidden w-full flex items-center justify-center gap-2 glass-panel rounded-lg px-4 py-3 mb-6 text-sm font-label-md uppercase tracking-widest border border-primary/20"
           onClick={() => setFiltersOpen((open) => !open)}
           type="button"
         >
-          <span className="material-symbols-outlined text-[18px]">tune</span>
+          <span className="material-symbols-outlined text-[18px]">
+            tune
+          </span>
+
           {filtersOpen ? "Hide Filters" : "Show Filters"}
         </button>
 
         <div className="flex flex-col lg:flex-row gap-8 lg:gap-10">
           <aside
-            className={`lg:w-72 shrink-0 ${filtersOpen ? "block" : "hidden"} lg:block mb-6 lg:mb-0`}
+            className={`lg:w-72 shrink-0 ${
+              filtersOpen ? "block" : "hidden"
+            } lg:block mb-6 lg:mb-0`}
           >
             <div className="lg:sticky lg:top-32">
               <ProductFilters
@@ -106,10 +144,11 @@ export default function ShopAll({
                 onRatingChange={setRating}
                 onToggleSubtype={toggleSubtype}
                 priceRange={priceRange}
-                products={products}
+                products={categoryProducts}
                 rating={rating}
                 resultCount={filteredProducts.length}
                 selectedSubtypes={selectedSubtypes}
+                hideAlcoholType={true}
               />
             </div>
           </aside>
@@ -119,17 +158,22 @@ export default function ShopAll({
               <p className="text-sm text-on-surface-variant">
                 {productsLoading
                   ? "Loading products…"
-                  : `Showing ${filteredProducts.length} of ${products.length} products`}
+                  : `Showing ${filteredProducts.length} of ${categoryProducts.length} products`}
               </p>
+
               <label className="flex items-center gap-2 text-sm text-on-surface-variant">
                 Sort by
+
                 <select
                   className="glass-panel rounded-lg px-3 py-1.5 text-sm text-on-surface bg-surface-container-high border border-primary/20 focus:outline-none focus:border-primary"
                   onChange={(e) => setSort(e.target.value)}
                   value={sort}
                 >
                   {SORT_OPTIONS.map((option) => (
-                    <option key={option.key} value={option.key}>
+                    <option
+                      key={option.key}
+                      value={option.key}
+                    >
                       {option.label}
                     </option>
                   ))}
@@ -139,13 +183,13 @@ export default function ShopAll({
 
             <ProductGrid
               addedProduct={addedProduct}
-              emptyMessage="No products match these filters. Try adjusting your selection."
+              emptyMessage={`No ${title} products match these filters. Try adjusting your selection.`}
               onAddToCart={handleAddToCart}
               products={filteredProducts}
             />
           </div>
         </div>
-      </div>
+      </Reveal>
     </div>
   );
 }

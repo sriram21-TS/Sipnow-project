@@ -42,6 +42,7 @@ export default function ProductFilters({
   onRatingChange,
   onClearAll,
   resultCount,
+ hideAlcoholType = false,
 }) {
   const TYPE_TREE = useMemo(() => buildTypeTree(products), [products]);
   const hasActiveFilters =
@@ -61,7 +62,7 @@ export default function ProductFilters({
           </button>
         )}
       </div>
-
+      {!hideAlcoholType && (
       <div className="space-y-5">
         <p className="font-label-md uppercase tracking-[0.15em] text-[11px] text-on-surface-variant">
           Type of Alcohol
@@ -97,7 +98,7 @@ export default function ProductFilters({
           );
         })}
       </div>
-
+      )}
       <div className="h-px bg-primary/10" />
 
       <div className="space-y-3">

@@ -191,19 +191,44 @@ export default function Navbar({ cartCount = 0, onNavigate, products = [] }) {
                 </button>
                 <div className="mega-menu absolute left-margin-desktop right-margin-desktop top-[100%] pt-4">
                   <div className="mega-menu-panel glass-panel border border-outline-variant/30 rounded-2xl p-10 grid grid-cols-4 gap-12 shadow-2xl">
-                    {menu.columns.map((col) =>
+                {menu.columns.map((col) =>
                       col.items?.length > 0 ? (
                         <div className="space-y-3" key={col.heading}>
                           <h4 className="font-headline-sm text-lg text-primary">
                             {col.heading}
                           </h4>
+
                           <ul className="space-y-3 text-sm text-on-surface-variant">
                             {col.items.map((item) => (
                               <li key={item}>
                                 <a
                                   className="hover:text-primary transition-colors"
                                   href="#"
-                                  onClick={preventNav}
+                                  onClick={(event) => {
+                                    event.preventDefault();
+
+                                    if (item === "Pilsner") {
+                                      onNavigate?.("pilsner");
+                                    } else if (item === "Dark Lager") {
+                                      onNavigate?.("dark-lager");
+                                    } else if (item === "Helles") {
+                                      onNavigate?.("helles");
+                                    } else if (item === "Pale Ale") {
+                                      onNavigate?.("pale-ale");
+                                    } else if (item === "IPA") {
+                                      onNavigate?.("ipa");
+                                    } else if (item === "Stout & Porter") {
+                                      onNavigate?.("stout-porter");
+                                    } else if (item === "Apple") {
+                                      onNavigate?.("apple-cider");
+                                    } else if (item === "Pear") {
+                                      onNavigate?.("pear-cider");
+                                    } else if (item === "Fruit Cider") {
+                                      onNavigate?.("fruit-cider");
+                                    } else {
+                                      preventNav(event);
+                                    }
+                                  }}
                                 >
                                   {item}
                                 </a>
@@ -216,14 +241,17 @@ export default function Navbar({ cartCount = 0, onNavigate, products = [] }) {
                           <a
                             className="font-headline-sm text-lg text-primary hover:opacity-80 transition-opacity"
                             href="#"
-                            onClick={
-                              HEADING_PAGES[col.heading]
-                                ? (e) => {
-                                    e.preventDefault();
-                                    onNavigate?.(HEADING_PAGES[col.heading]);
-                                  }
-                                : preventNav
-                            }
+                            onClick={(event) => {
+                              event.preventDefault();
+
+                              const page = HEADING_PAGES[col.heading];
+
+                              if (page) {
+                                onNavigate?.(page);
+                              } else {
+                                preventNav(event);
+                              }
+                            }}
                           >
                             {col.heading}
                           </a>
