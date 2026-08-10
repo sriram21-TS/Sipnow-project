@@ -142,7 +142,49 @@ export default function HeroCarousel() {
             </div>
             {!slide.imageOnly && (
               <div className="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop w-full relative z-10 grid lg:grid-cols-2 items-center gap-16">
-                {slide.quiz ? (
+                {slide.promotions ? (
+                  <div className="lg:col-span-2 grid items-center gap-8 lg:grid-cols-[minmax(0,3fr)_minmax(0,7fr)] lg:gap-10">
+                    <div className="space-y-5 lg:order-1">
+                      <p className="font-label-md text-xs uppercase tracking-[0.28em] text-primary">
+                        IN-STORE PROMOTIONS
+                      </p>
+                      <h1 className="font-display-lg text-4xl leading-[1.1] text-white lg:text-5xl">
+                        Exclusive Offers &amp;{" "}
+                        <span className="italic text-primary">
+                          Special Deals
+                        </span>
+                      </h1>
+                      <p className="font-body-lg text-on-surface-variant leading-relaxed">
+                        Discover exclusive in-store offers on selected wines,
+                        beers and spirits.
+                      </p>
+                    </div>
+                    <div className="grid grid-cols-2 gap-4 lg:order-2 lg:gap-5">
+                      {slide.promotions.map((product) => (
+                        <article
+                          className="relative min-h-[210px] overflow-hidden rounded-2xl glass-panel border border-outline-variant/30 p-4 transition-transform duration-300 hover:-translate-y-1 lg:min-h-[250px] lg:p-5"
+                          key={product.name}
+                        >
+                          <span className="absolute left-3 top-3 z-10 rounded-full bg-primary px-2.5 py-1 text-[9px] font-bold uppercase tracking-wider text-on-primary">
+                            {product.badgeText}
+                          </span>
+                          <img
+                            alt={product.name}
+                            className="h-28 w-full object-contain sm:h-36 lg:h-40 xl:h-44"
+                            draggable="false"
+                            src={product.image}
+                          />
+                          <p className="mt-3 line-clamp-2 text-sm font-medium leading-snug text-on-surface lg:text-base">
+                            {product.name}
+                          </p>
+                          <p className="mt-1 text-sm font-semibold text-primary lg:text-base">
+                            {product.price}
+                          </p>
+                        </article>
+                      ))}
+                    </div>
+                  </div>
+                ) : slide.quiz ? (
                   <div className="lg:col-span-2 mx-auto max-w-2xl text-center space-y-7 md:space-y-9">
                     <div className="inline-flex items-center gap-3 px-5 py-2 rounded-full glass-panel border border-primary/40 text-primary">
                       <span className="material-symbols-outlined text-lg">
@@ -201,53 +243,26 @@ export default function HeroCarousel() {
                       </div>
                     </div>
                     <div className="hidden lg:block">
-                      {slide.promotions ? (
-                        <div className="grid grid-cols-2 gap-3 max-w-[380px] mx-auto">
-                          {slide.promotions.map((product) => (
-                            <article
-                              className="relative overflow-hidden rounded-2xl glass-panel border border-outline-variant/30 p-3"
-                              key={product.name}
-                            >
-                              <span className="absolute left-2 top-2 z-10 rounded-full bg-primary px-2 py-1 text-[8px] font-bold uppercase tracking-wider text-on-primary">
-                                {product.badgeText}
-                              </span>
-                              <img
-                                alt={product.name}
-                                className="h-24 w-full object-contain"
-                                draggable="false"
-                                src={product.image}
-                              />
-                              <p className="mt-2 line-clamp-2 text-xs font-medium leading-snug text-on-surface">
-                                {product.name}
+                      <div className="relative group max-w-[380px] mx-auto">
+                        <div className="absolute -inset-10 bg-primary/20 blur-[80px] rounded-full opacity-30 group-hover:opacity-50 transition-opacity"></div>
+                        <div className="relative glass-panel rounded-3xl p-4 border border-white/10 shadow-[0_32px_64px_-16px_rgba(0,0,0,0.5)] transform rotate-2 group-hover:rotate-0 transition-transform duration-700">
+                          <div className="aspect-[4/5] rounded-2xl overflow-hidden relative">
+                            <img
+                              className="w-full h-full object-cover"
+                              draggable="false"
+                              src={slide.card.image}
+                            />
+                            <div className="absolute bottom-0 left-0 right-0 p-8 bg-gradient-to-t from-black/80 to-transparent">
+                              <p className="text-[10px] text-primary uppercase font-bold tracking-widest mb-1">
+                                {slide.card.tag}
                               </p>
-                              <p className="mt-1 text-xs font-semibold text-primary">
-                                {product.price}
-                              </p>
-                            </article>
-                          ))}
-                        </div>
-                      ) : (
-                        <div className="relative group max-w-[380px] mx-auto">
-                          <div className="absolute -inset-10 bg-primary/20 blur-[80px] rounded-full opacity-30 group-hover:opacity-50 transition-opacity"></div>
-                          <div className="relative glass-panel rounded-3xl p-4 border border-white/10 shadow-[0_32px_64px_-16px_rgba(0,0,0,0.5)] transform rotate-2 group-hover:rotate-0 transition-transform duration-700">
-                            <div className="aspect-[4/5] rounded-2xl overflow-hidden relative">
-                              <img
-                                className="w-full h-full object-cover"
-                                draggable="false"
-                                src={slide.card.image}
-                              />
-                              <div className="absolute bottom-0 left-0 right-0 p-8 bg-gradient-to-t from-black/80 to-transparent">
-                                <p className="text-[10px] text-primary uppercase font-bold tracking-widest mb-1">
-                                  {slide.card.tag}
-                                </p>
-                                <h3 className="font-headline-sm text-white">
-                                  {slide.card.title}
-                                </h3>
-                              </div>
+                              <h3 className="font-headline-sm text-white">
+                                {slide.card.title}
+                              </h3>
                             </div>
                           </div>
                         </div>
-                      )}
+                      </div>
                     </div>
                   </>
                 )}

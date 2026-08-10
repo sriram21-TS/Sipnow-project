@@ -11,7 +11,11 @@ export default function Footer() {
     <footer className="bg-surface-container-lowest pt-24 pb-12 relative overflow-hidden">
       <div className="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-16 mb-24 relative z-10">
         <div className="space-y-8">
-          <img className="h-10 brightness-110" src={siteAssets.LOGO_URL} />
+          <img
+            alt="SipNow Logo"
+            className="h-14 md:h-16 object-contain brightness-110"
+            src={siteAssets.LOGO_URL}
+          />
           <p className="text-on-surface-variant leading-relaxed">
             Elevating the drinking experience with curated excellence and
             unparalleled delivery service since our cellar doors first opened.
