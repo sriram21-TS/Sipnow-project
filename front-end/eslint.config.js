@@ -8,6 +8,17 @@ import prettier from "eslint-config-prettier";
 export default [
   { ignores: ["dist"] },
   {
+    files: ["back-end/**"],
+    languageOptions: {
+      ecmaVersion: 2020,
+      globals: globals.node,
+      parserOptions: {
+        ecmaVersion: "latest",
+        sourceType: "script",
+      },
+    },
+  },
+  {
     files: ["**/*.{js,jsx}"],
     languageOptions: {
       ecmaVersion: 2020,
