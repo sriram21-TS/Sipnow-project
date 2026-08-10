@@ -1,5 +1,6 @@
 import HeroCarousel from "../components/HeroCarousel.jsx";
 import CategoryGrid from "../components/CategoryGrid.jsx";
+import InStorePromotionsPreview from "../components/InStorePromotionsPreview.jsx";
 import BestSellers from "../components/BestSellers.jsx";
 import NewArrivalsBanner from "../components/NewArrivalsBanner.jsx";
 import BrandSpotlight from "../components/BrandSpotlight.jsx";
@@ -18,6 +19,10 @@ export default function Home({
     <>
       <HeroCarousel />
       <CategoryGrid onNavigate={onNavigate} />
+      <InStorePromotionsPreview
+        onAddToCart={onAddToCart}
+        onNavigate={onNavigate}
+      />
       <BestSellers onAddToCart={onAddToCart} products={products} />
       <NewArrivalsBanner />
       <BrandSpotlight />

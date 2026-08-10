@@ -28,10 +28,6 @@ const TOP_LEVEL_ROUTES = {
   "In-Store promotions": "/in-store-promotions",
 };
 
-// ========================================
-// MOBILE NAV LINKS
-// ========================================
-
 const mobileNavLinks = [
   "Offers & Services",
   "Beer & Cider",
@@ -175,6 +171,7 @@ function getMenuItemRoute(
 // FEATURED PANEL
 // ========================================
 
+// Renders the promotional/featured card displayed inside a mega menu.
 function FeaturedPanel({ featured }) {
   if (!featured) {
     return null;
@@ -232,19 +229,8 @@ function FeaturedPanel({ featured }) {
   );
 }
 
-// ========================================
-// SEARCH RESULTS
-// ========================================
-
-function SearchResults({
-  results,
-  searched,
-  onSelect,
-}) {
-  if (!searched) {
-    return null;
-  }
-
+function SearchResults({ results, searched, onSelect }) {
+  if (!searched) return null;
   return (
     <div className="absolute top-full left-0 right-0 mt-2 w-[420px] glass-panel border border-outline-variant/30 rounded-2xl shadow-2xl overflow-hidden z-50">
       {results.length === 0 ? (
@@ -295,15 +281,7 @@ function SearchResults({
   );
 }
 
-// ========================================
-// NAVBAR
-// ========================================
-
-export default function Navbar({
-  cartCount = 0,
-  onNavigate,
-  products = [],
-}) {
+export default function Navbar({ cartCount = 0, onNavigate, products = [] }) {
   const [scrolled, setScrolled] = useState(false);
 
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -369,9 +347,7 @@ export default function Navbar({
   // SEARCH
   // ========================================
 
-  const normalizedTerm =
-    searchTerm.trim().toLowerCase();
-
+  const normalizedTerm = searchTerm.trim().toLowerCase();
   const searchResults = normalizedTerm
     ? products
         .filter((product) => {
@@ -413,6 +389,7 @@ export default function Navbar({
   // SEARCH RESULT
   // ========================================
 
+  // Selecting a result returns to the home page and scrolls to Best Sellers.
   const handleSelectResult = () => {
     clearTimeout(blurTimeoutRef.current);
 
@@ -545,117 +522,51 @@ export default function Navbar({
                   >
                     expand_more
                   </span>
-                </Link>
-
-                {/* MEGA MENU */}
-
-                {openMenu === menu.label && (
-                  <div className="mega-menu mega-menu-open absolute left-0 right-0 top-[100%] pt-4">
-
-                    <div className="mega-menu-panel glass-panel border border-outline-variant/30 rounded-2xl p-10 grid grid-cols-4 gap-12 shadow-2xl">
-
-                      {/* MENU COLUMNS */}
-
-                      {menu.columns.map((col) => {
-
-                        if (col.items?.length > 0) {
-                          return (
-                            <div
-                              className="space-y-3"
-                              key={col.heading}
-                            >
-
-                              {/* COLUMN HEADING */}
-
-                              <Link
-                                to={
-                                  TOP_LEVEL_ROUTES[
-                                    col.heading
-                                  ] ||
-                                  `/${slugify(
-                                    menu.label
-                                  )}/${slugify(
-                                    col.heading
-                                  )}`
-                                }
-                                className="font-headline-sm text-lg text-primary hover:opacity-80 transition-opacity"
-                                onClick={
-                                  handleChildNavigation
-                                }
-                              >
-                                {col.heading}
-                              </Link>
-
-                              {/* COLUMN ITEMS */}
-
-                              <ul className="space-y-3 text-sm text-on-surface-variant">
-
-                                {col.items.map((item) => {
-                                  const route =
-                                    getMenuItemRoute(
-                                      menu.label,
-                                      col.heading,
-                                      item
-                                    );
-
-                                  return (
-                                    <li key={item}>
-                                      <Link
-                                        to={route}
-                                        className="hover:text-primary transition-colors"
-                                        onClick={
-                                          handleChildNavigation
-                                        }
-                                      >
-                                        {item}
-                                      </Link>
-                                    </li>
-                                  );
-                                })}
-
-                              </ul>
-                            </div>
-                          );
-                        }
-
-                        {/* COLUMN WITHOUT ITEMS */}
-
-                        return (
-                          <div
-                            className="space-y-3"
-                            key={col.heading}
+                </button>
+                <div className="mega-menu absolute left-margin-desktop right-margin-desktop top-[100%] pt-4">
+                  <div className="mega-menu-panel glass-panel border border-outline-variant/30 rounded-2xl p-10 grid grid-cols-4 gap-12 shadow-2xl">
+                    {menu.columns.map((col) =>
+                      col.items?.length > 0 ? (
+                        <div className="space-y-3" key={col.heading}>
+                          <h4 className="font-headline-sm text-lg text-primary">
+                            {col.heading}
+                          </h4>
+                          <ul className="space-y-3 text-sm text-on-surface-variant">
+                            {col.items.map((item) => (
+                              <li key={item}>
+                                <a
+                                  className="hover:text-primary transition-colors"
+                                  href="#"
+                                  onClick={preventNav}
+                                >
+                                  {item}
+                                </a>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      ) : (
+                        <div className="space-y-3" key={col.heading}>
+                          <a
+                            className="font-headline-sm text-lg text-primary hover:opacity-80 transition-opacity"
+                            href="#"
+                            onClick={
+                              HEADING_PAGES[col.heading]
+                                ? (e) => {
+                                    e.preventDefault();
+                                    onNavigate?.(HEADING_PAGES[col.heading]);
+                                  }
+                                : preventNav
+                            }
                           >
-                            <Link
-                              to={
-                                TOP_LEVEL_ROUTES[
-                                  col.heading
-                                ] ||
-                                `/${slugify(
-                                  menu.label
-                                )}/${slugify(
-                                  col.heading
-                                )}`
-                              }
-                              className="font-headline-sm text-lg text-primary hover:opacity-80 transition-opacity"
-                              onClick={
-                                handleChildNavigation
-                              }
-                            >
-                              {col.heading}
-                            </Link>
-                          </div>
-                        );
-                      })}
-
-                      {/* FEATURED PANEL */}
-
-                      {menu.featured && (
-                        <FeaturedPanel
-                          featured={menu.featured}
-                        />
-                      )}
-
-                    </div>
+                            {col.heading}
+                          </a>
+                        </div>
+                      )
+                    )}
+                    {menu.featured && (
+                      <FeaturedPanel featured={menu.featured} />
+                    )}
                   </div>
                 )}
 
@@ -738,13 +649,7 @@ export default function Navbar({
               </span>
             )}
           </button>
-
-          {/* ACCOUNT */}
-
-          <button
-            className="hidden sm:inline material-symbols-outlined hover:text-primary transition-colors"
-            type="button"
-          >
+          <button className="hidden sm:inline material-symbols-outlined hover:text-primary transition-colors">
             person
           </button>
 
@@ -776,26 +681,16 @@ export default function Navbar({
       >
 
         <div className="glass-panel border-t border-outline-variant/20 px-margin-mobile py-6 space-y-6">
-
-          {mobileNavLinks.map((link) => {
-            const route =
-              TOP_LEVEL_ROUTES[link] ||
-              `/${slugify(link)}`;
-
-            return (
-              <Link
-                className="block font-label-md text-label-md text-on-surface/80 hover:text-primary transition-colors tracking-wide"
-                to={route}
-                key={link}
-                onClick={closeMenus}
-              >
-                {link}
-              </Link>
-            );
-          })}
-
-          {/* MOBILE SEARCH */}
-
+          {mobileNavLinks.map((link) => (
+            <a
+              className="block font-label-md text-label-md text-on-surface/80 hover:text-primary transition-colors tracking-wide"
+              href="#"
+              key={link}
+              onClick={preventNav}
+            >
+              {link}
+            </a>
+          ))}
           <div className="relative">
 
             <div className="flex items-center gap-2 border-b border-outline-variant/30 py-2">
