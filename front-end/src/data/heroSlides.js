@@ -1,26 +1,25 @@
+import { inStorePromotions } from "./inStorePromotions.js";
 import {
-  BEER_FEATURED_URL,
   WINE_FEATURED_URL,
-  SPIRITS_FEATURED_URL,
   CELLAR_HIGHLIGHT_URL,
   PENFOLDS_URL,
-  YAMAZAKI_URL,
-  PRESTIGE_COLLECTION_URL,
-  NEW_BANNER_URL,
+  SIPNOW_HERO_BANNER_URL,
 } from "./images.js";
+
 export const heroSlides = [
   {
-    bgImage: NEW_BANNER_URL,
-    bgAlt: "SipNow promotional banner",
-    badge: "Featured Promotion",
-    titleLines: ["Discover", "SipNow."],
-    description: "Discover our latest collection and exclusive offers.",
-    primaryCta: "Shop Now",
-    secondaryCta: "Explore",
+    bgImage: SIPNOW_HERO_BANNER_URL,
+    bgAlt: "SipNow brand banner",
+    imageOnly: true,
+    badge: "",
+    titleLines: ["", ""],
+    description: "",
+    primaryCta: "",
+    secondaryCta: "",
     card: {
-      image: NEW_BANNER_URL,
-      tag: "Featured",
-      title: "SipNow Collection",
+      image: SIPNOW_HERO_BANNER_URL,
+      tag: "",
+      title: "SipNow Brand Banner",
     },
   },
   {
@@ -37,6 +36,7 @@ export const heroSlides = [
       tag: "Cellar Highlight",
       title: "Vintage Krug Selection",
     },
+    promotions: inStorePromotions.slice(0, 4),
   },
   {
     bgImage: WINE_FEATURED_URL,
@@ -52,35 +52,6 @@ export const heroSlides = [
       tag: "Best Seller · $135.00",
       title: "Penfolds St Henri Shiraz",
     },
-  },
-  {
-    bgImage: SPIRITS_FEATURED_URL,
-    bgAlt: "Global spirits selection",
-    badge: "Global Spirits Selection",
-    titleLines: ["Discover Rare", "Single Malts."],
-    description:
-      "From Japanese craftsmanship to Scottish tradition — an exceptional spirits collection for the discerning palate.",
-    primaryCta: "Shop Spirits",
-    secondaryCta: "Find Rare Malts",
-    card: {
-      image: YAMAZAKI_URL,
-      tag: "Rare Single Malt · $289.00",
-      title: "Yamazaki 12 Year Old",
-    },
-  },
-  {
-    bgImage: BEER_FEATURED_URL,
-    bgAlt: "Craft beer collection",
-    badge: "Artisanal & Craft",
-    titleLines: ["Cool Down With", "Craft Perfection."],
-    description:
-      "Independent brewers, bold flavours, small batches — the season's most awarded craft beer, curated for you.",
-    primaryCta: "Shop Craft Beer",
-    secondaryCta: "View Range",
-    card: {
-      image: PRESTIGE_COLLECTION_URL,
-      tag: "Seasonal Curations",
-      title: "2024 Prestige Collection",
-    },
+    quiz: true,
   },
 ];

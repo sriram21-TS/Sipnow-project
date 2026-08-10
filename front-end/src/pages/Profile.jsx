@@ -1,8 +1,5 @@
 import { useState } from "react";
-import {
-  formatCurrency,
-  parsePrice,
-} from "../utils/productHelpers.js";
+import { formatCurrency, parsePrice } from "../utils/productHelpers.js";
 
 /*
  * ============================================================
@@ -37,11 +34,7 @@ function readOrders() {
     /*
      * First try to get all stored orders.
      */
-    const orders = JSON.parse(
-      window.localStorage.getItem(
-        "sipnow-orders"
-      )
-    );
+    const orders = JSON.parse(window.localStorage.getItem("sipnow-orders"));
 
     if (orders?.length) return orders;
 
@@ -50,9 +43,7 @@ function readOrders() {
      * check whether a last order exists.
      */
     const lastOrder = JSON.parse(
-      window.localStorage.getItem(
-        "sipnow-last-order"
-      )
+      window.localStorage.getItem("sipnow-last-order")
     );
 
     return lastOrder ? [lastOrder] : [];
@@ -74,18 +65,11 @@ function readOrders() {
 function OrderCard({ order }) {
   return (
     <article className="rounded-xl border border-primary/20 bg-primary/5 p-5">
-      <p className="font-medium text-primary">
-        Order placed successfully
-      </p>
+      <p className="font-medium text-primary">Order placed successfully</p>
 
       <p className="mt-2 text-sm text-on-surface-variant">
-        {new Date(
-          order.placedAt
-        ).toLocaleString()}{" "}
-        ·{" "}
-        {order.fulfilment === "delivery"
-          ? "Delivery"
-          : "Pickup"}
+        {new Date(order.placedAt).toLocaleString()} ·{" "}
+        {order.fulfilment === "delivery" ? "Delivery" : "Pickup"}
       </p>
 
       {/* Products in this order */}
@@ -96,16 +80,11 @@ function OrderCard({ order }) {
             key={item.product.name}
           >
             <span>
-              {item.product.name} ×{" "}
-              {item.quantity}
+              {item.product.name} × {item.quantity}
             </span>
 
             <span>
-              {formatCurrency(
-                parsePrice(
-                  item.product.price
-                ) * item.quantity
-              )}
+              {formatCurrency(parsePrice(item.product.price) * item.quantity)}
             </span>
           </div>
         ))}
@@ -115,9 +94,7 @@ function OrderCard({ order }) {
       <div className="mt-4 flex justify-between border-t border-primary/10 pt-4 font-headline-md">
         <span>Total</span>
 
-        <span className="text-primary">
-          {formatCurrency(order.subtotal)}
-        </span>
+        <span className="text-primary">{formatCurrency(order.subtotal)}</span>
       </div>
     </article>
   );
@@ -129,17 +106,11 @@ function OrderCard({ order }) {
  * ============================================================
  */
 
-export default function Profile({
-  onLogout,
-  onSave,
-  onShopAll,
-  user,
-}) {
+export default function Profile({ onLogout, onSave, onShopAll, user }) {
   /*
    * Controls whether profile fields are editable.
    */
-  const [editing, setEditing] =
-    useState(false);
+  const [editing, setEditing] = useState(false);
 
   /*
    * Profile form values.
@@ -182,9 +153,7 @@ export default function Profile({
      * Only letters and spaces remain.
      */
     const cleanedValue =
-      name === "name"
-        ? value.replace(/[^A-Za-z ]/g, "")
-        : value;
+      name === "name" ? value.replace(/[^A-Za-z ]/g, "") : value;
 
     setValues((current) => ({
       ...current,
@@ -216,9 +185,7 @@ export default function Profile({
      */
 
     if (!NAME_PATTERN.test(values.name.trim())) {
-      nextErrors.push(
-        "Name can contain letters and spaces only."
-      );
+      nextErrors.push("Name can contain letters and spaces only.");
     }
 
     /*
@@ -227,14 +194,8 @@ export default function Profile({
      * --------------------------------------------------------
      */
 
-    if (
-      !EMAIL_PATTERN.test(
-        values.email.trim()
-      )
-    ) {
-      nextErrors.push(
-        "Enter a valid email address."
-      );
+    if (!EMAIL_PATTERN.test(values.email.trim())) {
+      nextErrors.push("Enter a valid email address.");
     }
 
     /*
@@ -243,14 +204,8 @@ export default function Profile({
      * --------------------------------------------------------
      */
 
-    if (
-      !/^[6-9]\d{9}$/.test(
-        values.mobile.replace(/\s/g, "")
-      )
-    ) {
-      nextErrors.push(
-        "Enter a valid 10-digit mobile number."
-      );
+    if (!/^[6-9]\d{9}$/.test(values.mobile.replace(/\s/g, ""))) {
+      nextErrors.push("Enter a valid 10-digit mobile number.");
     }
 
     /*
@@ -280,17 +235,12 @@ export default function Profile({
       /*
        * Store email in lowercase.
        */
-      email: values.email
-        .trim()
-        .toLowerCase(),
+      email: values.email.trim().toLowerCase(),
 
       /*
        * Remove spaces from mobile number.
        */
-      mobile: values.mobile.replace(
-        /\s/g,
-        ""
-      ),
+      mobile: values.mobile.replace(/\s/g, ""),
     });
 
     /*
@@ -333,16 +283,10 @@ export default function Profile({
             <div className="flex gap-3">
               <button
                 className="rounded-lg border border-primary/30 px-4 py-2 text-sm hover:border-primary"
-                onClick={() =>
-                  setEditing(
-                    (value) => !value
-                  )
-                }
+                onClick={() => setEditing((value) => !value)}
                 type="button"
               >
-                {editing
-                  ? "Cancel"
-                  : "Edit profile"}
+                {editing ? "Cancel" : "Edit profile"}
               </button>
 
               <button
@@ -369,35 +313,27 @@ export default function Profile({
                 ["name", "Name"],
                 ["email", "Email", "email"],
                 ["mobile", "Mobile"],
-              ].map(
-                ([name, label, type]) => (
-                  <label key={name}>
-                    <span className="mb-2 block text-xs uppercase tracking-wider text-on-surface-variant">
-                      {label}
-                    </span>
+              ].map(([name, label, type]) => (
+                <label key={name}>
+                  <span className="mb-2 block text-xs uppercase tracking-wider text-on-surface-variant">
+                    {label}
+                  </span>
 
-                    <input
-                      className={`w-full rounded-lg border bg-surface-container-high px-3 py-2 text-sm focus:border-primary focus:ring-0 ${
-                        error
-                          ? "border-error"
-                          : "border-outline-variant/30"
-                      }`}
-                      name={name}
-                      onChange={update}
-                      type={type || "text"}
-                      value={values[name]}
-                    />
-                  </label>
-                )
-              )}
+                  <input
+                    className={`w-full rounded-lg border bg-surface-container-high px-3 py-2 text-sm focus:border-primary focus:ring-0 ${
+                      error ? "border-error" : "border-outline-variant/30"
+                    }`}
+                    name={name}
+                    onChange={update}
+                    type={type || "text"}
+                    value={values[name]}
+                  />
+                </label>
+              ))}
 
               {/* Error + Save button */}
               <div className="sm:col-span-3">
-                {error && (
-                  <p className="mb-3 text-sm text-error">
-                    {error}
-                  </p>
-                )}
+                {error && <p className="mb-3 text-sm text-error">{error}</p>}
 
                 <button
                   className="rounded-lg px-5 py-2 text-sm text-white primary-gradient"
@@ -420,9 +356,7 @@ export default function Profile({
                   Name
                 </p>
 
-                <p className="mt-1">
-                  {user?.name}
-                </p>
+                <p className="mt-1">{user?.name}</p>
               </div>
 
               <div>
@@ -430,9 +364,7 @@ export default function Profile({
                   Email
                 </p>
 
-                <p className="mt-1 break-words">
-                  {user?.email}
-                </p>
+                <p className="mt-1 break-words">{user?.email}</p>
               </div>
 
               <div>
@@ -440,10 +372,7 @@ export default function Profile({
                   Mobile
                 </p>
 
-                <p className="mt-1">
-                  {user?.mobile ||
-                    "Not added"}
-                </p>
+                <p className="mt-1">{user?.mobile || "Not added"}</p>
               </div>
             </div>
           )}
@@ -454,27 +383,17 @@ export default function Profile({
             ==================================================== */}
 
         <section className="glass-panel mt-6 rounded-2xl p-6 sm:p-8">
-          <h2 className="font-headline-md text-2xl">
-            Order history
-          </h2>
+          <h2 className="font-headline-md text-2xl">Order history</h2>
 
           {orders.length ? (
             <div className="mt-5 space-y-4">
-              {orders.map(
-                (order, index) => (
-                  <OrderCard
-                    key={`${order.placedAt}-${index}`}
-                    order={order}
-                  />
-                )
-              )}
+              {orders.map((order, index) => (
+                <OrderCard key={`${order.placedAt}-${index}`} order={order} />
+              ))}
             </div>
           ) : (
             <div className="mt-5 text-sm text-on-surface-variant">
-              <p>
-                You have not placed an
-                order yet.
-              </p>
+              <p>You have not placed an order yet.</p>
 
               <button
                 className="mt-4 rounded-lg px-5 py-2 text-sm text-white primary-gradient"

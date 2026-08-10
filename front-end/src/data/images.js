@@ -1,10 +1,12 @@
 import sipNowLogo from "../assets/sipnow-logo.png";
+import sipNowHeroBanner from "../assets/sipnow-hero-banner.png";
 
 // Remote design-tool image URLs carried over unchanged from the original page.
 // Grouped here once so the data files below can reference them by name
 // instead of repeating long URLs.
 
 export const LOGO_URL = sipNowLogo;
+export const SIPNOW_HERO_BANNER_URL = sipNowHeroBanner;
 
 export const BEER_FEATURED_URL =
   "https://lh3.googleusercontent.com/aida/AP1WRLumnwRbPmAbWR1WbU6c85EIvxQkUlJwPYBvDYs43oD3f0Kz-4cZM9ylIJL7JHg11vmzJ3u0_Op2Dt48MC0A_dduSt59UdiYoyxuKKKHgJgEk8QK3omKf34s5oHdJwilIZ9lXnwbsynJD01n8XbDDps6cYf6GeYUd1TmPjlCnnaFAhI3ihD_OjjI55SF_EPQvCpnS11RsIhPp8JTYvEqgfnf5PIc5cWbsgBGsRfdWgoAfam14sSNPtbBknc";

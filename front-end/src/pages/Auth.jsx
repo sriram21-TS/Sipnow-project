@@ -78,13 +78,7 @@ const NAME_PATTERN = /^[A-Za-z ]{2,50}$/;
  *
  * The "required" prop controls whether the red * is displayed.
  */
-function Field({
-  error,
-  icon,
-  label,
-  required = false,
-  ...inputProps
-}) {
+function Field({ error, icon, label, required = false, ...inputProps }) {
   return (
     <label className="block">
       {/* Field label */}
@@ -93,10 +87,7 @@ function Field({
 
         {/* Red asterisk for mandatory fields */}
         {required && (
-          <span
-            className="ml-1 text-red-500"
-            aria-hidden="true"
-          >
+          <span className="ml-1 text-red-500" aria-hidden="true">
             *
           </span>
         )}
@@ -105,9 +96,7 @@ function Field({
       {/* Input container */}
       <span
         className={`flex items-center overflow-hidden rounded-xl border bg-[#1a171c] ${
-          error
-            ? "border-red-500"
-            : "border-primary/20"
+          error ? "border-red-500" : "border-primary/20"
         }`}
       >
         {/* Input icon */}
@@ -126,9 +115,7 @@ function Field({
 
       {/* Field-specific error message */}
       {error && (
-        <span className="mt-1 block text-xs text-red-400">
-          {error}
-        </span>
+        <span className="mt-1 block text-xs text-red-400">{error}</span>
       )}
     </label>
   );
@@ -146,9 +133,7 @@ function Field({
  */
 function readUser() {
   try {
-    return JSON.parse(
-      window.localStorage.getItem("sipnow-user")
-    );
+    return JSON.parse(window.localStorage.getItem("sipnow-user"));
   } catch {
     return null;
   }
@@ -160,11 +145,7 @@ function readUser() {
  * ============================================================
  */
 
-export default function Auth({
-  mode,
-  onAuthenticated,
-  onSwitch,
-}) {
+export default function Auth({ mode, onAuthenticated, onSwitch }) {
   /*
    * mode is either:
    *   "signup"
@@ -209,87 +190,85 @@ export default function Auth({
    */
 
   const updateValue = (event) => {
-  const { name, value } = event.target;
+    const { name, value } = event.target;
 
-  /*
-   * NAME SANITIZATION
-   *
-   * If the current field is "name", remove everything
-   * except English letters and spaces.
-   *
-   * Example:
-   *
-   * User enters:
-   *   Monik123@#
-   *
-   * Input becomes:
-   *   Monik
-   *
-   * This improves the user experience because invalid
-   * characters don't remain inside the field.
-   */
+    /*
+     * NAME SANITIZATION
+     *
+     * If the current field is "name", remove everything
+     * except English letters and spaces.
+     *
+     * Example:
+     *
+     * User enters:
+     *   Monik123@#
+     *
+     * Input becomes:
+     *   Monik
+     *
+     * This improves the user experience because invalid
+     * characters don't remain inside the field.
+     */
 
-  /*
-   * MOBILE SANITIZATION
-   *
-   * If the current field is "mobile", allow numbers only
-   * and limit the input to 9 digits.
-   *
-   * Example:
-   *
-   * User enters:
-   *   98765abc@12
-   *
-   * Input becomes:
-   *   9876512
-   *
-   * Letters, spaces and special characters are removed.
-   * More than 9 digits are not allowed.
-   */
-  let cleanedValue = value;
+    /*
+     * MOBILE SANITIZATION
+     *
+     * If the current field is "mobile", allow numbers only
+     * and limit the input to 9 digits.
+     *
+     * Example:
+     *
+     * User enters:
+     *   98765abc@12
+     *
+     * Input becomes:
+     *   9876512
+     *
+     * Letters, spaces and special characters are removed.
+     * More than 9 digits are not allowed.
+     */
+    let cleanedValue = value;
 
-  if (name === "name") {
-    cleanedValue = value.replace(/[^A-Za-z ]/g, "");
-  }
+    if (name === "name") {
+      cleanedValue = value.replace(/[^A-Za-z ]/g, "");
+    }
 
-  if (name === "mobile") {
-    cleanedValue = value
-      .replace(/\D/g, "")
-      .slice(0, 9);
-  }
+    if (name === "mobile") {
+      cleanedValue = value.replace(/\D/g, "").slice(0, 9);
+    }
 
-  /*
-   * Update only the changed field while keeping
-   * the other form values.
-   */
-  setValues((current) => ({
-    ...current,
-    [name]: cleanedValue,
-  }));
+    /*
+     * Update only the changed field while keeping
+     * the other form values.
+     */
+    setValues((current) => ({
+      ...current,
+      [name]: cleanedValue,
+    }));
 
-  /*
-   * If the user starts correcting a field, remove
-   * its previous error.
-   *
-   * The complete validation will still happen when
-   * the user submits the form.
-   */
-  if (errors[name]) {
-    setErrors((current) => {
-      const next = { ...current };
-      delete next[name];
-      return next;
-    });
-  }
+    /*
+     * If the user starts correcting a field, remove
+     * its previous error.
+     *
+     * The complete validation will still happen when
+     * the user submits the form.
+     */
+    if (errors[name]) {
+      setErrors((current) => {
+        const next = { ...current };
+        delete next[name];
+        return next;
+      });
+    }
 
-  /*
-   * Clear the general login message when the user
-   * starts changing their input.
-   */
-  if (message) {
-    setMessage("");
-  }
-};
+    /*
+     * Clear the general login message when the user
+     * starts changing their input.
+     */
+    if (message) {
+      setMessage("");
+    }
+  };
   /*
    * ==========================================================
    * VALIDATE FORM
@@ -334,16 +313,12 @@ export default function Auth({
         /*
          * Empty field.
          */
-        nextErrors.name =
-          "Full name is required.";
-      } else if (
-        !NAME_PATTERN.test(values.name.trim())
-      ) {
+        nextErrors.name = "Full name is required.";
+      } else if (!NAME_PATTERN.test(values.name.trim())) {
         /*
          * Field has a value, but the value is invalid.
          */
-        nextErrors.name =
-          "Name can contain letters and spaces only.";
+        nextErrors.name = "Name can contain letters and spaces only.";
       }
 
       /*
@@ -361,24 +336,19 @@ export default function Auth({
        * becomes:
        * 9876543210
        */
-      const mobile = values.mobile.replace(
-        /\s/g,
-        ""
-      );
+      const mobile = values.mobile.replace(/\s/g, "");
 
       if (!mobile) {
         /*
          * Empty mobile field.
          */
-        nextErrors.mobile =
-          "Mobile number is required.";
+        nextErrors.mobile = "Mobile number is required.";
       } else if (!/^[6-9]\d{8}$/.test(mobile)) {
         /*
          * Mobile exists but isn't a valid Indian
          * 9-digit mobile number.
          */
-        nextErrors.mobile =
-          "Enter a valid 9-digit mobile number.";
+        nextErrors.mobile = "Enter a valid 9-digit mobile number.";
       }
     }
 
@@ -392,17 +362,13 @@ export default function Auth({
       /*
        * Empty email.
        */
-      nextErrors.email =
-        "Email address is required.";
-    } else if (
-      !EMAIL_PATTERN.test(values.email.trim())
-    ) {
+      nextErrors.email = "Email address is required.";
+    } else if (!EMAIL_PATTERN.test(values.email.trim())) {
       /*
        * Email has a value but does not match
        * the expected email format.
        */
-      nextErrors.email =
-        "Enter a valid email address.";
+      nextErrors.email = "Enter a valid email address.";
     }
 
     /*
@@ -415,12 +381,8 @@ export default function Auth({
       /*
        * Password is mandatory for both login and signup.
        */
-      nextErrors.password =
-        "Password is required.";
-    } else if (
-      isSignup &&
-      !PASSWORD_PATTERN.test(values.password)
-    ) {
+      nextErrors.password = "Password is required.";
+    } else if (isSignup && !PASSWORD_PATTERN.test(values.password)) {
       /*
        * During signup, the password must satisfy
        * the complete password-strength requirements.
@@ -442,17 +404,12 @@ export default function Auth({
         /*
          * Confirm password is empty.
          */
-        nextErrors.confirmPassword =
-          "Please confirm your password.";
-      } else if (
-        values.password !==
-        values.confirmPassword
-      ) {
+        nextErrors.confirmPassword = "Please confirm your password.";
+      } else if (values.password !== values.confirmPassword) {
         /*
          * Both passwords exist but don't match.
          */
-        nextErrors.confirmPassword =
-          "Passwords do not match.";
+        nextErrors.confirmPassword = "Passwords do not match.";
       }
     }
 
@@ -511,14 +468,9 @@ export default function Auth({
       const user = {
         name: values.name.trim(),
 
-        mobile: values.mobile.replace(
-          /\s/g,
-          ""
-        ),
+        mobile: values.mobile.replace(/\s/g, ""),
 
-        email: values.email
-          .trim()
-          .toLowerCase(),
+        email: values.email.trim().toLowerCase(),
 
         password: values.password,
       };
@@ -534,10 +486,7 @@ export default function Auth({
        * A production application should NOT store plain-text
        * passwords in localStorage.
        */
-      window.localStorage.setItem(
-        "sipnow-user",
-        JSON.stringify(user)
-      );
+      window.localStorage.setItem("sipnow-user", JSON.stringify(user));
 
       /*
        * Create the active session.
@@ -580,8 +529,7 @@ export default function Auth({
      */
     if (
       !user ||
-      user.email !==
-        values.email.trim().toLowerCase() ||
+      user.email !== values.email.trim().toLowerCase() ||
       user.password !== values.password
     ) {
       /*
@@ -630,7 +578,6 @@ export default function Auth({
      */
     <div className="min-h-screen bg-[#09080a] px-5 py-10 text-white sm:py-16">
       <main className="mx-auto max-w-xl rounded-[2rem] border border-primary/30 bg-[#100e11] p-7 text-white shadow-2xl shadow-black/50 sm:p-12">
-
         {/* ==================================================
             BRAND
             ================================================== */}
@@ -644,9 +591,7 @@ export default function Auth({
             ================================================== */}
 
         <p className="mt-12 text-sm font-bold uppercase tracking-[0.16em] text-primary">
-          {isSignup
-            ? "Join the club"
-            : "Welcome back"}
+          {isSignup ? "Join the club" : "Welcome back"}
         </p>
 
         {/* ==================================================
@@ -654,9 +599,7 @@ export default function Auth({
             ================================================== */}
 
         <h1 className="mt-7 font-headline-md text-4xl sm:text-5xl">
-          {isSignup
-            ? "Create your account"
-            : "Sign in to SipNow"}
+          {isSignup ? "Create your account" : "Sign in to SipNow"}
         </h1>
 
         {/* ==================================================
@@ -673,11 +616,7 @@ export default function Auth({
             AUTH FORM
             ================================================== */}
 
-        <form
-          className="mt-12 space-y-5"
-          noValidate
-          onSubmit={handleSubmit}
-        >
+        <form className="mt-12 space-y-5" noValidate onSubmit={handleSubmit}>
           {/* =================================================
               SIGNUP FIELDS
               ================================================= */}
@@ -735,11 +674,7 @@ export default function Auth({
               ================================================= */}
 
           <Field
-            autoComplete={
-              isSignup
-                ? "new-password"
-                : "current-password"
-            }
+            autoComplete={isSignup ? "new-password" : "current-password"}
             error={errors.password}
             icon="lock"
             label="Password"
@@ -758,8 +693,7 @@ export default function Auth({
           {isSignup && (
             <>
               <p className="-mt-3 text-xs text-gray-400">
-                Use uppercase, lowercase, a number and a
-                special character.
+                Use uppercase, lowercase, a number and a special character.
               </p>
 
               {/* =================================================
@@ -785,11 +719,7 @@ export default function Auth({
               GENERAL LOGIN ERROR
               ================================================= */}
 
-          {message && (
-            <p className="text-sm text-red-400">
-              {message}
-            </p>
-          )}
+          {message && <p className="text-sm text-red-400">{message}</p>}
 
           {/* =================================================
               SUBMIT BUTTON
@@ -803,9 +733,7 @@ export default function Auth({
             className="w-full rounded-full py-4 font-bold text-white primary-gradient"
             type="submit"
           >
-            {isSignup
-              ? "Create account"
-              : "Login"}
+            {isSignup ? "Create account" : "Login"}
           </button>
         </form>
 
@@ -814,23 +742,13 @@ export default function Auth({
             ================================================== */}
 
         <p className="mt-7 text-center text-sm text-gray-400">
-          {isSignup
-            ? "Already have an account?"
-            : "New to SipNow?"}{" "}
+          {isSignup ? "Already have an account?" : "New to SipNow?"}{" "}
           <button
             className="font-semibold text-primary hover:underline"
-            onClick={() =>
-              onSwitch(
-                isSignup
-                  ? "login"
-                  : "signup"
-              )
-            }
+            onClick={() => onSwitch(isSignup ? "login" : "signup")}
             type="button"
           >
-            {isSignup
-              ? "Login"
-              : "Create an account"}
+            {isSignup ? "Login" : "Create an account"}
           </button>
         </p>
       </main>
