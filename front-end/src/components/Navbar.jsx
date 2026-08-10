@@ -509,8 +509,6 @@ export default function Navbar({ cartCount = 0, products = [], user }) {
                     </div>
                   </div>
                 )}
-                  </div>
-                )}
               </div>
             ))}
           </div>
