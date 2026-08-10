@@ -10,6 +10,7 @@ import InStorePromotions from "./pages/InStorePromotions.jsx";
 import ShopAll from "./pages/ShopAll.jsx";
 import Cart from "./pages/Cart.jsx";
 import { useProducts } from "./hooks/useProducts.js";
+import WineSubcategoryPage from "./pages/wine/WineSubcategoryPage.jsx";
 
 export default function App() {
   const [ageVerified, setAgeVerified] = useState(
@@ -101,6 +102,13 @@ export default function App() {
             products={products}
             productsLoading={productsLoading}
           />
+          ) : page.startsWith("wine:") ? (
+  <WineSubcategoryPage
+    wineType={page.slice("wine:".length)}
+    onAddToCart={addToCart}
+    onBack={() => goToPage("home")}
+    products={products}
+  />
         ) : page.startsWith("category:") ? (
           <CategoryPage
             categoryKey={page.slice("category:".length)}

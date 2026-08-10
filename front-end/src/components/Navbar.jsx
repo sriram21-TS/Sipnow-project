@@ -199,16 +199,21 @@ export default function Navbar({ cartCount = 0, onNavigate, products = [] }) {
                           </h4>
                           <ul className="space-y-3 text-sm text-on-surface-variant">
                             {col.items.map((item) => (
-                              <li key={item}>
-                                <a
-                                  className="hover:text-primary transition-colors"
-                                  href="#"
-                                  onClick={preventNav}
-                                >
-                                  {item}
-                                </a>
-                              </li>
-                            ))}
+                                  <a
+                                    className="block cursor-pointer hover:text-primary transition-all duration-200"
+                                    href="#"
+                                    onClick={(e) => {
+                                      e.preventDefault();
+                                      if (menu.label === "Wine") {
+                                        onNavigate?.(`wine:${item}`);
+                                      } else {
+                                        preventNav(e);
+                                      }
+                                    }}
+                                  >
+                                    {item}
+                                  </a>
+                                ))}
                           </ul>
                         </div>
                       ) : (
