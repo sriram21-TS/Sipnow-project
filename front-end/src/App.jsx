@@ -11,6 +11,7 @@ import AmbientBackground from "./components/AmbientBackground.jsx";
 import Footer from "./components/Footer.jsx";
 import Navbar from "./components/Navbar.jsx";
 import QuizModal from "./components/QuizModal.jsx";
+import BeerCiderCategoryPage from "./components/BeerCiderCategoryPage.jsx";
 import { useProducts } from "./hooks/useProducts.js";
 import Auth from "./pages/Auth.jsx";
 import Cart from "./pages/Cart.jsx";
@@ -265,21 +266,22 @@ export default function App() {
           <Route
             path="/beer-cider"
             element={
-              <CategoryPage
-                categoryKey="beer"
+              <BeerCiderCategoryPage
                 onAddToCart={addToCart}
                 onBack={goHome}
                 products={products}
+                productsLoading={productsLoading}
               />
             }
           />
           <Route
             path="/beer-cider/:categoryKey"
             element={
-              <CategoryPage
+              <BeerCiderCategoryPage
                 onAddToCart={addToCart}
                 onBack={goHome}
                 products={products}
+                productsLoading={productsLoading}
               />
             }
           />
