@@ -55,17 +55,13 @@ export default function ProductFilters({
   const TYPE_TREE = useMemo(() => buildTypeTree(products), [products]);
 
   const hasActiveFilters =
-    selectedSubtypes.length > 0 ||
-    priceRange !== "all" ||
-    rating !== "all";
+    selectedSubtypes.length > 0 || priceRange !== "all" || rating !== "all";
 
   return (
     <div className="glass-panel rounded-2xl border border-primary/20 p-6 space-y-6">
       {/* FILTER HEADER */}
       <div className="flex items-center justify-between">
-        <h3 className="font-headline-sm text-lg text-on-surface">
-          Filters
-        </h3>
+        <h3 className="font-headline-sm text-lg text-on-surface">Filters</h3>
 
         {hasActiveFilters && (
           <button

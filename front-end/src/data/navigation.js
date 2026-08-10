@@ -125,17 +125,17 @@ export const navMenus = [
       title: "Ready-to-drink Classics",
     },
   },
-    {
+  {
     label: "Zero %",
     columns: [
       {
-        heading: "ZERO%* ALCOHOL (0-0.5% ABV)",
+        heading: "ZERO % ALCOHOL (0-0.5% ABV)",
         items: [
-          "Zero%* Alcohol Wine",
-          "Zero%* Alcohol Beer",
-          "Zero%* Alcohol Spirits",
-          "Zero%* Alcohol Premix",
-          "Zero%* Alcohol Cider",
+          "Zero % Alcohol Wine",
+          "Zero % Alcohol Beer",
+          "Zero % Alcohol Spirits",
+          "Zero % Alcohol Premix",
+          "Zero % Alcohol Cider",
         ],
       },
     ],

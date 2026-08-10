@@ -53,9 +53,7 @@ function FeaturedPanel({ featured }) {
           {featured.tag}
         </p>
 
-        <p className="text-sm font-semibold">
-          {featured.title}
-        </p>
+        <p className="text-sm font-semibold">{featured.title}</p>
       </div>
     );
   }
@@ -72,9 +70,7 @@ function FeaturedPanel({ featured }) {
         {featured.tag}
       </p>
 
-      <p className="text-sm font-semibold">
-        {featured.title}
-      </p>
+      <p className="text-sm font-semibold">{featured.title}</p>
     </div>
   );
 }
@@ -181,10 +177,7 @@ export default function Navbar({
   };
 
   const handleSearchBlur = () => {
-    blurTimeoutRef.current = setTimeout(
-      () => setSearchFocused(false),
-      150
-    );
+    blurTimeoutRef.current = setTimeout(() => setSearchFocused(false), 150);
   };
 
   // Selecting a result returns to the home page and scrolls to Best Sellers.
@@ -198,12 +191,10 @@ export default function Navbar({
     onNavigate?.("home");
 
     requestAnimationFrame(() => {
-      document
-        .getElementById("best-sellers")
-        ?.scrollIntoView({
-          behavior: "smooth",
-          block: "start",
-        });
+      document.getElementById("best-sellers")?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
     });
   };
 
@@ -247,10 +238,7 @@ export default function Navbar({
     }
 
     // ZERO % SPIRITS
-    if (
-      itemName.includes("spirit") ||
-      itemName.includes("spirits")
-    ) {
+    if (itemName.includes("spirit") || itemName.includes("spirits")) {
       onNavigate?.("zero-spirits");
       return;
     }
@@ -273,21 +261,13 @@ export default function Navbar({
   return (
     <nav
       className={`fixed top-0 w-full z-[60] transition-all duration-500 bg-surface border-b border-primary/40 ${
-        scrolled
-          ? "py-3 shadow-lg shadow-black/30"
-          : "py-5"
+        scrolled ? "py-3 shadow-lg shadow-black/30" : "py-5"
       }`}
     >
       <div className="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop flex justify-between items-center relative">
-
         {/* LOGO + NAVIGATION */}
         <div className="flex items-center gap-10">
-
-          <a
-            className="relative z-10"
-            href="#"
-            onClick={scrollToTop}
-          >
+          <a className="relative z-10" href="#" onClick={scrollToTop}>
             <img
               alt="SipNow Logo"
               className="h-8 md:h-10 object-contain brightness-110"
@@ -296,22 +276,16 @@ export default function Navbar({
           </a>
           <div className="hidden lg:flex items-center gap-5">
             {navMenus.map((menu) => {
-              const isZeroMenu =
-                menu.label.toLowerCase().includes("zero");
+              const isZeroMenu = menu.label.toLowerCase().includes("zero");
 
               return (
-                <div
-                  className="nav-item group py-2"
-                  key={menu.label}
-                >
+                <div className="nav-item group py-2" key={menu.label}>
                   {/* MENU TITLE */}
                   <button
                     type="button"
                     className="flex items-center gap-1.5 font-label-md text-label-md text-on-surface/80 hover:text-primary transition-colors tracking-wide whitespace-nowrap"
                   >
-                    {menu.label === "ZERO%*"
-                      ? "Zero %"
-                      : menu.label}
+                    {menu.label === "ZERO%*" ? "Zero %" : menu.label}
 
                     <span className="material-symbols-outlined text-[18px] opacity-50 group-hover:rotate-180 transition-transform">
                       expand_more
@@ -323,10 +297,7 @@ export default function Navbar({
                     <div className="mega-menu-panel glass-panel border border-outline-variant/30 rounded-2xl p-10 grid grid-cols-4 gap-12 shadow-2xl">
                       {menu.columns.map((col) =>
                         col.items?.length > 0 ? (
-                          <div
-                            className="space-y-3"
-                            key={col.heading}
-                          >
+                          <div className="space-y-3" key={col.heading}>
                             <h4 className="font-headline-sm text-lg text-primary">
                               {col.heading}
                             </h4>
@@ -339,13 +310,8 @@ export default function Navbar({
                                     href="#"
                                     onClick={(e) => {
                                       if (isZeroMenu) {
-                                        handleZeroNavigation(
-                                          e,
-                                          item
-                                        );
-                                      } else if (
-                                        WINE_ITEM_PAGES[item]
-                                      ) {
+                                        handleZeroNavigation(e, item);
+                                      } else if (WINE_ITEM_PAGES[item]) {
                                         e.preventDefault();
                                         onNavigate?.(
                                           `wine:${WINE_ITEM_PAGES[item]}`
@@ -362,10 +328,7 @@ export default function Navbar({
                             </ul>
                           </div>
                         ) : (
-                          <div
-                            className="space-y-3"
-                            key={col.heading}
-                          >
+                          <div className="space-y-3" key={col.heading}>
                             <a
                               className="font-headline-sm text-lg text-primary hover:opacity-80 transition-opacity"
                               href="#"
@@ -373,11 +336,7 @@ export default function Navbar({
                                 HEADING_PAGES[col.heading]
                                   ? (e) => {
                                       e.preventDefault();
-                                      onNavigate?.(
-                                        HEADING_PAGES[
-                                          col.heading
-                                        ]
-                                      );
+                                      onNavigate?.(HEADING_PAGES[col.heading]);
                                     }
                                   : preventNav
                               }
@@ -389,9 +348,7 @@ export default function Navbar({
                       )}
 
                       {menu.featured && (
-                        <FeaturedPanel
-                          featured={menu.featured}
-                        />
+                        <FeaturedPanel featured={menu.featured} />
                       )}
                     </div>
                   </div>
@@ -403,12 +360,9 @@ export default function Navbar({
 
         {/* RIGHT SIDE */}
         <div className="flex items-center gap-5 md:gap-7 relative z-10 ml-auto">
-
           {/* DESKTOP SEARCH */}
           <div className="hidden md:flex flex-col relative">
-
             <div className="flex items-center border-b border-outline-variant/30 py-1">
-
               <span className="material-symbols-outlined text-[20px] text-on-surface-variant">
                 search
               </span>
@@ -416,27 +370,20 @@ export default function Navbar({
               <input
                 className="bg-transparent border-none focus:ring-0 text-sm w-52 placeholder:text-on-surface-variant/50"
                 onBlur={handleSearchBlur}
-                onChange={(e) =>
-                  setSearchTerm(e.target.value)
-                }
+                onChange={(e) => setSearchTerm(e.target.value)}
                 onFocus={handleSearchFocus}
                 placeholder="Search our cellar..."
                 ref={desktopSearchRef}
                 type="text"
                 value={searchTerm}
               />
-
             </div>
 
             <SearchResults
               onSelect={handleSelectResult}
               results={searchResults}
-              searched={
-                searchFocused &&
-                normalizedTerm.length > 0
-              }
+              searched={searchFocused && normalizedTerm.length > 0}
             />
-
           </div>
 
           {/* SEARCH BUTTON */}
@@ -450,17 +397,12 @@ export default function Navbar({
 
           {/* CART */}
           <button
-            aria-label={
-              cartCount > 0
-                ? `Cart, ${cartCount} items`
-                : "Cart"
-            }
+            aria-label={cartCount > 0 ? `Cart, ${cartCount} items` : "Cart"}
             className="relative material-symbols-outlined hover:text-primary transition-colors"
             onClick={() => onNavigate?.("cart")}
             type="button"
           >
             shopping_bag
-
             {cartCount > 0 && (
               <span className="absolute -top-1.5 -right-2 min-w-[18px] h-[18px] px-1 flex items-center justify-center rounded-full bg-primary text-on-primary text-[10px] font-bold leading-none">
                 {cartCount}
@@ -483,27 +425,20 @@ export default function Navbar({
             aria-expanded={mobileOpen}
             aria-label="Toggle menu"
             className="material-symbols-outlined lg:hidden hover:text-primary transition-colors"
-            onClick={() =>
-              setMobileOpen((open) => !open)
-            }
+            onClick={() => setMobileOpen((open) => !open)}
             type="button"
           >
             {mobileOpen ? "close" : "menu"}
           </button>
-
         </div>
       </div>
 
       {/* MOBILE NAVIGATION */}
       <div
-        className={`mobile-nav-panel lg:hidden ${
-          mobileOpen ? "open" : ""
-        }`}
+        className={`mobile-nav-panel lg:hidden ${mobileOpen ? "open" : ""}`}
         id="mobile-nav-panel"
       >
-
         <div className="glass-panel border-t border-outline-variant/20 px-margin-mobile py-6 space-y-6">
-
           {mobileNavLinks.map((link) => (
             <a
               className="block font-label-md text-label-md text-on-surface/80 hover:text-primary transition-colors tracking-wide"
@@ -527,9 +462,7 @@ export default function Navbar({
 
           {/* MOBILE SEARCH */}
           <div className="relative">
-
             <div className="flex items-center gap-2 border-b border-outline-variant/30 py-2">
-
               <span className="material-symbols-outlined text-[20px] text-on-surface-variant">
                 search
               </span>
@@ -537,29 +470,21 @@ export default function Navbar({
               <input
                 className="bg-transparent border-none focus:ring-0 text-sm w-full placeholder:text-on-surface-variant/50"
                 onBlur={handleSearchBlur}
-                onChange={(e) =>
-                  setSearchTerm(e.target.value)
-                }
+                onChange={(e) => setSearchTerm(e.target.value)}
                 onFocus={handleSearchFocus}
                 placeholder="Search our cellar..."
                 ref={mobileSearchRef}
                 type="text"
                 value={searchTerm}
               />
-
             </div>
 
             <SearchResults
               onSelect={handleSelectResult}
               results={searchResults}
-              searched={
-                searchFocused &&
-                normalizedTerm.length > 0
-              }
+              searched={searchFocused && normalizedTerm.length > 0}
             />
-
           </div>
-
         </div>
       </div>
     </nav>

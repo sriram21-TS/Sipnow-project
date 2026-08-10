@@ -86,20 +86,14 @@ export default function App() {
   const updateCartQuantity = (productName, quantity) =>
     setCartItems((current) =>
       quantity <= 0
-        ? current.filter(
-            (item) => item.product.name !== productName
-          )
+        ? current.filter((item) => item.product.name !== productName)
         : current.map((item) =>
-            item.product.name === productName
-              ? { ...item, quantity }
-              : item
+            item.product.name === productName ? { ...item, quantity } : item
           )
     );
   const removeFromCart = (productName) =>
     setCartItems((current) =>
-      current.filter(
-        (item) => item.product.name !== productName
-      )
+      current.filter((item) => item.product.name !== productName)
     );
   // Save the authenticated session without storing the password in App state.
   const authenticate = (nextUser) => {
