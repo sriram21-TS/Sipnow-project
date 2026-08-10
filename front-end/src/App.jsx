@@ -19,6 +19,7 @@ import CategoryPage from "./pages/CategoryPage.jsx";
 import Checkout from "./pages/Checkout.jsx";
 import Home from "./pages/Home.jsx";
 import InStorePromotions from "./pages/InStorePromotions.jsx";
+import PremixPage from "./pages/PremixPage.jsx";
 import Profile from "./pages/Profile.jsx";
 import ShopAll from "./pages/ShopAll.jsx";
 import ZeroCategoryPage from "./pages/ZeroCategoryPage.jsx";
@@ -261,6 +262,78 @@ export default function App() {
               />
             }
           />
+          <Route
+            path="/zero-alcohol"
+            element={
+              <ZeroCategoryPage
+                subcategory="wine"
+                onAddToCart={addToCart}
+                onBack={goHome}
+                products={products}
+                productsLoading={productsLoading}
+              />
+            }
+          />
+          <Route
+            path="/zero-wine"
+            element={
+              <ZeroCategoryPage
+                subcategory="wine"
+                onAddToCart={addToCart}
+                onBack={goHome}
+                products={products}
+                productsLoading={productsLoading}
+              />
+            }
+          />
+          <Route
+            path="/zero-beer"
+            element={
+              <ZeroCategoryPage
+                subcategory="beer"
+                onAddToCart={addToCart}
+                onBack={goHome}
+                products={products}
+                productsLoading={productsLoading}
+              />
+            }
+          />
+          <Route
+            path="/zero-spirits"
+            element={
+              <ZeroCategoryPage
+                subcategory="spirits"
+                onAddToCart={addToCart}
+                onBack={goHome}
+                products={products}
+                productsLoading={productsLoading}
+              />
+            }
+          />
+          <Route
+            path="/zero-premix"
+            element={
+              <ZeroCategoryPage
+                subcategory="premix"
+                onAddToCart={addToCart}
+                onBack={goHome}
+                products={products}
+                productsLoading={productsLoading}
+              />
+            }
+          />
+          <Route
+            path="/zero-cider"
+            element={
+              <ZeroCategoryPage
+                subcategory="cider"
+                onAddToCart={addToCart}
+                onBack={goHome}
+                products={products}
+                productsLoading={productsLoading}
+              />
+            }
+          />
 
           {/* Category browsing: one generic page keyed off the URL, covering
               every mega-menu destination (offers, beer & cider, premix,
@@ -311,21 +384,21 @@ export default function App() {
           <Route
             path="/premix"
             element={
-              <CategoryPage
-                categoryKey="premix"
+              <PremixPage
                 onAddToCart={addToCart}
-                onBack={goHome}
                 products={products}
+                productsLoading={productsLoading}
+                title="Premix"
               />
             }
           />
           <Route
             path="/premix/:categoryKey"
             element={
-              <CategoryPage
+              <PremixPage
                 onAddToCart={addToCart}
-                onBack={goHome}
                 products={products}
+                productsLoading={productsLoading}
               />
             }
           />

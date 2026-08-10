@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { useParams } from "react";
+import { useLocation, useParams } from "react-router-dom";
 import ProductGrid from "../components/ProductGrid.jsx";
 import Reveal from "../components/Reveal.jsx";
 import { useAddToCartFeedback } from "../hooks/useAddToCartFeedback.js";
@@ -38,6 +38,7 @@ const SUBCATEGORIES = {
   wine: {
     title: "Zero % Alcohol Wine",
     keyword: "wine",
+    subtitle: "Explore our collection of zero alcohol wines.",
     emptyMessage: "No zero % alcohol wine products found.",
     bannerTag: "Zero Alcohol Cellar",
     description:
@@ -46,6 +47,7 @@ const SUBCATEGORIES = {
   beer: {
     title: "Zero % Alcohol Beer",
     keyword: "beer",
+    subtitle: "Explore our collection of zero alcohol beers.",
     emptyMessage: "No zero % alcohol beer products found.",
     bannerTag: "Zero Alcohol Brews",
     description:
@@ -54,6 +56,7 @@ const SUBCATEGORIES = {
   spirits: {
     title: "Zero % Alcohol Spirits",
     keyword: "spirits",
+    subtitle: "Explore our collection of zero alcohol spirits.",
     emptyMessage: "No zero % alcohol spirits products found.",
     bannerTag: "Zero Alcohol Spirits",
     description:
@@ -62,6 +65,7 @@ const SUBCATEGORIES = {
   premix: {
     title: "Zero % Alcohol Premix",
     keyword: "premix",
+    subtitle: "Explore our collection of zero alcohol premix drinks.",
     emptyMessage: "No zero % alcohol premix products found.",
     bannerTag: "Zero Alcohol Premix & RTD",
     description:
@@ -70,6 +74,7 @@ const SUBCATEGORIES = {
   cider: {
     title: "Zero % Alcohol Cider",
     keyword: "cider",
+    subtitle: "Explore our collection of zero alcohol ciders.",
     emptyMessage: "No zero % alcohol cider products found.",
     bannerTag: "Zero Alcohol Ciders",
     description:
@@ -82,24 +87,29 @@ export default function ZeroCategoryPage({
   onAddToCart,
   onBack,
   products = [],
-  productsLoading = false,
 }) {
   const params = useParams();
-  const rawSubcategory =
-    subcategoryProp || params.subcategory || params.categoryKey || "wine";
+  const location = useLocation();
 
-  const subKey = rawSubcategory
-    .toLowerCase()
-    .replace("zero-alcohol-", "")
-    .replace("zero-", "")
-    .trim();
+  let rawSub =
+    subcategoryProp || params.subcategory || params.categoryKey || "";
+  if (!rawSub && location.pathname) {
+    const parts = location.pathname.split("/").filter(Boolean);
+    rawSub = parts[parts.length - 1] || "wine";
+  }
+
+  const subKey =
+    (rawSub || "wine")
+      .toLowerCase()
+      .replace(/^zero-alcohol-?/, "")
+      .replace(/^zero-?/, "")
+      .trim() || "wine";
 
   const config = SUBCATEGORIES[subKey] || {
     title: `Zero % Alcohol ${subKey.charAt(0).toUpperCase() + subKey.slice(1)}`,
     keyword: subKey,
+    subtitle: `Explore our collection of zero alcohol ${subKey}.`,
     emptyMessage: `No zero % alcohol ${subKey} products found.`,
-    bannerTag: "Zero % Collection",
-    description: `Discover our selection of zero % alcohol ${subKey}.`,
   };
 
   const { addedProduct, handleAddToCart } = useAddToCartFeedback(onAddToCart);
@@ -128,7 +138,7 @@ export default function ZeroCategoryPage({
   const selectedSort =
     SORT_OPTIONS.find((option) => option.key === sortBy) || SORT_OPTIONS[0];
 
-  /* FILTER + SORT PRODUCTS */
+  /* STRICT ZERO % FILTERING - NO FALLBACK TO REGULAR ALCOHOLIC PRODUCTS */
   const filteredProducts = useMemo(() => {
     const [minPrice, maxPrice] = PRICE_BOUNDS[priceRange];
 
@@ -136,43 +146,48 @@ export default function ZeroCategoryPage({
       const text =
         `${product.name || ""} ${product.category || ""} ${product.categoryGroup || ""}`.toLowerCase();
 
-      if (!text.includes("zero")) {
-        return false;
-      }
+      const isZero =
+        text.includes("zero") ||
+        text.includes("0%") ||
+        text.includes("non-alcoholic") ||
+        text.includes("zeroproof");
+      if (!isZero) return false;
 
       if (config.keyword === "spirits") {
-        if (!text.includes("spirit") && !text.includes("spirits")) {
+        if (
+          !text.includes("spirit") &&
+          !text.includes("spirits") &&
+          product.categoryGroup !== "spirits"
+        )
           return false;
-        }
-      } else if (!text.includes(config.keyword)) {
+      } else if (
+        !text.includes(config.keyword) &&
+        product.categoryGroup !== config.keyword
+      ) {
         return false;
       }
 
       const price = parsePrice(product.price);
-      if (price < minPrice || price > maxPrice) {
-        return false;
-      }
+      if (price < minPrice || price > maxPrice) return false;
 
       const minimumRating = rating === "all" ? 0 : Number(rating);
       return (product.rating || 0) >= minimumRating;
     });
 
-    return [...filtered].sort((a, b) => {
-      if (sortBy === "price-low") {
-        return parsePrice(a.price) - parsePrice(b.price);
-      }
-      if (sortBy === "price-high") {
-        return parsePrice(b.price) - parsePrice(a.price);
-      }
-      if (sortBy === "top-rated") {
-        return (b.rating || 0) - (a.rating || 0);
-      }
-      return 0;
-    });
-  }, [products, config.keyword, priceRange, rating, sortBy]);
+    const sorted = [...filtered];
 
-  const activeFilterCount =
-    (priceRange !== "all" ? 1 : 0) + (rating !== "all" ? 1 : 0);
+    if (sortBy === "price-low") {
+      sorted.sort((a, b) => parsePrice(a.price) - parsePrice(b.price));
+    }
+    if (sortBy === "price-high") {
+      sorted.sort((a, b) => parsePrice(b.price) - parsePrice(a.price));
+    }
+    if (sortBy === "top-rated") {
+      sorted.sort((a, b) => (b.rating || 0) - (a.rating || 0));
+    }
+
+    return sorted;
+  }, [products, config.keyword, priceRange, rating, sortBy]);
 
   const clearFilters = () => {
     setPriceRange("all");
@@ -180,153 +195,208 @@ export default function ZeroCategoryPage({
     setSortBy("featured");
   };
 
+  const handleSortChange = (value) => {
+    setSortBy(value);
+    setSortOpen(false);
+  };
+
   return (
-    <div className="pt-24 pb-16 min-h-screen bg-surface">
-      <div className="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop">
-        {/* TOP BAR / BACK NAVIGATION */}
-        <Reveal>
-          <div className="flex items-center justify-between gap-4 mb-8">
-            <button
-              onClick={onBack}
-              type="button"
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-panel hover:border-primary/40 text-sm font-semibold transition-colors"
-            >
-              <span className="material-symbols-outlined text-[18px]">
-                arrow_back
-              </span>
-              Back to Home
-            </button>
+    <div className="min-h-screen px-margin-mobile md:px-margin-desktop pt-28 pb-16">
+      <Reveal>
+        {/* BACK TO HOME */}
+        <button
+          type="button"
+          onClick={onBack}
+          className="flex items-center gap-2 text-on-surface-variant hover:text-primary transition-colors mb-10 cursor-pointer"
+        >
+          <span className="material-symbols-outlined">arrow_back</span>
+          Back to home
+        </button>
 
-            <span className="text-xs uppercase tracking-widest text-on-surface-variant font-bold">
-              {config.bannerTag}
-            </span>
+        {/* PAGE TITLE */}
+        <div className="mb-14">
+          <div className="inline-flex px-5 py-2 rounded-full border border-primary/40 text-primary text-xs uppercase tracking-[0.2em] mb-8">
+            Full Collection
           </div>
-        </Reveal>
 
-        {/* HERO HEADER */}
-        <Reveal delay={100}>
-          <div className="glass-panel border border-outline-variant/30 rounded-3xl p-8 md:p-12 mb-10 relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-96 h-96 bg-primary/10 rounded-full blur-3xl -z-10" />
+          <h1 className="font-serif text-5xl md:text-6xl text-on-surface">
+            {config.title}
+          </h1>
 
-            <div className="max-w-2xl">
-              <span className="inline-block px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-bold uppercase tracking-wider mb-4">
-                0% ABV Collection
-              </span>
+          <p className="mt-5 text-lg text-on-surface-variant">
+            {config.subtitle}
+          </p>
+        </div>
 
-              <h1 className="text-3xl md:text-5xl font-bold font-headline text-on-surface mb-4">
-                {config.title}
-              </h1>
+        {/* CONTENT AREA */}
+        <div className="flex flex-col lg:flex-row gap-8 lg:gap-10">
+          {/* LEFT FILTERS */}
+          <aside className="lg:w-72 shrink-0">
+            <div className="lg:sticky lg:top-32 glass-panel rounded-2xl border border-primary/20 p-6">
+              {/* FILTER HEADER */}
+              <div className="flex items-center justify-between mb-8">
+                <h2 className="font-headline-sm text-xl">Filters</h2>
 
-              <p className="text-on-surface-variant text-base md:text-lg">
-                {config.description}
-              </p>
-            </div>
-          </div>
-        </Reveal>
-
-        {/* CONTROLS BAR: FILTERS + SORTING */}
-        <Reveal delay={200}>
-          <div className="glass-panel border border-outline-variant/30 rounded-2xl p-4 md:p-6 mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
-            {/* PRICE & RATING FILTERS */}
-            <div className="flex flex-wrap items-center gap-3">
-              {/* PRICE DROPDOWN */}
-              <div className="relative">
-                <select
-                  value={priceRange}
-                  onChange={(e) => setPriceRange(e.target.value)}
-                  className="appearance-none bg-surface-container-high border border-outline-variant/30 rounded-xl px-4 py-2.5 pr-10 text-sm font-medium text-on-surface focus:outline-none focus:border-primary transition-colors cursor-pointer"
-                >
-                  {PRICE_RANGES.map((option) => (
-                    <option key={option.key} value={option.key}>
-                      {option.label}
-                    </option>
-                  ))}
-                </select>
-                <span className="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none text-[18px]">
-                  expand_more
-                </span>
-              </div>
-
-              {/* RATING DROPDOWN */}
-              <div className="relative">
-                <select
-                  value={rating}
-                  onChange={(e) => setRating(e.target.value)}
-                  className="appearance-none bg-surface-container-high border border-outline-variant/30 rounded-xl px-4 py-2.5 pr-10 text-sm font-medium text-on-surface focus:outline-none focus:border-primary transition-colors cursor-pointer"
-                >
-                  {RATING_OPTIONS.map((option) => (
-                    <option key={option.key} value={option.key}>
-                      {option.label}
-                    </option>
-                  ))}
-                </select>
-                <span className="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none text-[18px]">
-                  expand_more
-                </span>
-              </div>
-
-              {/* CLEAR FILTERS */}
-              {activeFilterCount > 0 && (
                 <button
-                  onClick={clearFilters}
                   type="button"
-                  className="text-xs text-primary font-semibold hover:underline px-2 py-1"
+                  onClick={clearFilters}
+                  className="text-xs text-primary hover:underline cursor-pointer"
                 >
-                  Clear Filters ({activeFilterCount})
+                  Clear All
                 </button>
-              )}
-            </div>
+              </div>
 
-            {/* SORT DROPDOWN */}
-            <div className="relative" ref={sortRef}>
-              <button
-                type="button"
-                onClick={() => setSortOpen(!sortOpen)}
-                className="flex items-center gap-2 bg-surface-container-high border border-outline-variant/30 rounded-xl px-4 py-2.5 text-sm font-medium text-on-surface hover:border-primary/40 transition-colors w-full md:w-auto justify-between md:justify-start"
-              >
-                <span className="text-on-surface-variant">Sort by:</span>
-                <span className="font-semibold">{selectedSort.label}</span>
-                <span className="material-symbols-outlined text-[18px] text-on-surface-variant">
-                  expand_more
-                </span>
-              </button>
+              {/* PRICE */}
+              <div className="space-y-4">
+                <p className="font-label-md uppercase tracking-[0.15em] text-[11px] text-on-surface-variant">
+                  Price
+                </p>
 
-              {sortOpen && (
-                <div className="absolute right-0 top-full mt-2 w-48 bg-surface-container-high border border-outline-variant/30 rounded-xl shadow-xl py-2 z-30">
-                  {SORT_OPTIONS.map((option) => (
-                    <button
+                <div className="space-y-3">
+                  {PRICE_RANGES.map((option) => (
+                    <label
                       key={option.key}
-                      type="button"
-                      onClick={() => {
-                        setSortBy(option.key);
-                        setSortOpen(false);
-                      }}
-                      className={`w-full text-left px-4 py-2 text-sm transition-colors ${
-                        sortBy === option.key
-                          ? "text-primary font-bold bg-primary/10"
-                          : "text-on-surface hover:bg-primary/5"
-                      }`}
+                      className="flex items-center gap-3 text-sm text-on-surface-variant hover:text-on-surface cursor-pointer"
                     >
-                      {option.label}
-                    </button>
+                      <input
+                        type="checkbox"
+                        checked={priceRange === option.key}
+                        onChange={() =>
+                          setPriceRange(
+                            priceRange === option.key ? "all" : option.key
+                          )
+                        }
+                        className="w-4 h-4 rounded-sm border border-primary/40 bg-transparent accent-primary cursor-pointer"
+                      />
+
+                      <span>{option.label}</span>
+                    </label>
                   ))}
                 </div>
-              )}
-            </div>
-          </div>
-        </Reveal>
+              </div>
 
-        {/* PRODUCT GRID SECTION */}
-        <Reveal delay={300}>
-          <ProductGrid
-            addedProduct={addedProduct}
-            emptyMessage={config.emptyMessage}
-            loading={productsLoading}
-            onAddToCart={handleAddToCart}
-            products={filteredProducts}
-          />
-        </Reveal>
-      </div>
+              {/* DIVIDER */}
+              <div className="h-px bg-primary/10 my-7" />
+
+              {/* RATING */}
+              <div className="space-y-4">
+                <p className="font-label-md uppercase tracking-[0.15em] text-[11px] text-on-surface-variant">
+                  Rating
+                </p>
+
+                <div className="space-y-3">
+                  {RATING_OPTIONS.map((option) => (
+                    <label
+                      key={option.key}
+                      className="flex items-center gap-3 text-sm text-on-surface-variant hover:text-on-surface cursor-pointer"
+                    >
+                      <input
+                        type="checkbox"
+                        checked={rating === option.key}
+                        onChange={() =>
+                          setRating(rating === option.key ? "all" : option.key)
+                        }
+                        className="w-4 h-4 rounded-sm border border-primary/40 bg-transparent accent-primary cursor-pointer"
+                      />
+
+                      <span>{option.label}</span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </aside>
+
+          {/* RIGHT PRODUCT AREA */}
+          <div className="flex-1 min-w-0">
+            {/* PRODUCT COUNT + SORT */}
+            <div className="flex items-center justify-between mb-6">
+              {/* PRODUCT COUNT */}
+              <p className="text-sm text-on-surface-variant">
+                Showing {filteredProducts.length} products
+              </p>
+
+              {/* SORT */}
+              <div ref={sortRef} className="relative flex items-center gap-3">
+                <span className="text-sm text-on-surface-variant whitespace-nowrap">
+                  Sort by
+                </span>
+
+                <button
+                  type="button"
+                  onClick={() => setSortOpen((open) => !open)}
+                  className="w-[216px] h-[50px] flex items-center justify-between gap-4 bg-[#1b181d] border border-primary/60 rounded-md px-4 text-sm text-on-surface hover:border-primary transition-colors cursor-pointer"
+                >
+                  <span>{selectedSort.label}</span>
+
+                  <span
+                    className={`material-symbols-outlined text-[20px] transition-transform ${
+                      sortOpen ? "rotate-180" : ""
+                    }`}
+                  >
+                    expand_more
+                  </span>
+                </button>
+
+                {sortOpen && (
+                  <div className="absolute right-0 top-full mt-1 w-[216px] z-50 bg-[#1b181d] border border-primary/40 rounded-md overflow-hidden shadow-2xl">
+                    {SORT_OPTIONS.map((option) => {
+                      const isSelected = sortBy === option.key;
+
+                      return (
+                        <button
+                          key={option.key}
+                          type="button"
+                          onClick={() => handleSortChange(option.key)}
+                          className={`w-full text-left px-4 py-2.5 text-sm transition-colors cursor-pointer ${
+                            isSelected
+                              ? "bg-primary text-white"
+                              : "bg-[#1b181d] text-white hover:bg-primary/20"
+                          }`}
+                        >
+                          {option.label}
+                        </button>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* PRODUCT GRID OR BLANK GRID PLACEHOLDERS */}
+            {filteredProducts.length === 0 ? (
+              <div className="space-y-6">
+                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+                  {Array.from({ length: 8 }).map((_, idx) => (
+                    <div
+                      key={idx}
+                      className="h-64 rounded-2xl border border-primary/10 bg-surface-container-high/20 flex flex-col items-center justify-center p-6 text-center"
+                    >
+                      <div className="w-12 h-12 rounded-full bg-primary/5 border border-primary/10 flex items-center justify-center mb-3">
+                        <span className="material-symbols-outlined text-primary/20 text-xl">
+                          no_drinks
+                        </span>
+                      </div>
+                      <div className="w-20 h-2.5 rounded bg-primary/10 mb-2" />
+                      <div className="w-12 h-2 rounded bg-primary/5" />
+                    </div>
+                  ))}
+                </div>
+                <p className="text-on-surface-variant text-center py-4 text-sm font-medium">
+                  {config.emptyMessage}
+                </p>
+              </div>
+            ) : (
+              <ProductGrid
+                addedProduct={addedProduct}
+                onAddToCart={handleAddToCart}
+                products={filteredProducts}
+                emptyMessage={config.emptyMessage}
+              />
+            )}
+          </div>
+        </div>
+      </Reveal>
     </div>
   );
 }
