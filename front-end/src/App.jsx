@@ -20,6 +20,7 @@ import CategoryPage from "./pages/CategoryPage.jsx";
 import Checkout from "./pages/Checkout.jsx";
 import Home from "./pages/Home.jsx";
 import InStorePromotions from "./pages/InStorePromotions.jsx";
+import PremixPage from "./pages/PremixPage.jsx";
 import Profile from "./pages/Profile.jsx";
 import ShopAll from "./pages/ShopAll.jsx";
 import ZeroCategoryPage from "./pages/ZeroCategoryPage.jsx";
@@ -383,21 +384,21 @@ export default function App() {
           <Route
             path="/premix"
             element={
-              <CategoryPage
-                categoryKey="premix"
+              <PremixPage
                 onAddToCart={addToCart}
-                onBack={goHome}
                 products={products}
+                productsLoading={productsLoading}
+                title="Premix"
               />
             }
           />
           <Route
             path="/premix/:categoryKey"
             element={
-              <CategoryPage
+              <PremixPage
                 onAddToCart={addToCart}
-                onBack={goHome}
                 products={products}
+                productsLoading={productsLoading}
               />
             }
           />

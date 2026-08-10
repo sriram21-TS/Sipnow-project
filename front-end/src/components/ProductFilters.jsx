@@ -51,6 +51,7 @@ export default function ProductFilters({
   onRatingChange,
   onClearAll,
   resultCount,
+  hideAlcoholType = false,
 }) {
   const TYPE_TREE = useMemo(() => buildTypeTree(products), [products]);
 
@@ -74,51 +75,55 @@ export default function ProductFilters({
         )}
       </div>
 
-      {/* TYPE OF ALCOHOL */}
-      <div className="space-y-5">
-        <p className="font-label-md uppercase tracking-[0.15em] text-[11px] text-on-surface-variant">
-          Type of Alcohol
-        </p>
+      {!hideAlcoholType && (
+        <>
+          {/* TYPE OF ALCOHOL */}
+          <div className="space-y-5">
+            <p className="font-label-md uppercase tracking-[0.15em] text-[11px] text-on-surface-variant">
+              Type of Alcohol
+            </p>
 
-        {GROUP_ORDER.map((groupKey) => {
-          const subtypes = TYPE_TREE.get(groupKey);
+            {GROUP_ORDER.map((groupKey) => {
+              const subtypes = TYPE_TREE.get(groupKey);
 
-          if (!subtypes) return null;
+              if (!subtypes) return null;
 
-          return (
-            <div className="space-y-2" key={groupKey}>
-              <p className="text-sm font-medium text-on-surface">
-                {GROUP_LABELS[groupKey]}
-              </p>
+              return (
+                <div className="space-y-2" key={groupKey}>
+                  <p className="text-sm font-medium text-on-surface">
+                    {GROUP_LABELS[groupKey]}
+                  </p>
 
-              <div className="space-y-1.5 pl-1">
-                {[...subtypes.entries()].map(([subtype, count]) => (
-                  <label
-                    className="flex items-center gap-2.5 text-sm text-on-surface-variant hover:text-on-surface cursor-pointer"
-                    key={subtype}
-                  >
-                    <input
-                      checked={selectedSubtypes.includes(subtype)}
-                      className="w-4 h-4 rounded-sm border border-primary/30 bg-transparent accent-primary cursor-pointer"
-                      onChange={() => onToggleSubtype(subtype)}
-                      type="checkbox"
-                    />
+                  <div className="space-y-1.5 pl-1">
+                    {[...subtypes.entries()].map(([subtype, count]) => (
+                      <label
+                        className="flex items-center gap-2.5 text-sm text-on-surface-variant hover:text-on-surface cursor-pointer"
+                        key={subtype}
+                      >
+                        <input
+                          checked={selectedSubtypes.includes(subtype)}
+                          className="w-4 h-4 rounded-sm border border-primary/30 bg-transparent accent-primary cursor-pointer"
+                          onChange={() => onToggleSubtype(subtype)}
+                          type="checkbox"
+                        />
 
-                    <span className="flex-1">{subtype}</span>
+                        <span className="flex-1">{subtype}</span>
 
-                    <span className="text-xs text-on-surface-variant/60">
-                      {count}
-                    </span>
-                  </label>
-                ))}
-              </div>
-            </div>
-          );
-        })}
-      </div>
+                        <span className="text-xs text-on-surface-variant/60">
+                          {count}
+                        </span>
+                      </label>
+                    ))}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
 
-      {/* DIVIDER */}
-      <div className="h-px bg-primary/10" />
+          {/* DIVIDER */}
+          <div className="h-px bg-primary/10" />
+        </>
+      )}
 
       {/* PRICE */}
       <div className="space-y-3">
