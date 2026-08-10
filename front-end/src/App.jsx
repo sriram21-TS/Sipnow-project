@@ -3,6 +3,7 @@ import AmbientBackground from "./components/AmbientBackground.jsx";
 import Footer from "./components/Footer.jsx";
 import Navbar from "./components/Navbar.jsx";
 import QuizModal from "./components/QuizModal.jsx";
+import AgeVerification from "./components/AgeVerification.jsx";
 import { useProducts } from "./hooks/useProducts.js";
 import Auth from "./pages/Auth.jsx";
 import Cart from "./pages/Cart.jsx";
@@ -25,6 +26,9 @@ function readStored(key, fallback) {
 }
 
 export default function App() {
+  const [ageVerified, setAgeVerified] = useState(
+    () => localStorage.getItem("sipnow-age-verified") === "true"
+  );
   const [quizOpen, setQuizOpen] = useState(false);
   const [cartItems, setCartItems] = useState(() =>
     readStored("sipnow-cart", [])
@@ -34,6 +38,14 @@ export default function App() {
   const [authDestination, setAuthDestination] = useState("profile");
   const { products, loading: productsLoading } = useProducts();
   // Total number of individual items currently in the cart.
+  const [backendStatus, setBackendStatus] = useState("checking");
+
+  useEffect(() => {
+    const apiUrl = import.meta.env.VITE_API_URL;
+    fetch(`${apiUrl}/api/health`)
+      .then((res) => setBackendStatus(res.ok ? "connected" : "offline"))
+      .catch(() => setBackendStatus("offline"));
+  }, []);
   const cartCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
 
   // Persist cart changes so the cart survives a page refresh.
@@ -182,6 +194,15 @@ export default function App() {
       />
     );
 
+  const confirmAge = () => {
+    localStorage.setItem("sipnow-age-verified", "true");
+    setAgeVerified(true);
+  };
+
+  if (!ageVerified) {
+    return <AgeVerification onConfirm={confirmAge} />;
+  }
+
   return (
     <>
       <AmbientBackground />
@@ -194,6 +215,19 @@ export default function App() {
       <main className="relative z-10">{content}</main>
       {!["login", "signup"].includes(page) && <Footer />}
       <QuizModal isOpen={quizOpen} onClose={() => setQuizOpen(false)} />
+      {import.meta.env.DEV && (
+        <div
+          className={`fixed bottom-3 right-3 z-50 rounded-full px-3 py-1 text-xs font-medium text-white ${
+            backendStatus === "connected"
+              ? "bg-green-600"
+              : backendStatus === "offline"
+                ? "bg-red-600"
+                : "bg-gray-500"
+          }`}
+        >
+          Backend: {backendStatus}
+        </div>
+      )}
     </>
   );
 }
