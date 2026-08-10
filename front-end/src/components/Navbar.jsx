@@ -1,18 +1,8 @@
-import {
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import { useEffect, useRef, useState } from "react";
 
-import {
-  Link,
-  useLocation,
-} from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
-import {
-  useNavMenus,
-  useSiteAssets,
-} from "../hooks/useContent.js";
+import { useNavMenus, useSiteAssets } from "../hooks/useContent.js";
 
 // ========================================
 // TOP LEVEL ROUTES
@@ -27,21 +17,13 @@ const TOP_LEVEL_ROUTES = {
   "Shop All": "/shop-all",
   "In-Store promotions": "/in-store-promotions",
 };
-const ITEM_PAGES = {
-  "Other Whisky": "other-whisky",
-  "Scotch Whisky": "scotch-whisky",
-  "Japanese Whisky": "japanese-whisky",
-  "Irish Whisky": "irish-whisky",
-  "American Whisky": "american-whisky",
-  "Australian Whisky": "australian-whisky",
-};
+
 const mobileNavLinks = [
   "Offers & Services",
   "Beer & Cider",
   "Premix",
   "Wine",
   "Spirits",
-  "My Account",
 ];
 
 // ========================================
@@ -61,11 +43,7 @@ function slugify(text) {
 // GET MENU ITEM ROUTE
 // ========================================
 
-function getMenuItemRoute(
-  menuLabel,
-  columnHeading,
-  item
-) {
+function getMenuItemRoute(menuLabel, columnHeading, item) {
   const columnSlug = slugify(columnHeading);
   const itemSlug = slugify(item);
 
@@ -209,9 +187,7 @@ function FeaturedPanel({ featured }) {
           {featured.tag}
         </p>
 
-        <p className="text-sm font-semibold">
-          {featured.title}
-        </p>
+        <p className="text-sm font-semibold">{featured.title}</p>
       </div>
     );
   }
@@ -229,9 +205,7 @@ function FeaturedPanel({ featured }) {
         {featured.tag}
       </p>
 
-      <p className="text-sm font-semibold">
-        {featured.title}
-      </p>
+      <p className="text-sm font-semibold">{featured.title}</p>
     </div>
   );
 }
@@ -288,7 +262,7 @@ function SearchResults({ results, searched, onSelect }) {
   );
 }
 
-export default function Navbar({ cartCount = 0, onNavigate, products = [] }) {
+export default function Navbar({ cartCount = 0, products = [], user }) {
   const [scrolled, setScrolled] = useState(false);
 
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -305,24 +279,11 @@ export default function Navbar({ cartCount = 0, onNavigate, products = [] }) {
 
   const blurTimeoutRef = useRef(null);
 
-  const location = useLocation();
+  const navigate = useNavigate();
 
-  const {
-    data: navMenus = [],
-  } = useNavMenus();
+  const { data: navMenus = [] } = useNavMenus();
 
-  const {
-    data: siteAssets = {},
-  } = useSiteAssets();
-
-  // ========================================
-  // CLOSE MENU WHEN ROUTE CHANGES
-  // ========================================
-
-  useEffect(() => {
-    setOpenMenu(null);
-    setMobileOpen(false);
-  }, [location.pathname]);
+  const { data: siteAssets = {} } = useSiteAssets();
 
   // ========================================
   // SCROLL
@@ -358,15 +319,12 @@ export default function Navbar({ cartCount = 0, onNavigate, products = [] }) {
   const searchResults = normalizedTerm
     ? products
         .filter((product) => {
-          const name =
-            product.name?.toLowerCase() || "";
+          const name = product.name?.toLowerCase() || "";
 
-          const category =
-            product.category?.toLowerCase() || "";
+          const category = product.category?.toLowerCase() || "";
 
           return (
-            name.includes(normalizedTerm) ||
-            category.includes(normalizedTerm)
+            name.includes(normalizedTerm) || category.includes(normalizedTerm)
           );
         })
         .slice(0, 6)
@@ -405,15 +363,13 @@ export default function Navbar({ cartCount = 0, onNavigate, products = [] }) {
     setMobileOpen(false);
     setOpenMenu(null);
 
-    onNavigate?.("/");
+    navigate("/");
 
     requestAnimationFrame(() => {
-      document
-        .getElementById("best-sellers")
-        ?.scrollIntoView({
-          behavior: "smooth",
-          block: "start",
-        });
+      document.getElementById("best-sellers")?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
     });
   };
 
@@ -422,9 +378,7 @@ export default function Navbar({ cartCount = 0, onNavigate, products = [] }) {
   // ========================================
 
   const focusSearch = () => {
-    if (
-      window.matchMedia("(min-width: 768px)").matches
-    ) {
+    if (window.matchMedia("(min-width: 768px)").matches) {
       desktopSearchRef.current?.focus();
     } else {
       setMobileOpen(true);
@@ -445,41 +399,24 @@ export default function Navbar({ cartCount = 0, onNavigate, products = [] }) {
   };
 
   // ========================================
-  // HANDLE CHILD NAVIGATION
-  // ========================================
-
-  const handleChildNavigation = () => {
-    setOpenMenu(null);
-    setMobileOpen(false);
-  };
-
-  // ========================================
   // RENDER
   // ========================================
 
   return (
     <nav
       className={`fixed top-0 w-full z-[60] transition-all duration-500 bg-surface border-b border-primary/40 ${
-        scrolled
-          ? "py-3 shadow-lg shadow-black/30"
-          : "py-5"
+        scrolled ? "py-3 shadow-lg shadow-black/30" : "py-5"
       }`}
     >
       {/* NAVBAR CONTAINER */}
 
       <div className="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop flex justify-between items-center relative">
-
         {/* LOGO + NAV */}
 
         <div className="flex items-center gap-16">
-
           {/* LOGO */}
 
-          <Link
-            to="/"
-            className="relative z-10"
-            onClick={closeMenus}
-          >
+          <Link to="/" className="relative z-10" onClick={closeMenus}>
             <img
               alt="SipNow Logo"
               className="h-10 md:h-12 object-contain brightness-110"
@@ -490,115 +427,100 @@ export default function Navbar({ cartCount = 0, onNavigate, products = [] }) {
           {/* DESKTOP NAV */}
 
           <div className="hidden lg:flex gap-10">
-
             {navMenus.map((menu) => (
               <div
-                className="nav-item py-2"
+                className="nav-item py-2 relative"
                 key={menu.label}
                 onMouseEnter={() => {
                   setOpenMenu(menu.label);
                 }}
+                onMouseLeave={() => {
+                  setOpenMenu(null);
+                }}
               >
-
                 {/* TOP LEVEL LINK */}
 
                 <Link
-                  to={
-                    TOP_LEVEL_ROUTES[
-                      menu.label
-                    ] ||
-                    `/${slugify(menu.label)}`
-                  }
+                  to={TOP_LEVEL_ROUTES[menu.label] || `/${slugify(menu.label)}`}
                   className={`flex items-center gap-1.5 font-label-md text-label-md transition-colors tracking-wide ${
                     openMenu === menu.label
                       ? "text-primary"
                       : "text-on-surface/80 hover:text-primary"
                   }`}
-                  onClick={() => {
-                    setOpenMenu(null);
-                  }}
+                  onClick={closeMenus}
                 >
                   {menu.label}
 
                   <span
                     className={`material-symbols-outlined text-[18px] opacity-50 transition-transform ${
-                      openMenu === menu.label
-                        ? "rotate-180"
-                        : ""
+                      openMenu === menu.label ? "rotate-180" : ""
                     }`}
                   >
                     expand_more
                   </span>
-                </button>
-                <div className="mega-menu absolute left-margin-desktop right-margin-desktop top-[100%] pt-4">
-                  <div className="mega-menu-panel glass-panel border border-outline-variant/30 rounded-2xl p-10 grid grid-cols-4 gap-12 shadow-2xl">
-                    {menu.columns.map((col) =>
-                      col.items?.length > 0 ? (
-                        <div className="space-y-3" key={col.heading}>
-                          <h4 className="font-headline-sm text-lg text-primary">
-                            {col.heading}
-                          </h4>
-                          <ul className="space-y-3 text-sm text-on-surface-variant">
-                            {col.items.map((item) => (
-                              <li key={item}>
-                                <a
-                                  className="hover:text-primary transition-colors"
-                                  href="#"
-                                  onClick={(e) => {
-                                    e.preventDefault();
+                </Link>
 
-                                    if (ITEM_PAGES[item]) {
-                                      onNavigate?.(ITEM_PAGES[item]);
-                                    }
-                                  }}
-                                >
-                                  {item}
-                                </a>
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                      ) : (
-                        <div className="space-y-3" key={col.heading}>
-                          <a
-                            className="font-headline-sm text-lg text-primary hover:opacity-80 transition-opacity"
-                            href="#"
-                            onClick={
-                              HEADING_PAGES[col.heading]
-                                ? (e) => {
-                                    e.preventDefault();
-                                    onNavigate?.(HEADING_PAGES[col.heading]);
-                                  }
-                                : preventNav
-                            }
-                          >
-                            {col.heading}
-                          </a>
-                        </div>
-                      )
-                    )}
-                    {menu.featured && (
-                      <FeaturedPanel featured={menu.featured} />
-                    )}
+                {openMenu === menu.label && (
+                  <div className="mega-menu absolute left-margin-desktop right-margin-desktop top-[100%] pt-4">
+                    <div className="mega-menu-panel glass-panel border border-outline-variant/30 rounded-2xl p-10 grid grid-cols-4 gap-12 shadow-2xl">
+                      {menu.columns.map((col) =>
+                        col.items?.length > 0 ? (
+                          <div className="space-y-3" key={col.heading}>
+                            <h4 className="font-headline-sm text-lg text-primary">
+                              {col.heading}
+                            </h4>
+                            <ul className="space-y-3 text-sm text-on-surface-variant">
+                              {col.items.map((item) => (
+                                <li key={item}>
+                                  <Link
+                                    className="hover:text-primary transition-colors"
+                                    onClick={closeMenus}
+                                    to={getMenuItemRoute(
+                                      menu.label,
+                                      col.heading,
+                                      item
+                                    )}
+                                  >
+                                    {item}
+                                  </Link>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        ) : (
+                          <div className="space-y-3" key={col.heading}>
+                            <Link
+                              className="font-headline-sm text-lg text-primary hover:opacity-80 transition-opacity"
+                              onClick={closeMenus}
+                              to={getMenuItemRoute(
+                                menu.label,
+                                col.heading,
+                                col.heading
+                              )}
+                            >
+                              {col.heading}
+                            </Link>
+                          </div>
+                        )
+                      )}
+                      {menu.featured && (
+                        <FeaturedPanel featured={menu.featured} />
+                      )}
+                    </div>
                   </div>
                 )}
-
               </div>
             ))}
-
           </div>
         </div>
 
         {/* RIGHT SIDE */}
 
         <div className="flex items-center gap-5 md:gap-8 relative z-10">
-
           {/* DESKTOP SEARCH */}
 
           <div className="hidden md:flex flex-col relative">
-
             <div className="flex items-center border-b border-outline-variant/30 py-1">
-
               <span className="material-symbols-outlined text-[20px] text-on-surface-variant">
                 search
               </span>
@@ -606,27 +528,20 @@ export default function Navbar({ cartCount = 0, onNavigate, products = [] }) {
               <input
                 className="bg-transparent border-none focus:ring-0 text-sm w-44 placeholder:text-on-surface-variant/50"
                 onBlur={handleSearchBlur}
-                onChange={(e) =>
-                  setSearchTerm(e.target.value)
-                }
+                onChange={(e) => setSearchTerm(e.target.value)}
                 onFocus={handleSearchFocus}
                 placeholder="Search our cellar..."
                 ref={desktopSearchRef}
                 type="text"
                 value={searchTerm}
               />
-
             </div>
 
             <SearchResults
               onSelect={handleSelectResult}
               results={searchResults}
-              searched={
-                searchFocused &&
-                normalizedTerm.length > 0
-              }
+              searched={searchFocused && normalizedTerm.length > 0}
             />
-
           </div>
 
           {/* SEARCH BUTTON */}
@@ -642,27 +557,33 @@ export default function Navbar({ cartCount = 0, onNavigate, products = [] }) {
           {/* CART */}
 
           <button
-            aria-label={
-              cartCount > 0
-                ? `Cart, ${cartCount} items`
-                : "Cart"
-            }
+            aria-label={cartCount > 0 ? `Cart, ${cartCount} items` : "Cart"}
             className="relative material-symbols-outlined hover:text-primary transition-colors"
             onClick={() => {
-              setOpenMenu(null);
-              onNavigate?.("/cart");
+              closeMenus();
+              navigate("/cart");
             }}
             type="button"
           >
             shopping_bag
-
             {cartCount > 0 && (
               <span className="absolute -top-1.5 -right-2 min-w-[18px] h-[18px] px-1 flex items-center justify-center rounded-full bg-primary text-on-primary text-[10px] font-bold leading-none">
                 {cartCount}
               </span>
             )}
           </button>
-          <button className="hidden sm:inline material-symbols-outlined hover:text-primary transition-colors">
+
+          {/* ACCOUNT */}
+
+          <button
+            aria-label={user ? "My account" : "Sign in"}
+            className="hidden sm:inline material-symbols-outlined hover:text-primary transition-colors"
+            onClick={() => {
+              closeMenus();
+              navigate(user ? "/profile" : "/login");
+            }}
+            type="button"
+          >
             person
           </button>
 
@@ -673,41 +594,42 @@ export default function Navbar({ cartCount = 0, onNavigate, products = [] }) {
             aria-expanded={mobileOpen}
             aria-label="Toggle menu"
             className="material-symbols-outlined lg:hidden hover:text-primary transition-colors"
-            onClick={() =>
-              setMobileOpen((open) => !open)
-            }
+            onClick={() => setMobileOpen((open) => !open)}
             type="button"
           >
             {mobileOpen ? "close" : "menu"}
           </button>
-
         </div>
       </div>
 
       {/* MOBILE NAVIGATION */}
 
       <div
-        className={`mobile-nav-panel lg:hidden ${
-          mobileOpen ? "open" : ""
-        }`}
+        className={`mobile-nav-panel lg:hidden ${mobileOpen ? "open" : ""}`}
         id="mobile-nav-panel"
       >
-
         <div className="glass-panel border-t border-outline-variant/20 px-margin-mobile py-6 space-y-6">
           {mobileNavLinks.map((link) => (
-            <a
+            <Link
               className="block font-label-md text-label-md text-on-surface/80 hover:text-primary transition-colors tracking-wide"
-              href="#"
               key={link}
-              onClick={preventNav}
+              onClick={closeMenus}
+              to={TOP_LEVEL_ROUTES[link] || `/${slugify(link)}`}
             >
               {link}
-            </a>
+            </Link>
           ))}
+
+          <Link
+            className="block font-label-md text-label-md text-on-surface/80 hover:text-primary transition-colors tracking-wide"
+            onClick={closeMenus}
+            to={user ? "/profile" : "/login"}
+          >
+            My Account
+          </Link>
+
           <div className="relative">
-
             <div className="flex items-center gap-2 border-b border-outline-variant/30 py-2">
-
               <span className="material-symbols-outlined text-[20px] text-on-surface-variant">
                 search
               </span>
@@ -715,29 +637,21 @@ export default function Navbar({ cartCount = 0, onNavigate, products = [] }) {
               <input
                 className="bg-transparent border-none focus:ring-0 text-sm w-full placeholder:text-on-surface-variant/50"
                 onBlur={handleSearchBlur}
-                onChange={(e) =>
-                  setSearchTerm(e.target.value)
-                }
+                onChange={(e) => setSearchTerm(e.target.value)}
                 onFocus={handleSearchFocus}
                 placeholder="Search our cellar..."
                 ref={mobileSearchRef}
                 type="text"
                 value={searchTerm}
               />
-
             </div>
 
             <SearchResults
               onSelect={handleSelectResult}
               results={searchResults}
-              searched={
-                searchFocused &&
-                normalizedTerm.length > 0
-              }
+              searched={searchFocused && normalizedTerm.length > 0}
             />
-
           </div>
-
         </div>
       </div>
     </nav>

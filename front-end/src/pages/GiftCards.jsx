@@ -4,15 +4,8 @@ import Reveal from "../components/Reveal.jsx";
 
 import { useAddToCartFeedback } from "../hooks/useAddToCartFeedback.js";
 
-export default function GiftCards({
-  onAddToCart,
-  onBack,
-  products = [],
-}) {
-  const {
-    addedProduct,
-    handleAddToCart,
-  } = useAddToCartFeedback(onAddToCart);
+export default function GiftCards({ onAddToCart, onBack, products = [] }) {
+  const { addedProduct, handleAddToCart } = useAddToCartFeedback(onAddToCart);
 
   return (
     <>

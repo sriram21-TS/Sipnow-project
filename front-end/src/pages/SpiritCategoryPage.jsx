@@ -6,10 +6,7 @@ import ProductGrid from "../components/ProductGrid.jsx";
 import Reveal from "../components/Reveal.jsx";
 
 import { useAddToCartFeedback } from "../hooks/useAddToCartFeedback.js";
-import {
-  getSubtype,
-  parsePrice,
-} from "../utils/productHelpers.js";
+import { getSubtype, parsePrice } from "../utils/productHelpers.js";
 
 const SORT_OPTIONS = [
   {
@@ -52,25 +49,17 @@ export default function SpiritCategoryPage({
   onBack,
   productsLoading = false,
 }) {
-  const {
-    addedProduct,
-    handleAddToCart,
-  } = useAddToCartFeedback(onAddToCart);
+  const { addedProduct, handleAddToCart } = useAddToCartFeedback(onAddToCart);
 
-  const [selectedSubtypes, setSelectedSubtypes] =
-    useState([]);
+  const [selectedSubtypes, setSelectedSubtypes] = useState([]);
 
-  const [priceRange, setPriceRange] =
-    useState("all");
+  const [priceRange, setPriceRange] = useState("all");
 
-  const [rating, setRating] =
-    useState("all");
+  const [rating, setRating] = useState("all");
 
-  const [sort, setSort] =
-    useState("featured");
+  const [sort, setSort] = useState("featured");
 
-  const [filtersOpen, setFiltersOpen] =
-    useState(false);
+  const [filtersOpen, setFiltersOpen] = useState(false);
 
   // =========================================
   // SUBTYPE FILTER
@@ -79,9 +68,7 @@ export default function SpiritCategoryPage({
   const toggleSubtype = (subtype) => {
     setSelectedSubtypes((current) =>
       current.includes(subtype)
-        ? current.filter(
-            (item) => item !== subtype
-          )
+        ? current.filter((item) => item !== subtype)
         : [...current, subtype]
     );
   };
@@ -101,74 +88,42 @@ export default function SpiritCategoryPage({
   // =========================================
 
   const filteredProducts = useMemo(() => {
-    const [
-      minPrice,
-      maxPrice,
-    ] = PRICE_RANGE_BOUNDS[priceRange];
+    const [minPrice, maxPrice] = PRICE_RANGE_BOUNDS[priceRange];
 
-    const minRating =
-      RATING_THRESHOLDS[rating];
+    const minRating = RATING_THRESHOLDS[rating];
 
-    const filtered = products.filter(
-      (product) => {
-        // Subtype
-        if (
-          selectedSubtypes.length > 0 &&
-          !selectedSubtypes.includes(
-            getSubtype(product)
-          )
-        ) {
-          return false;
-        }
-
-        // Price
-        const price = parsePrice(
-          product.price
-        );
-
-        if (
-          price < minPrice ||
-          price > maxPrice
-        ) {
-          return false;
-        }
-
-        // Rating
-        return (
-          product.rating >= minRating
-        );
+    const filtered = products.filter((product) => {
+      // Subtype
+      if (
+        selectedSubtypes.length > 0 &&
+        !selectedSubtypes.includes(getSubtype(product))
+      ) {
+        return false;
       }
-    );
+
+      // Price
+      const price = parsePrice(product.price);
+
+      if (price < minPrice || price > maxPrice) {
+        return false;
+      }
+
+      // Rating
+      return product.rating >= minRating;
+    });
 
     const sorted = [...filtered];
 
     if (sort === "price-asc") {
-      sorted.sort(
-        (a, b) =>
-          parsePrice(a.price) -
-          parsePrice(b.price)
-      );
+      sorted.sort((a, b) => parsePrice(a.price) - parsePrice(b.price));
     } else if (sort === "price-desc") {
-      sorted.sort(
-        (a, b) =>
-          parsePrice(b.price) -
-          parsePrice(a.price)
-      );
+      sorted.sort((a, b) => parsePrice(b.price) - parsePrice(a.price));
     } else if (sort === "rating") {
-      sorted.sort(
-        (a, b) =>
-          b.rating - a.rating
-      );
+      sorted.sort((a, b) => b.rating - a.rating);
     }
 
     return sorted;
-  }, [
-    products,
-    selectedSubtypes,
-    priceRange,
-    rating,
-    sort,
-  ]);
+  }, [products, selectedSubtypes, priceRange, rating, sort]);
 
   return (
     <>
@@ -191,68 +146,40 @@ export default function SpiritCategoryPage({
       ===================================== */}
 
       <Reveal className="px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
-
         {/* MOBILE FILTER BUTTON */}
 
         <button
           className="lg:hidden w-full flex items-center justify-center gap-2 glass-panel rounded-lg px-4 py-3 mb-6 text-sm font-label-md uppercase tracking-widest border border-primary/20"
-          onClick={() =>
-            setFiltersOpen(
-              (open) => !open
-            )
-          }
+          onClick={() => setFiltersOpen((open) => !open)}
           type="button"
         >
-          <span className="material-symbols-outlined text-[18px]">
-            tune
-          </span>
+          <span className="material-symbols-outlined text-[18px]">tune</span>
 
-          {filtersOpen
-            ? "Hide Filters"
-            : "Show Filters"}
+          {filtersOpen ? "Hide Filters" : "Show Filters"}
         </button>
 
         <div className="flex flex-col lg:flex-row gap-8 lg:gap-10">
-
           {/* =====================================
               FILTER SIDEBAR
           ===================================== */}
 
           <aside
             className={`lg:w-72 shrink-0 ${
-              filtersOpen
-                ? "block"
-                : "hidden"
+              filtersOpen ? "block" : "hidden"
             } lg:block mb-6 lg:mb-0`}
           >
             <div className="lg:sticky lg:top-32">
-
               <ProductFilters
-                onClearAll={
-                  clearAllFilters
-                }
-                onPriceRangeChange={
-                  setPriceRange
-                }
-                onRatingChange={
-                  setRating
-                }
-                onToggleSubtype={
-                  toggleSubtype
-                }
-                priceRange={
-                  priceRange
-                }
+                onClearAll={clearAllFilters}
+                onPriceRangeChange={setPriceRange}
+                onRatingChange={setRating}
+                onToggleSubtype={toggleSubtype}
+                priceRange={priceRange}
                 products={products}
                 rating={rating}
-                resultCount={
-                  filteredProducts.length
-                }
-                selectedSubtypes={
-                  selectedSubtypes
-                }
+                resultCount={filteredProducts.length}
+                selectedSubtypes={selectedSubtypes}
               />
-
             </div>
           </aside>
 
@@ -261,11 +188,9 @@ export default function SpiritCategoryPage({
           ===================================== */}
 
           <div className="flex-1 min-w-0">
-
             {/* SECTION HEADER */}
 
             <div className="flex items-center justify-between mb-6">
-
               <p className="text-sm text-on-surface-variant">
                 {productsLoading
                   ? "Loading products…"
@@ -275,36 +200,18 @@ export default function SpiritCategoryPage({
               {/* SORT */}
 
               <label className="flex items-center gap-2 text-sm text-on-surface-variant">
-
                 Sort by
-
                 <select
                   className="glass-panel rounded-lg px-3 py-1.5 text-sm text-on-surface bg-surface-container-high border border-primary/20 focus:outline-none focus:border-primary"
-                  onChange={(e) =>
-                    setSort(
-                      e.target.value
-                    )
-                  }
+                  onChange={(e) => setSort(e.target.value)}
                   value={sort}
                 >
-                  {SORT_OPTIONS.map(
-                    (option) => (
-                      <option
-                        key={
-                          option.key
-                        }
-                        value={
-                          option.key
-                        }
-                      >
-                        {
-                          option.label
-                        }
-                      </option>
-                    )
-                  )}
+                  {SORT_OPTIONS.map((option) => (
+                    <option key={option.key} value={option.key}>
+                      {option.label}
+                    </option>
+                  ))}
                 </select>
-
               </label>
             </div>
 
@@ -313,21 +220,13 @@ export default function SpiritCategoryPage({
             ===================================== */}
 
             <ProductGrid
-              addedProduct={
-                addedProduct
-              }
+              addedProduct={addedProduct}
               emptyMessage={`New ${title} arrivals are on the way. Check back soon.`}
-              onAddToCart={
-                handleAddToCart
-              }
-              products={
-                filteredProducts
-              }
+              onAddToCart={handleAddToCart}
+              products={filteredProducts}
             />
-
           </div>
         </div>
-
       </Reveal>
     </>
   );

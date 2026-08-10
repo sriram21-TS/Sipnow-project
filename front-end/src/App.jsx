@@ -1,30 +1,48 @@
-import Whisky from "./pages/Whisky.jsx";
-import OtherWhisky from "./pages/OtherWhisky.jsx";
-import ScotchWhisky from "./pages/ScotchWhisky.jsx";
-import JapaneseWhisky from "./pages/JapaneseWhisky.jsx";
-import IrishWhisky from "./pages/IrishWhisky.jsx";
-import AmericanWhisky from "./pages/AmericanWhisky.jsx";
-import AustralianWhisky from "./pages/AustralianWhisky.jsx";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import {
+  Navigate,
+  Route,
+  Routes,
+  useLocation,
+  useNavigate,
+} from "react-router-dom";
+
 import AmbientBackground from "./components/AmbientBackground.jsx";
 import Footer from "./components/Footer.jsx";
 import Navbar from "./components/Navbar.jsx";
 import QuizModal from "./components/QuizModal.jsx";
-import Home from "./pages/Home.jsx";
+import { useProducts } from "./hooks/useProducts.js";
+
+import Auth from "./pages/Auth.jsx";
+import Cart from "./pages/Cart.jsx";
 import CategoryPage from "./pages/CategoryPage.jsx";
 import Checkout from "./pages/Checkout.jsx";
 import Home from "./pages/Home.jsx";
 import InStorePromotions from "./pages/InStorePromotions.jsx";
 import Profile from "./pages/Profile.jsx";
 import ShopAll from "./pages/ShopAll.jsx";
-import Cart from "./pages/Cart.jsx";
-import { useProducts } from "./hooks/useProducts.js";
+
+// Safely read JSON data from localStorage. If the key is missing or
+// contains invalid JSON, return the provided fallback value.
+function readStored(key, fallback) {
+  try {
+    return JSON.parse(window.localStorage.getItem(key)) ?? fallback;
+  } catch {
+    return fallback;
+  }
+}
 
 export default function App() {
   const [quizOpen, setQuizOpen] = useState(false);
-  const [cartItems, setCartItems] = useState([]);
-  const [page, setPage] = useState("home");
+  const [cartItems, setCartItems] = useState(() =>
+    readStored("sipnow-cart", [])
+  );
+  const [user, setUser] = useState(() => readStored("sipnow-session", null));
+  const [authDestination, setAuthDestination] = useState("profile");
   const { products, loading: productsLoading } = useProducts();
+
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const cartCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
 
@@ -33,120 +51,315 @@ export default function App() {
     window.localStorage.setItem("sipnow-cart", JSON.stringify(cartItems));
   }, [cartItems]);
 
-  // Central navigation function used by Navbar and the individual pages.
-  const goToPage = (nextPage) => {
-    if (nextPage === "login" || nextPage === "signup") {
-      setAuthDestination("profile");
-    }
-    setPage(nextPage);
+  const goHome = () => {
+    navigate("/");
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
+
+  // Home's child components (category cards, in-store-promotions banner)
+  // still speak the old "page key" navigation vocabulary; translate it to routes.
+  const goToPage = (target) => {
+    const path = target.startsWith("category:")
+      ? `/${target.slice("category:".length)}`
+      : `/${target}`;
+    navigate(path);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  const switchAuthPage = (nextPage) => {
+    navigate(`/${nextPage}`);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   // Add a product to the cart. If it already exists, increase its quantity.
-  // This is also a good place to add a maximum-per-product rule later.
   const addToCart = (product, quantity = 1) =>
     setCartItems((current) => {
       const existing = current.find(
         (item) => item.product.name === product.name
       );
-      if (existing) {
-        return current.map((item) =>
-          item.product.name === product.name
-            ? { ...item, quantity: item.quantity + quantity }
-            : item
-        );
-      }
-      return [...current, { product, quantity }];
-    });
-  };
-
-  const updateCartQuantity = (productName, quantity) => {
-    setCartItems((current) =>
-      quantity <= 0
-        ? current.filter(
-            (item) =>
-              item.product.name !== productName
-          )
-        : current.map((item) =>
-            item.product.name === productName
-              ? {
-                  ...item,
-                  quantity,
-                }
+      return existing
+        ? current.map((item) =>
+            item.product.name === product.name
+              ? { ...item, quantity: item.quantity + quantity }
               : item
           )
-    );
-  };
+        : [...current, { product, quantity }];
+    });
 
-  const removeFromCart = (productName) => {
+  const updateCartQuantity = (productName, quantity) =>
     setCartItems((current) =>
-      current.filter(
-        (item) =>
-          item.product.name !== productName
-      )
+      quantity <= 0
+        ? current.filter((item) => item.product.name !== productName)
+        : current.map((item) =>
+            item.product.name === productName ? { ...item, quantity } : item
+          )
     );
+
+  const removeFromCart = (productName) =>
+    setCartItems((current) =>
+      current.filter((item) => item.product.name !== productName)
+    );
+
+  // Save the authenticated session without storing the password in App state.
+  const authenticate = (nextUser) => {
+    setUser({
+      name: nextUser.name,
+      email: nextUser.email,
+      mobile: nextUser.mobile,
+    });
+    switchAuthPage(authDestination);
   };
 
-  const goToPage = (nextPage) => {
-    setPage(nextPage);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+  // Users must be logged in before they can reach checkout.
+  const handleCheckout = () => {
+    if (user) {
+      navigate("/checkout");
+      return;
+    }
+    setAuthDestination("checkout");
+    switchAuthPage("signup");
+  };
+
+  // Merge profile changes into the stored demo user and active session.
+  const saveProfile = (updatedUser) => {
+    const savedUser = readStored("sipnow-user", {});
+    const nextUser = { ...savedUser, ...updatedUser };
+    window.localStorage.setItem("sipnow-user", JSON.stringify(nextUser));
+    window.localStorage.setItem("sipnow-session", JSON.stringify(updatedUser));
+    setUser(updatedUser);
+  };
+
+  // End the current demo session and return to the home page.
+  const logout = () => {
+    window.localStorage.removeItem("sipnow-session");
+    setUser(null);
+    goHome();
   };
 
   return (
     <>
       <AmbientBackground />
-      <Navbar cartCount={cartCount} onNavigate={goToPage} products={products} />
+      <Navbar cartCount={cartCount} products={products} user={user} />
       <main className="relative z-10">
-        {page === "cart" ? (
-          <Cart
-            cartItems={cartItems}
-            onBack={() => goToPage("home")}
-            onRemove={removeFromCart}
-            onShopAll={() => goToPage("shop-all")}
-            onUpdateQuantity={updateCartQuantity}
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <Home
+                onAddToCart={addToCart}
+                onNavigate={goToPage}
+                onStartQuiz={() => setQuizOpen(true)}
+                products={products}
+              />
+            }
           />
-        ) : page === "in-store-promotions" ? (
-          <InStorePromotions
-            onAddToCart={addToCart}
-            onBack={() => goToPage("home")}
+          <Route
+            path="/cart"
+            element={
+              <Cart
+                cartItems={cartItems}
+                isLoggedIn={Boolean(user)}
+                onCheckout={handleCheckout}
+                onRemove={removeFromCart}
+                onRequireSignUp={handleCheckout}
+                onShopAll={() => navigate("/shop-all")}
+                onUpdateQuantity={updateCartQuantity}
+              />
+            }
           />
-        ) : page === "shop-all" ? (
-          <ShopAll
-            onAddToCart={addToCart}
-            onBack={() => goToPage("home")}
-            products={products}
-            productsLoading={productsLoading}
+          <Route
+            path="/checkout"
+            element={
+              <Checkout
+                cartItems={cartItems}
+                onOrderComplete={() => {
+                  setCartItems([]);
+                  navigate("/profile");
+                }}
+                user={user}
+              />
+            }
           />
-        ) : page === "whisky" ? (
-          <Whisky />
-        ) : page === "other-whisky" ? (
-          <OtherWhisky />
-        ) : page === "scotch-whisky" ? (
-          <ScotchWhisky />
-        ) : page === "japanese-whisky" ? (
-          <JapaneseWhisky />
-        ) : page === "irish-whisky" ? (
-          <IrishWhisky />
-        ) : page === "american-whisky" ? (
-          <AmericanWhisky />
-        ) : page === "australian-whisky" ? (
-          <AustralianWhisky />
-        ) : page.startsWith("category:") ? (
-          <CategoryPage
-            categoryKey={page.slice("category:".length)}
-            onAddToCart={addToCart}
-            onBack={() => goToPage("home")}
-            products={products}
+          <Route
+            path="/profile"
+            element={
+              user ? (
+                <Profile
+                  onLogout={logout}
+                  onSave={saveProfile}
+                  onShopAll={() => navigate("/shop-all")}
+                  user={user}
+                />
+              ) : (
+                <Auth
+                  mode="login"
+                  onAuthenticated={authenticate}
+                  onSwitch={switchAuthPage}
+                />
+              )
+            }
           />
-        ) : (
-          <Home
-            onNavigate={goToPage}
-            onAddToCart={addToCart}
-            onStartQuiz={() => setQuizOpen(true)}
-            products={products}
+          <Route
+            path="/login"
+            element={
+              <Auth
+                mode="login"
+                onAuthenticated={authenticate}
+                onSwitch={switchAuthPage}
+              />
+            }
           />
-        )}
+          <Route
+            path="/signup"
+            element={
+              <Auth
+                mode="signup"
+                onAuthenticated={authenticate}
+                onSwitch={switchAuthPage}
+              />
+            }
+          />
+          <Route
+            path="/shop-all"
+            element={
+              <ShopAll
+                onAddToCart={addToCart}
+                onBack={goHome}
+                products={products}
+                productsLoading={productsLoading}
+              />
+            }
+          />
+          <Route
+            path="/in-store-promotions"
+            element={
+              <InStorePromotions onAddToCart={addToCart} onBack={goHome} />
+            }
+          />
+
+          {/* Category browsing: one generic page keyed off the URL, covering
+              every mega-menu destination (offers, beer & cider, premix,
+              spirits, wine and their sub-categories). */}
+          <Route
+            path="/offers"
+            element={
+              <CategoryPage
+                categoryKey="offers"
+                onAddToCart={addToCart}
+                onBack={goHome}
+                products={products}
+              />
+            }
+          />
+          <Route
+            path="/offers/:categoryKey"
+            element={
+              <CategoryPage
+                onAddToCart={addToCart}
+                onBack={goHome}
+                products={products}
+              />
+            }
+          />
+          <Route
+            path="/beer-cider"
+            element={
+              <CategoryPage
+                categoryKey="beer"
+                onAddToCart={addToCart}
+                onBack={goHome}
+                products={products}
+              />
+            }
+          />
+          <Route
+            path="/beer-cider/:categoryKey"
+            element={
+              <CategoryPage
+                onAddToCart={addToCart}
+                onBack={goHome}
+                products={products}
+              />
+            }
+          />
+          <Route
+            path="/premix"
+            element={
+              <CategoryPage
+                categoryKey="premix"
+                onAddToCart={addToCart}
+                onBack={goHome}
+                products={products}
+              />
+            }
+          />
+          <Route
+            path="/premix/:categoryKey"
+            element={
+              <CategoryPage
+                onAddToCart={addToCart}
+                onBack={goHome}
+                products={products}
+              />
+            }
+          />
+          <Route
+            path="/spirits"
+            element={
+              <CategoryPage
+                categoryKey="spirits"
+                onAddToCart={addToCart}
+                onBack={goHome}
+                products={products}
+              />
+            }
+          />
+          <Route
+            path="/spirits/whisky/:categoryKey"
+            element={
+              <CategoryPage
+                onAddToCart={addToCart}
+                onBack={goHome}
+                products={products}
+              />
+            }
+          />
+          <Route
+            path="/spirits/:categoryKey"
+            element={
+              <CategoryPage
+                onAddToCart={addToCart}
+                onBack={goHome}
+                products={products}
+              />
+            }
+          />
+          <Route
+            path="/wine"
+            element={
+              <CategoryPage
+                categoryKey="wine"
+                onAddToCart={addToCart}
+                onBack={goHome}
+                products={products}
+              />
+            }
+          />
+          <Route
+            path="/wine/:categoryKey"
+            element={
+              <CategoryPage
+                onAddToCart={addToCart}
+                onBack={goHome}
+                products={products}
+              />
+            }
+          />
+
+          <Route path="*" element={<Navigate replace to="/" />} />
+        </Routes>
       </main>
-      <Footer />
+      {!["/login", "/signup"].includes(location.pathname) && <Footer />}
       <QuizModal isOpen={quizOpen} onClose={() => setQuizOpen(false)} />
     </>
   );

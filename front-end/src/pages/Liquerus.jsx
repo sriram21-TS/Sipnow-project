@@ -1,10 +1,6 @@
 import SpiritCategoryPage from "./SpiritCategoryPage.jsx";
 
-export default function Liquerus({
-  products = [],
-  onAddToCart,
-  onBack,
-}) {
+export default function Liquerus({ products = [], onAddToCart, onBack }) {
   return (
     <SpiritCategoryPage
       title="Liqueurs"
