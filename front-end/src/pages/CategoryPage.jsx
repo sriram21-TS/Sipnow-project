@@ -47,28 +47,21 @@ export default function CategoryPage({
   // Use App.jsx prop first, otherwise get it from the URL.
   const categoryKey = categoryKeyProp || categoryKeyParam;
 
-  const { addedProduct, handleAddToCart } =
-    useAddToCartFeedback(onAddToCart);
+  const { addedProduct, handleAddToCart } = useAddToCartFeedback(onAddToCart);
 
   const { data: categories = [] } = useCategories();
 
   // Check normal categories first.
-  const normalCategory = categories.find(
-    (item) => item.key === categoryKey
-  );
+  const normalCategory = categories.find((item) => item.key === categoryKey);
 
   // Check our special Offers & Services pages.
   const specialCategory = SPECIAL_CATEGORIES[categoryKey];
 
   const categoryName =
-    specialCategory?.name ||
-    normalCategory?.name ||
-    "Products";
+    specialCategory?.name || normalCategory?.name || "Products";
 
   const categoryTag =
-    specialCategory?.tag ||
-    normalCategory?.tag ||
-    "Our Range";
+    specialCategory?.tag || normalCategory?.tag || "Our Range";
 
   const categoryDescription =
     specialCategory?.description ||

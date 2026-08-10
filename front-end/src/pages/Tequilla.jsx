@@ -1,10 +1,6 @@
 import SpiritCategoryPage from "./SpiritCategoryPage.jsx";
 
-export default function Tequilla({
-  products = [],
-  onAddToCart,
-  onBack,
-}) {
+export default function Tequilla({ products = [], onAddToCart, onBack }) {
   return (
     <SpiritCategoryPage
       title="Tequila"

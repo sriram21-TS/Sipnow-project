@@ -1,10 +1,6 @@
 import SpiritCategoryPage from "./SpiritCategoryPage.jsx";
 
-export default function Bourbon({
-  products = [],
-  onAddToCart,
-  onBack,
-}) {
+export default function Bourbon({ products = [], onAddToCart, onBack }) {
   return (
     <SpiritCategoryPage
       title="Bourbon"

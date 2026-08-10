@@ -9,10 +9,7 @@ export default function GeneralPromotions({
   onBack,
   products = [],
 }) {
-  const {
-    addedProduct,
-    handleAddToCart,
-  } = useAddToCartFeedback(onAddToCart);
+  const { addedProduct, handleAddToCart } = useAddToCartFeedback(onAddToCart);
 
   return (
     <>
