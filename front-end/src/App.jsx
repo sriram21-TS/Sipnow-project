@@ -23,6 +23,7 @@ import InStorePromotions from "./pages/InStorePromotions.jsx";
 import Profile from "./pages/Profile.jsx";
 import ShopAll from "./pages/ShopAll.jsx";
 
+import Spirits from "./pages/Spirits.jsx";
 // Safely read JSON data from localStorage. If the key is missing or
 // contains invalid JSON, return the provided fallback value.
 function readStored(key, fallback) {
@@ -301,6 +302,17 @@ export default function App() {
                 onAddToCart={addToCart}
                 onBack={goHome}
                 products={products}
+              />
+            }
+          />
+          <Route
+            path="/spirits"
+            element={
+              <Spirits
+                onAddToCart={addToCart}
+                onBack={() => goToPage("/")}
+                products={products}
+                productsLoading={productsLoading}
               />
             }
           />
