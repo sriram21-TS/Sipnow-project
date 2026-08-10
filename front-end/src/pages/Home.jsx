@@ -2,8 +2,6 @@ import HeroCarousel from "../components/HeroCarousel.jsx";
 import CategoryGrid from "../components/CategoryGrid.jsx";
 import InStorePromotionsPreview from "../components/InStorePromotionsPreview.jsx";
 import BestSellers from "../components/BestSellers.jsx";
-import NewArrivalsBanner from "../components/NewArrivalsBanner.jsx";
-import BrandSpotlight from "../components/BrandSpotlight.jsx";
 import SommelierCta from "../components/SommelierCta.jsx";
 import Newsletter from "../components/Newsletter.jsx";
 import WhySipNow from "../components/WhySipNow.jsx";
@@ -24,8 +22,6 @@ export default function Home({
         onNavigate={onNavigate}
       />
       <BestSellers onAddToCart={onAddToCart} products={products} />
-      <NewArrivalsBanner />
-      <BrandSpotlight />
       <SommelierCta onStart={onStartQuiz} />
       <Newsletter />
       <WhySipNow />

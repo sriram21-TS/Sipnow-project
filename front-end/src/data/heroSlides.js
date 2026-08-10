@@ -1,10 +1,8 @@
 import { inStorePromotions } from "./inStorePromotions.js";
 import {
-  BEER_FEATURED_URL,
   WINE_FEATURED_URL,
   CELLAR_HIGHLIGHT_URL,
   PENFOLDS_URL,
-  PRESTIGE_COLLECTION_URL,
   SIPNOW_HERO_BANNER_URL,
 } from "./images.js";
 
@@ -55,20 +53,5 @@ export const heroSlides = [
       title: "Penfolds St Henri Shiraz",
     },
     quiz: true,
-  },
-  {
-    bgImage: BEER_FEATURED_URL,
-    bgAlt: "Craft beer collection",
-    badge: "Artisanal & Craft",
-    titleLines: ["Cool Down With", "Craft Perfection."],
-    description:
-      "Independent brewers, bold flavours, small batches — the season's most awarded craft beer, curated for you.",
-    primaryCta: "Shop Craft Beer",
-    secondaryCta: "View Range",
-    card: {
-      image: PRESTIGE_COLLECTION_URL,
-      tag: "Seasonal Curations",
-      title: "2024 Prestige Collection",
-    },
   },
 ];
