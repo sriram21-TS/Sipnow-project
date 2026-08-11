@@ -15,7 +15,7 @@ import QuizModal from "./components/QuizModal.jsx";
 import BeerCiderCategoryPage from "./pages/BeerCiderCategoryPage.jsx";
 import { useProducts } from "./hooks/useProducts.js";
 import Wine from "./pages/Wine.jsx";
-
+import Spirits from "./pages/Spirits.jsx";
 import Auth from "./pages/Auth.jsx";
 import Cart from "./pages/Cart.jsx";
 import CategoryPage from "./pages/CategoryPage.jsx";

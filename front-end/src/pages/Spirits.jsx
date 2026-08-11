@@ -382,55 +382,43 @@ export default function Spirits({
               PRODUCT COUNT + SORT
           =================================== */}
 
-<<<<<<< HEAD
-          <div className="flex items-center justify-between mb-6">
-            {/* PRODUCT COUNT */}
-=======
-            <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
-              {/* PRODUCT COUNT */}
->>>>>>> 72d3b4008124fcf82beb309581f9b44ed1b939db
+          <div className="flex-1 min-w-0">
+            {/* PRODUCT COUNT + SORT */}
+            <div className="flex items-center justify-between gap-4 mb-6">
+              <p className="text-sm text-on-surface-variant">
+                {productsLoading
+                  ? "Loading products..."
+                  : `Showing ${filteredProducts.length} of ${filteredProducts.length} products`}
+              </p>
 
-            <p className="text-sm text-on-surface-variant">
-              {productsLoading
-                ? "Loading products..."
-                : `Showing ${filteredProducts.length} of ${filteredProducts.length} products`}
-            </p>
+              <label className="flex items-center gap-3 text-sm text-on-surface-variant">
+                <span>Sort by</span>
 
-            {/* SORT */}
+                <select
+                  className="glass-panel rounded-lg px-4 py-2 text-sm text-on-surface bg-surface-container-high border border-primary/40 focus:outline-none focus:border-primary cursor-pointer"
+                  value={sort}
+                  onChange={(e) => setSort(e.target.value)}
+                >
+                  <option value="featured">Featured</option>
+                  <option value="price-asc">Price: Low to High</option>
+                  <option value="price-desc">Price: High to Low</option>
+                  <option value="rating">Top Rated</option>
+                </select>
+              </label>
+            </div>
 
-            <label className="flex items-center gap-3 text-sm text-on-surface-variant">
-              <span>Sort by</span>
-
-              <select
-                className="glass-panel rounded-lg px-4 py-2 text-sm text-on-surface bg-surface-container-high border border-primary/40 focus:outline-none focus:border-primary cursor-pointer"
-                value={sort}
-                onChange={(e) => setSort(e.target.value)}
-              >
-                <option value="featured">Featured</option>
-
-                <option value="price-asc">Price: Low to High</option>
-
-                <option value="price-desc">Price: High to Low</option>
-
-                <option value="rating">Top Rated</option>
-              </select>
-            </label>
+            {/* PRODUCT GRID */}
+            <ProductGrid
+              addedProduct={addedProduct}
+              onAddToCart={handleAddToCart}
+              products={filteredProducts}
+              emptyMessage={
+                normalizedSelectedType
+                  ? `No ${pageTitle} products found.`
+                  : "New spirits are on the way. Check back soon."
+              }
+            />
           </div>
-
-          {/* ===================================
-              PRODUCT GRID
-          =================================== */}
-
-          <ProductGrid
-            addedProduct={addedProduct}
-            onAddToCart={handleAddToCart}
-            products={filteredProducts}
-            emptyMessage={
-              normalizedSelectedType
-                ? `No ${pageTitle} products found.`
-                : "New spirits are on the way. Check back soon."
-            }
-          />
         </div>
       </div>
     </div>
