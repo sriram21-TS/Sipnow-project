@@ -18,7 +18,7 @@ export default function Footer() {
           />
           <p className="text-on-surface-variant leading-relaxed">
             Elevating the drinking experience with curated excellence and
-            unparalleled delivery service since our cellar doors first opened.
+            unparalleled delivery service since our cellar doors first opene.
           </p>
           <div className="flex gap-4">
             <a
