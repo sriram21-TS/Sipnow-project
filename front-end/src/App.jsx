@@ -12,7 +12,7 @@ import Footer from "./components/Footer.jsx";
 import Navbar from "./components/Navbar.jsx";
 import QuizModal from "./components/QuizModal.jsx";
 import { useProducts } from "./hooks/useProducts.js";
-import WineSubcategoryPage from "./pages/wine/WineSubcategoryPage.jsx";
+import Wine from "./pages/Wine.jsx";
 
 import Auth from "./pages/Auth.jsx";
 import Cart from "./pages/Cart.jsx";
@@ -20,9 +20,12 @@ import CategoryPage from "./pages/CategoryPage.jsx";
 import Checkout from "./pages/Checkout.jsx";
 import Home from "./pages/Home.jsx";
 import InStorePromotions from "./pages/InStorePromotions.jsx";
+import PremixPage from "./pages/PremixPage.jsx";
 import Profile from "./pages/Profile.jsx";
 import ShopAll from "./pages/ShopAll.jsx";
+import ZeroCategoryPage from "./pages/ZeroCategoryPage.jsx";
 
+import Spirits from "./pages/Spirits.jsx";
 // Safely read JSON data from localStorage. If the key is missing or
 // contains invalid JSON, return the provided fallback value.
 function readStored(key, fallback) {
@@ -238,6 +241,102 @@ export default function App() {
             }
           />
 
+          {/* Zero % Alcohol Subcategories - Single Unified Component */}
+          <Route
+            path="/zero-alcohol/:subcategory"
+            element={
+              <ZeroCategoryPage
+                onAddToCart={addToCart}
+                onBack={goHome}
+                products={products}
+                productsLoading={productsLoading}
+              />
+            }
+          />
+          <Route
+            path="/zero/:subcategory"
+            element={
+              <ZeroCategoryPage
+                onAddToCart={addToCart}
+                onBack={goHome}
+                products={products}
+                productsLoading={productsLoading}
+              />
+            }
+          />
+          <Route
+            path="/zero-alcohol"
+            element={
+              <ZeroCategoryPage
+                subcategory="wine"
+                onAddToCart={addToCart}
+                onBack={goHome}
+                products={products}
+                productsLoading={productsLoading}
+              />
+            }
+          />
+          <Route
+            path="/zero-wine"
+            element={
+              <ZeroCategoryPage
+                subcategory="wine"
+                onAddToCart={addToCart}
+                onBack={goHome}
+                products={products}
+                productsLoading={productsLoading}
+              />
+            }
+          />
+          <Route
+            path="/zero-beer"
+            element={
+              <ZeroCategoryPage
+                subcategory="beer"
+                onAddToCart={addToCart}
+                onBack={goHome}
+                products={products}
+                productsLoading={productsLoading}
+              />
+            }
+          />
+          <Route
+            path="/zero-spirits"
+            element={
+              <ZeroCategoryPage
+                subcategory="spirits"
+                onAddToCart={addToCart}
+                onBack={goHome}
+                products={products}
+                productsLoading={productsLoading}
+              />
+            }
+          />
+          <Route
+            path="/zero-premix"
+            element={
+              <ZeroCategoryPage
+                subcategory="premix"
+                onAddToCart={addToCart}
+                onBack={goHome}
+                products={products}
+                productsLoading={productsLoading}
+              />
+            }
+          />
+          <Route
+            path="/zero-cider"
+            element={
+              <ZeroCategoryPage
+                subcategory="cider"
+                onAddToCart={addToCart}
+                onBack={goHome}
+                products={products}
+                productsLoading={productsLoading}
+              />
+            }
+          />
+
           {/* Category browsing: one generic page keyed off the URL, covering
               every mega-menu destination (offers, beer & cider, premix,
               spirits, wine and their sub-categories). */}
@@ -286,21 +385,32 @@ export default function App() {
           <Route
             path="/premix"
             element={
-              <CategoryPage
-                categoryKey="premix"
+              <PremixPage
                 onAddToCart={addToCart}
-                onBack={goHome}
                 products={products}
+                productsLoading={productsLoading}
+                title="Premix"
               />
             }
           />
           <Route
             path="/premix/:categoryKey"
             element={
-              <CategoryPage
+              <PremixPage
                 onAddToCart={addToCart}
-                onBack={goHome}
                 products={products}
+                productsLoading={productsLoading}
+              />
+            }
+          />
+          <Route
+            path="/spirits"
+            element={
+              <Spirits
+                onAddToCart={addToCart}
+                onBack={() => goToPage("/")}
+                products={products}
+                productsLoading={productsLoading}
               />
             }
           />
@@ -338,24 +448,25 @@ export default function App() {
           <Route
             path="/wine"
             element={
-              <CategoryPage
-                categoryKey="wine"
+              <Wine
                 onAddToCart={addToCart}
-                onBack={goHome}
                 products={products}
+                productsLoading={productsLoading}
               />
             }
           />
+
           <Route
-            path="/wine/:categoryKey"
+            path="/wine/:wineType"
             element={
-              <CategoryPage
+              <Wine
                 onAddToCart={addToCart}
-                onBack={goHome}
                 products={products}
+                productsLoading={productsLoading}
               />
             }
           />
+
 
           <Route path="*" element={<Navigate replace to="/" />} />
         </Routes>
