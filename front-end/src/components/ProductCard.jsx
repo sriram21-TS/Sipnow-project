@@ -1,6 +1,5 @@
 import { useState } from "react";
 import StarRating from "./StarRating.jsx";
-import InStorePromotionBadge from "./InStorePromotionBadge.jsx";
 import {
   DEFAULT_PACK_SIZES,
   formatCurrency,
@@ -36,44 +35,14 @@ export default function ProductCard({
   className = "",
 }) {
   const s = SIZE;
-
-  const hasPromotion =
-    product.originalPrice &&
-    product.price &&
-    parsePrice(product.originalPrice) > parsePrice(product.price);
-
-  const discountPercent = hasPromotion
-    ? Math.round(
-        ((parsePrice(product.originalPrice) - parsePrice(product.price)) /
-          parsePrice(product.originalPrice)) *
-          100
-      )
-    : null;
-
-  const isInstorePromo =
-    product.promoLabel === "In-store only" ||
-    product.isInstore ||
-    className.includes("in-store-promotion-card");
-
-  const promoLabelText = isInstorePromo
-    ? discountPercent != null
-      ? `${discountPercent}% OFF`
-      : product.badgeText
-        ? product.badgeText.toUpperCase()
-        : "PROMO"
-    : null;
-
+  const isGlowBadge = product.badgeStyle === "glow";
   const packSizes = product.packSizes ?? DEFAULT_PACK_SIZES;
   const unitPrice = parsePrice(product.price);
 
   const [expanded, setExpanded] = useState(false);
   const [counts, setCounts] = useState(() => zeroCounts(packSizes));
 
-  const totalUnits = packSizes.reduce(
-    (sum, qty) => sum + counts[qty] * qty,
-    0
-  );
-
+  const totalUnits = packSizes.reduce((sum, qty) => sum + counts[qty] * qty, 0);
   const subtotal = packSizes.reduce(
     (sum, qty) => sum + counts[qty] * qty * unitPrice,
     0
@@ -94,11 +63,7 @@ export default function ProductCard({
 
   const confirmAdd = (e) => {
     e.stopPropagation();
-
-    if (totalUnits > 0) {
-      onAdd(product, totalUnits);
-    }
-
+    if (totalUnits > 0) onAdd(product, totalUnits);
     setCounts(zeroCounts(packSizes));
     setExpanded(false);
   };
@@ -116,7 +81,6 @@ export default function ProductCard({
               <p className="text-xs font-medium text-on-surface line-clamp-2 pr-1">
                 {product.name}
               </p>
-
               <button
                 aria-label="Close quantity picker"
                 className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-on-surface-variant hover:bg-primary/15 hover:text-primary transition-colors"
@@ -141,7 +105,6 @@ export default function ProductCard({
                       {qty <= 1 ? "each" : `case (${qty})`}
                     </span>
                   </p>
-
                   <div className="flex items-center gap-2.5">
                     <button
                       aria-label={`Decrease ${formatPackSize(qty)} quantity`}
@@ -157,11 +120,9 @@ export default function ProductCard({
                         remove
                       </span>
                     </button>
-
                     <span className="w-5 text-center text-sm font-medium text-on-surface">
                       {counts[qty]}
                     </span>
-
                     <button
                       aria-label={`Increase ${formatPackSize(qty)} quantity`}
                       className="flex h-7 w-7 items-center justify-center rounded-full primary-gradient text-white transition-transform hover:scale-110"
@@ -182,15 +143,11 @@ export default function ProductCard({
 
             <div className="space-y-2 border-t border-primary/10 pt-2.5">
               <div className="flex items-center justify-between text-xs">
-                <span className="text-on-surface-variant">
-                  Subtotal
-                </span>
-
+                <span className="text-on-surface-variant">Subtotal</span>
                 <span className="font-semibold text-primary">
                   {formatCurrency(subtotal)}
                 </span>
               </div>
-
               <button
                 className="w-full rounded-lg primary-gradient py-2 text-[11px] uppercase tracking-wide text-white shadow-lg transition-opacity disabled:opacity-40 disabled:cursor-not-allowed"
                 disabled={totalUnits === 0}
@@ -212,17 +169,28 @@ export default function ProductCard({
                 src={product.image}
               />
             </div>
-
-            {/* =====================================================
-                PROMOTION RIBBON (ONLY FOR IN-STORE PROMOTIONS)
-                ===================================================== */}
-            {isInstorePromo && promoLabelText && (
-              <InStorePromotionBadge label={promoLabelText} />
+            {isGlowBadge ? (
+              <div
+                className={`badge-glow absolute z-10 flex items-center gap-1 rounded-full bg-gradient-to-r from-primary to-tertiary text-on-primary font-label-sm font-bold uppercase tracking-wide shadow-lg ${s.badgePos} ${s.badgePad} ${s.badgeText}`}
+              >
+                <span
+                  className={`material-symbols-outlined ${s.badgeIcon}`}
+                  style={{ fontVariationSettings: '"FILL" 1' }}
+                >
+                  {product.icon}
+                </span>
+                {product.badgeText}
+              </div>
+            ) : (
+              <div
+                className={`absolute rounded-full bg-primary text-on-primary font-label-sm uppercase tracking-widest ${s.badgePos} ${s.plainBadgePad} ${s.plainBadgeText}`}
+              >
+                {product.badgeText}
+              </div>
             )}
-
             <button
               aria-label={`Add ${product.name} to cart`}
-              className={`group/cart absolute z-20 flex items-center rounded-full primary-gradient text-white shadow-2xl overflow-hidden opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-300 ease-out pl-[10px] gap-1.5 ${s.addBtnPos} ${s.addBtnSize}`}
+              className={`group/cart absolute z-20 flex items-center rounded-full primary-gradient text-white shadow-2xl overflow-hidden opacity-100 translate-y-0 md:opacity-0 md:group-hover:opacity-100 md:translate-y-4 md:group-hover:translate-y-0 transition-all duration-300 ease-out pl-[10px] gap-1.5 ${s.addBtnPos} ${s.addBtnSize}`}
               onClick={(e) => {
                 e.stopPropagation();
                 setExpanded(true);
@@ -234,7 +202,6 @@ export default function ProductCard({
               >
                 {isAdded ? "check" : "add_shopping_cart"}
               </span>
-
               <span className="whitespace-nowrap text-[11px] font-semibold uppercase tracking-wide opacity-0 group-hover/cart:opacity-100 transition-opacity duration-200">
                 {isAdded ? "Added" : "Add to Cart"}
               </span>
@@ -242,7 +209,6 @@ export default function ProductCard({
           </>
         )}
       </div>
-
       <div className="flex justify-between items-start px-1">
         <div className="space-y-0.5">
           <p
@@ -250,30 +216,25 @@ export default function ProductCard({
           >
             {product.category}
           </p>
-
           <h4
             className={`font-headline-md group-hover:text-primary transition-colors ${s.name}`}
           >
             {product.name}
           </h4>
-
           <StarRating
             rating={product.rating}
             reviewCount={product.reviewCount}
           />
-
           {product.promoLabel && (
             <p className="text-on-surface-variant text-[10px] uppercase tracking-widest pt-1">
               {product.promoLabel}
             </p>
           )}
         </div>
-
         <div className="text-right shrink-0">
           <p className={`font-headline-md text-primary ${s.price}`}>
             {product.price}
           </p>
-
           {product.originalPrice && (
             <p className="text-on-surface-variant text-xs line-through">
               {product.originalPrice}

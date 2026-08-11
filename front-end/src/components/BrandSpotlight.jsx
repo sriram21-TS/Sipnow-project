@@ -14,7 +14,7 @@ export default function BrandSpotlight() {
             src={siteAssets.PENFOLDS_URL}
           />
         </div>
-        <div className="bg-surface-container flex flex-col justify-center p-12 lg:p-24 space-y-8">
+        <div className="bg-surface-container flex flex-col justify-center p-8 sm:p-12 lg:p-24 space-y-8">
           <p className="text-primary font-label-md uppercase tracking-[0.3em] mb-4">
             Featured Producer
           </p>

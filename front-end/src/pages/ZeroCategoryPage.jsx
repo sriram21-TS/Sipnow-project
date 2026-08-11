@@ -488,6 +488,7 @@ export default function ZeroCategoryPage({
           <div className="flex-1 min-w-0">
             {/* PRODUCT COUNT + SORT */}
             <div className="flex items-center justify-between mb-6">
+              {/* PRODUCT COUNT */}
               <p className="text-sm text-on-surface-variant">
                 {productsLoading
                   ? "Loading products…"
@@ -503,12 +504,12 @@ export default function ZeroCategoryPage({
                 <button
                   type="button"
                   onClick={() => setSortOpen((open) => !open)}
-                  className="w-[216px] h-[46px] flex items-center justify-between gap-4 bg-[#1b181d] border border-primary/60 rounded-md px-4 text-sm text-on-surface hover:border-primary transition-colors cursor-pointer"
+                  className="w-[216px] h-[50px] flex items-center justify-between gap-4 bg-[#1b181d] border border-primary/60 rounded-md px-4 text-sm text-on-surface hover:border-primary transition-colors cursor-pointer"
                 >
-                  <span>{selectedSort.label}</span>
+                  <span className="truncate">{selectedSort.label}</span>
 
                   <span
-                    className={`material-symbols-outlined text-[20px] transition-transform ${
+                    className={`material-symbols-outlined text-[20px] shrink-0 transition-transform ${
                       sortOpen ? "rotate-180" : ""
                     }`}
                   >
@@ -517,7 +518,7 @@ export default function ZeroCategoryPage({
                 </button>
 
                 {sortOpen && (
-                  <div className="absolute right-0 top-full mt-1 w-[216px] z-50 bg-[#1b181d] border border-primary/40 rounded-md overflow-hidden shadow-2xl">
+                  <div className="absolute right-0 top-full mt-1 w-44 sm:w-[216px] z-50 bg-[#1b181d] border border-primary/40 rounded-md overflow-hidden shadow-2xl">
                     {SORT_OPTIONS.map((option) => {
                       const isSelected = sortBy === option.key;
 

@@ -16,6 +16,37 @@ import { formatCurrency, parsePrice } from "../utils/productHelpers.js";
  */
 const NAME_PATTERN = /^[A-Za-z ]{2,50}$/;
 
+const CITY_PATTERN = /^[A-Za-z ]{2,50}$/;
+
+const VALID_CITIES = [
+  "Hyderabad",
+  "Chennai",
+  "Bangalore",
+  "Bengaluru",
+  "Mumbai",
+  "Delhi",
+  "New Delhi",
+  "Kolkata",
+  "Pune",
+  "Ahmedabad",
+  "Jaipur",
+  "Surat",
+  "Visakhapatnam",
+  "Vijayawada",
+  "Warangal",
+  "Guntur",
+  "Tirupati",
+  "Coimbatore",
+  "Kochi",
+  "Bhopal",
+  "Indore",
+  "Lucknow",
+  "Nagpur",
+  "Nashik",
+];
+
+const ADDRESS_PATTERN = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z0-9\s,./#-]{10,100}$/;
+
 /*
  * ============================================================
  * CHECKOUT PAGE
@@ -103,8 +134,8 @@ export default function Checkout({ cartItems, user, onOrderComplete }) {
      * 9876543210
      */
 
-    if (!/^[6-9]\d{9}$/.test(values.phone.replace(/\s/g, ""))) {
-      nextErrors.phone = "Enter a valid 10-digit phone number.";
+    if (!/^[6-9]\d{8}$/.test(values.phone.replace(/\s/g, ""))) {
+      nextErrors.phone = "Enter a valid 9-digit phone number.";
     }
 
     /*
@@ -115,19 +146,32 @@ export default function Checkout({ cartItems, user, onOrderComplete }) {
      * Address and city are only required for delivery.
      */
 
-    if (fulfilment === "delivery" && values.address.trim().length < 5) {
-      nextErrors.address = "Enter your delivery address.";
-    }
-
+    if (
+  fulfilment === "delivery" &&
+  !ADDRESS_PATTERN.test(values.address.trim())
+) {
+  nextErrors.address =
+    "Enter a valid delivery address with a house/building number.";
+}
     /*
      * --------------------------------------------------------
      * CITY
      * --------------------------------------------------------
      */
 
-    if (fulfilment === "delivery" && values.city.trim().length < 2) {
-      nextErrors.city = "Enter your city.";
-    }
+    const enteredCity = values.city.trim();
+
+if (
+  fulfilment === "delivery" &&
+  (
+    !CITY_PATTERN.test(enteredCity) ||
+    !VALID_CITIES.some(
+      (city) => city.toLowerCase() === enteredCity.toLowerCase()
+    )
+  )
+) {
+  nextErrors.city = "Enter a valid city name.";
+}
 
     /*
      * Store validation errors.
@@ -201,21 +245,35 @@ export default function Checkout({ cartItems, user, onOrderComplete }) {
    */
 
   const update = (event) => {
-    const { name, value } = event.target;
+  const { name, value } = event.target;
 
-    /*
-     * Name field:
-     *
-     * Immediately remove numbers and special characters.
-     */
-    const cleanedValue =
-      name === "name" ? value.replace(/[^A-Za-z ]/g, "") : value;
+  let cleanedValue = value;
 
-    setValues((current) => ({
-      ...current,
-      [name]: cleanedValue,
-    }));
-  };
+  if (name === "name") {
+    cleanedValue = value.replace(/[^A-Za-z ]/g, "");
+  }
+
+  if (name === "phone") {
+    cleanedValue = value.replace(/\D/g, "").slice(0, 9);
+  }
+
+  if (name === "city") {
+    cleanedValue = value.replace(/[^A-Za-z ]/g, "");
+  }
+
+  setValues((current) => ({
+    ...current,
+    [name]: cleanedValue,
+  }));
+
+  if (errors[name]) {
+    setErrors((current) => {
+      const next = { ...current };
+      delete next[name];
+      return next;
+    });
+  }
+};
 
   /*
    * ==========================================================
