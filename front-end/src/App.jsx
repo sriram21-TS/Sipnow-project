@@ -7,6 +7,7 @@ import {
   useNavigate,
 } from "react-router-dom";
 
+import AgeVerification from "./components/AgeVerification.jsx";
 import AmbientBackground from "./components/AmbientBackground.jsx";
 import Footer from "./components/Footer.jsx";
 import Navbar from "./components/Navbar.jsx";
@@ -41,6 +42,9 @@ function readStored(key, fallback) {
 }
 
 export default function App() {
+  const [ageVerified, setAgeVerified] = useState(
+    () => window.localStorage.getItem("sipnow-age-verified") === "true"
+  );
   const [quizOpen, setQuizOpen] = useState(false);
   const [cartItems, setCartItems] = useState(() =>
     readStored("sipnow-cart", [])
@@ -143,6 +147,15 @@ export default function App() {
     setUser(null);
     goHome();
   };
+
+  const confirmAge = () => {
+    window.localStorage.setItem("sipnow-age-verified", "true");
+    setAgeVerified(true);
+  };
+
+  if (!ageVerified) {
+    return <AgeVerification onConfirm={confirmAge} />;
+  }
 
   return (
     <>
