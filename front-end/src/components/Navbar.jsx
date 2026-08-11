@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from "react";
+
 import { Link, useNavigate } from "react-router-dom";
+
 import { useNavMenus, useSiteAssets } from "../hooks/useContent.js";
 
 // ========================================
@@ -12,9 +14,6 @@ const TOP_LEVEL_ROUTES = {
   Premix: "/premix",
   Spirits: "/spirits",
   Wine: "/wine",
-  "Zero %": "/zero-alcohol",
-  Zero: "/zero-alcohol",
-  "Zero%": "/zero-alcohol",
   "Shop All": "/shop-all",
   "In-Store promotions": "/in-store-promotions",
 };
@@ -37,7 +36,6 @@ const mobileNavLinks = [
   "Premix",
   "Wine",
   "Spirits",
-  "Zero %",
 ];
 
 // ========================================
@@ -94,13 +92,7 @@ function getMenuItemRoute(menuLabel, columnHeading, item) {
   // ======================================
 
   if (menuLabel === "Spirits") {
-    const spiritType = item.toLowerCase().trim();
-
-    if (spiritType === "whisky" || spiritType === "whiskey") {
-      return "/whisky";
-    }
-
-    return `/spirits?type=${encodeURIComponent(spiritType)}`;
+    return `/spirits?type=${encodeURIComponent(item.toLowerCase().trim())}`;
   }
 
   // ======================================
@@ -131,16 +123,19 @@ function getMenuItemRoute(menuLabel, columnHeading, item) {
   // ZERO %
   // ======================================
 
+<<<<<<< HEAD
+  if (menuLabel === "Zero %" || menuLabel.toLowerCase().includes("zero")) {
+    const sub = itemSlug.replace("zero-alcohol-", "").replace("zero-", "");
+=======
   if (
     menuLabel === "Zero %" ||
     menuLabel === "Zero" ||
     menuLabel === "Zero%" ||
     menuLabel.toLowerCase().includes("zero")
   ) {
-    const sub = itemSlug
-      .replace("zero-alcohol-", "")
-      .replace("zero-", "");
+    const sub = itemSlug.replace("zero-alcohol-", "").replace("zero-", "");
 
+>>>>>>> fd18616e0be65897c1a064f9612faa5b966076aa
     return `/zero-alcohol/${sub}`;
   }
 
@@ -155,6 +150,7 @@ function getMenuItemRoute(menuLabel, columnHeading, item) {
 // FEATURED PANEL
 // ========================================
 
+// Renders the promotional/featured card displayed inside a mega menu.
 function FeaturedPanel({ featured }) {
   if (!featured) {
     return null;
@@ -208,15 +204,10 @@ function FeaturedPanel({ featured }) {
   );
 }
 
-// ========================================
-// SEARCH RESULTS
-// ========================================
-
 function SearchResults({ results, searched, onSelect }) {
   if (!searched) return null;
-
   return (
-    <div className="absolute top-full left-0 right-0 mt-2 w-full sm:w-[420px] glass-panel border border-outline-variant/30 rounded-2xl shadow-2xl overflow-hidden z-50">
+    <div className="absolute top-full left-0 right-0 mt-2 w-[420px] glass-panel border border-outline-variant/30 rounded-2xl shadow-2xl overflow-hidden z-50">
       {results.length === 0 ? (
         <p className="px-6 py-5 text-sm text-on-surface-variant">
           No products match your search.
@@ -265,29 +256,36 @@ function SearchResults({ results, searched, onSelect }) {
   );
 }
 
+<<<<<<< HEAD
+=======
 // ========================================
 // NAVBAR
 // ========================================
 
-export default function Navbar({
-  cartCount = 0,
-  products = [],
-  user,
-}) {
+>>>>>>> fd18616e0be65897c1a064f9612faa5b966076aa
+export default function Navbar({ cartCount = 0, products = [], user }) {
   const [scrolled, setScrolled] = useState(false);
+
   const [mobileOpen, setMobileOpen] = useState(false);
+
   const [openMenu, setOpenMenu] = useState(null);
+
   const [searchTerm, setSearchTerm] = useState("");
+
   const [searchFocused, setSearchFocused] = useState(false);
 
   const desktopSearchRef = useRef(null);
+
   const mobileSearchRef = useRef(null);
+
   const blurTimeoutRef = useRef(null);
+
   const menuTimeoutRef = useRef(null);
 
   const navigate = useNavigate();
 
   const { data: navMenus = [] } = useNavMenus();
+
   const { data: siteAssets = {} } = useSiteAssets();
 
   // ========================================
@@ -321,8 +319,11 @@ export default function Navbar({
   // MEGA MENU HOVER
   // ========================================
 
+  // A small delay before closing keeps the menu open while the cursor
+  // crosses the gap between the nav link and the dropdown panel below it.
   const handleMenuEnter = (label) => {
     clearTimeout(menuTimeoutRef.current);
+
     setOpenMenu(label);
   };
 
@@ -337,16 +338,15 @@ export default function Navbar({
   // ========================================
 
   const normalizedTerm = searchTerm.trim().toLowerCase();
-
   const searchResults = normalizedTerm
     ? products
         .filter((product) => {
           const name = product.name?.toLowerCase() || "";
+
           const category = product.category?.toLowerCase() || "";
 
           return (
-            name.includes(normalizedTerm) ||
-            category.includes(normalizedTerm)
+            name.includes(normalizedTerm) || category.includes(normalizedTerm)
           );
         })
         .slice(0, 6)
@@ -358,6 +358,7 @@ export default function Navbar({
 
   const handleSearchFocus = () => {
     clearTimeout(blurTimeoutRef.current);
+
     setSearchFocused(true);
   };
 
@@ -375,6 +376,7 @@ export default function Navbar({
   // SEARCH RESULT
   // ========================================
 
+  // Selecting a result returns to the home page and scrolls to Best Sellers.
   const handleSelectResult = () => {
     clearTimeout(blurTimeoutRef.current);
 
@@ -421,18 +423,6 @@ export default function Navbar({
   };
 
   // ========================================
-  // GET DISPLAY LABEL
-  // ========================================
-
-  const getDisplayLabel = (label) => {
-    if (label === "Zero" || label === "Zero%") {
-      return "Zero %";
-    }
-
-    return label;
-  };
-
-  // ========================================
   // RENDER
   // ========================================
 
@@ -450,11 +440,7 @@ export default function Navbar({
         <div className="flex items-center gap-16">
           {/* LOGO */}
 
-          <Link
-            to="/"
-            className="relative z-10"
-            onClick={closeMenus}
-          >
+          <Link to="/" className="relative z-10" onClick={closeMenus}>
             <img
               alt="SipNow Logo"
               className="h-10 md:h-12 object-contain brightness-110"
@@ -464,7 +450,7 @@ export default function Navbar({
 
           {/* DESKTOP NAV */}
 
-          <div className="hidden lg:flex items-center gap-4 xl:gap-8">
+          <div className="hidden lg:flex items-center gap-8">
             {navMenus.map((menu) => (
               <div
                 className="nav-item py-2"
@@ -475,20 +461,19 @@ export default function Navbar({
                 {/* TOP LEVEL LINK */}
 
                 <Link
-                  to={
-                    TOP_LEVEL_ROUTES[menu.label] ||
-                    `/${slugify(menu.label)}`
-                  }
+                  to={TOP_LEVEL_ROUTES[menu.label] || `/${slugify(menu.label)}`}
+<<<<<<< HEAD
+                  className={`flex items-center gap-1.5 font-label-md text-label-md transition-colors tracking-wide cursor-default ${
+=======
                   className={`flex items-center gap-1.5 whitespace-nowrap font-label-md text-label-md transition-colors tracking-wide cursor-default ${
+>>>>>>> fd18616e0be65897c1a064f9612faa5b966076aa
                     openMenu === menu.label
                       ? "text-primary"
                       : "text-on-surface/80 hover:text-primary"
                   }`}
                   onClick={closeMenus}
                 >
-                  {/* ZERO % WILL ALWAYS STAY ON ONE LINE */}
-
-                  {getDisplayLabel(menu.label)}
+                  {menu.label}
 
                   <span
                     className={`material-symbols-outlined text-[18px] opacity-50 transition-transform cursor-pointer ${
@@ -499,8 +484,6 @@ export default function Navbar({
                   </span>
                 </Link>
 
-                {/* MEGA MENU */}
-
                 {openMenu === menu.label && (
                   <div
                     className="mega-menu absolute top-full left-0 right-0 pt-0"
@@ -509,14 +492,10 @@ export default function Navbar({
                     <div className="mega-menu-panel glass-panel border border-outline-variant/30 rounded-2xl p-10 grid grid-cols-4 gap-12 shadow-2xl">
                       {menu.columns.map((col) =>
                         col.items?.length > 0 ? (
-                          <div
-                            className="space-y-3"
-                            key={col.heading}
-                          >
+                          <div className="space-y-3" key={col.heading}>
                             <h4 className="font-headline-sm text-lg text-primary">
                               {col.heading}
                             </h4>
-
                             <ul className="space-y-3 text-sm text-on-surface-variant">
                               {col.items.map((item) => (
                                 <li key={item}>
@@ -536,10 +515,7 @@ export default function Navbar({
                             </ul>
                           </div>
                         ) : (
-                          <div
-                            className="space-y-3"
-                            key={col.heading}
-                          >
+                          <div className="space-y-3" key={col.heading}>
                             <Link
                               className="font-headline-sm text-lg text-primary hover:opacity-80 transition-opacity"
                               onClick={closeMenus}
@@ -554,7 +530,6 @@ export default function Navbar({
                           </div>
                         )
                       )}
-
                       {menu.featured && (
                         <FeaturedPanel featured={menu.featured} />
                       )}
@@ -592,9 +567,7 @@ export default function Navbar({
             <SearchResults
               onSelect={handleSelectResult}
               results={searchResults}
-              searched={
-                searchFocused && normalizedTerm.length > 0
-              }
+              searched={searchFocused && normalizedTerm.length > 0}
             />
           </div>
 
@@ -611,11 +584,7 @@ export default function Navbar({
           {/* CART */}
 
           <button
-            aria-label={
-              cartCount > 0
-                ? `Cart, ${cartCount} items`
-                : "Cart"
-            }
+            aria-label={cartCount > 0 ? `Cart, ${cartCount} items` : "Cart"}
             className="relative material-symbols-outlined hover:text-primary transition-colors"
             onClick={() => {
               closeMenus();
@@ -624,7 +593,6 @@ export default function Navbar({
             type="button"
           >
             shopping_bag
-
             {cartCount > 0 && (
               <span className="absolute -top-1.5 -right-2 min-w-[18px] h-[18px] px-1 flex items-center justify-center rounded-full bg-primary text-on-primary text-[10px] font-bold leading-none">
                 {cartCount}
@@ -664,27 +632,20 @@ export default function Navbar({
       {/* MOBILE NAVIGATION */}
 
       <div
-        className={`mobile-nav-panel lg:hidden ${
-          mobileOpen ? "open" : ""
-        }`}
+        className={`mobile-nav-panel lg:hidden ${mobileOpen ? "open" : ""}`}
         id="mobile-nav-panel"
       >
         <div className="glass-panel border-t border-outline-variant/20 px-margin-mobile py-6 space-y-6">
           {mobileNavLinks.map((link) => (
             <Link
-              className="block whitespace-nowrap font-label-md text-label-md text-on-surface/80 hover:text-primary transition-colors tracking-wide"
+              className="block font-label-md text-label-md text-on-surface/80 hover:text-primary transition-colors tracking-wide"
               key={link}
               onClick={closeMenus}
-              to={
-                TOP_LEVEL_ROUTES[link] ||
-                `/${slugify(link)}`
-              }
+              to={TOP_LEVEL_ROUTES[link] || `/${slugify(link)}`}
             >
-              {getDisplayLabel(link)}
+              {link}
             </Link>
           ))}
-
-          {/* MY ACCOUNT */}
 
           <Link
             className="block font-label-md text-label-md text-on-surface/80 hover:text-primary transition-colors tracking-wide"
@@ -693,8 +654,6 @@ export default function Navbar({
           >
             My Account
           </Link>
-
-          {/* MOBILE SEARCH */}
 
           <div className="relative">
             <div className="flex items-center gap-2 border-b border-outline-variant/30 py-2">
@@ -717,9 +676,7 @@ export default function Navbar({
             <SearchResults
               onSelect={handleSelectResult}
               results={searchResults}
-              searched={
-                searchFocused && normalizedTerm.length > 0
-              }
+              searched={searchFocused && normalizedTerm.length > 0}
             />
           </div>
         </div>

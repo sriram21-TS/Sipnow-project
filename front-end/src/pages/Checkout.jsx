@@ -16,61 +16,36 @@ import { formatCurrency, parsePrice } from "../utils/productHelpers.js";
  */
 const NAME_PATTERN = /^[A-Za-z ]{2,50}$/;
 
-/*
- * Coupon codes:
- * - SAVE10 = 10% discount
- * - SAVE20 = 20% discount
- * - WELCOME15 = 15% discount
- */
-const COUPONS = {
-  SAVE10: 10,
-  SAVE20: 20,
-  WELCOME15: 15,
-};
-
-/*
- * City:
- * - Letters and spaces only
- * - Minimum 2 characters
- * - Maximum 50 characters
- */
 const CITY_PATTERN = /^[A-Za-z ]{2,50}$/;
 
-/*
- * Australian cities supported by the checkout.
- */
 const VALID_CITIES = [
-  "Sydney",
-  "Melbourne",
-  "Brisbane",
-  "Perth",
-  "Adelaide",
-  "Canberra",
-  "Hobart",
-  "Darwin",
-  "Gold Coast",
-  "Newcastle",
-  "Wollongong",
-  "Geelong",
-  "Cairns",
-  "Townsville",
-  "Toowoomba",
-  "Ballarat",
-  "Bendigo",
-  "Albury",
-  "Launceston",
-  "Mackay",
+  "Hyderabad",
+  "Chennai",
+  "Bangalore",
+  "Bengaluru",
+  "Mumbai",
+  "Delhi",
+  "New Delhi",
+  "Kolkata",
+  "Pune",
+  "Ahmedabad",
+  "Jaipur",
+  "Surat",
+  "Visakhapatnam",
+  "Vijayawada",
+  "Warangal",
+  "Guntur",
+  "Tirupati",
+  "Coimbatore",
+  "Kochi",
+  "Bhopal",
+  "Indore",
+  "Lucknow",
+  "Nagpur",
+  "Nashik",
 ];
 
-/*
- * Address:
- * - Must contain at least one letter
- * - Must contain at least one number
- * - 10 to 100 characters
- * - Allows normal address characters
- */
-const ADDRESS_PATTERN =
-  /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z0-9\s,./#-]{10,100}$/;
+const ADDRESS_PATTERN = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z0-9\s,./#-]{10,100}$/;
 
 /*
  * ============================================================
@@ -177,9 +152,7 @@ export default function Checkout({ cartItems, user, onOrderComplete }) {
      * Exactly 9 digits.
      */
 
-    const phone = values.phone.replace(/\s/g, "");
-
-    if (!/^[6-9]\d{8}$/.test(phone)) {
+    if (!/^[6-9]\d{8}$/.test(values.phone.replace(/\s/g, ""))) {
       nextErrors.phone = "Enter a valid 9-digit phone number.";
     }
 
@@ -191,12 +164,8 @@ export default function Checkout({ cartItems, user, onOrderComplete }) {
      * Address is only required for delivery.
      */
 
-    if (
-      fulfilment === "delivery" &&
-      !ADDRESS_PATTERN.test(values.address.trim())
-    ) {
-      nextErrors.address =
-        "Enter a valid delivery address with a house/building number.";
+    if (fulfilment === "delivery" && values.address.trim().length < 5) {
+      nextErrors.address = "Enter your delivery address.";
     }
 
     /*
@@ -214,7 +183,7 @@ export default function Checkout({ cartItems, user, onOrderComplete }) {
           (city) => city.toLowerCase() === enteredCity.toLowerCase()
         ))
     ) {
-      nextErrors.city = "Enter a valid Australian city name.";
+      nextErrors.city = "Enter a valid city name.";
     }
 
     /*
@@ -302,26 +271,14 @@ export default function Checkout({ cartItems, user, onOrderComplete }) {
 
     let cleanedValue = value;
 
-    /*
-     * Name:
-     * Remove numbers and special characters.
-     */
     if (name === "name") {
       cleanedValue = value.replace(/[^A-Za-z ]/g, "");
     }
 
-    /*
-     * Phone:
-     * Allow numbers only and maximum 9 digits.
-     */
     if (name === "phone") {
       cleanedValue = value.replace(/\D/g, "").slice(0, 9);
     }
 
-    /*
-     * City:
-     * Allow letters and spaces only.
-     */
     if (name === "city") {
       cleanedValue = value.replace(/[^A-Za-z ]/g, "");
     }
@@ -336,10 +293,6 @@ export default function Checkout({ cartItems, user, onOrderComplete }) {
       [name]: cleanedValue,
     }));
 
-    /*
-     * Remove validation error when
-     * the user starts correcting the field.
-     */
     if (errors[name]) {
       setErrors((current) => {
         const next = { ...current };

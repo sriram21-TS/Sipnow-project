@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { formatCurrency, parsePrice } from "../utils/productHelpers.js";
 
 /*
@@ -111,8 +110,6 @@ export default function Profile({ onLogout, onSave, onShopAll, user }) {
   /*
    * Controls whether profile fields are editable.
    */
-  const navigate = useNavigate();
-
   const [editing, setEditing] = useState(false);
 
   /*
@@ -155,15 +152,8 @@ export default function Profile({ onLogout, onSave, onShopAll, user }) {
      *
      * Only letters and spaces remain.
      */
-    let cleanedValue = value;
-
-    if (name === "name") {
-      cleanedValue = value.replace(/[^A-Za-z ]/g, "");
-    }
-
-    if (name === "mobile") {
-      cleanedValue = value.replace(/\D/g, "").slice(0, 9);
-    }
+    const cleanedValue =
+      name === "name" ? value.replace(/[^A-Za-z ]/g, "") : value;
 
     setValues((current) => ({
       ...current,
@@ -214,8 +204,8 @@ export default function Profile({ onLogout, onSave, onShopAll, user }) {
      * --------------------------------------------------------
      */
 
-    if (!/^[6-9]\d{8}$/.test(values.mobile.replace(/\s/g, ""))) {
-      nextErrors.push("Enter a valid 9-digit mobile number.");
+    if (!/^[6-9]\d{9}$/.test(values.mobile.replace(/\s/g, ""))) {
+      nextErrors.push("Enter a valid 10-digit mobile number.");
     }
 
     /*
@@ -272,21 +262,7 @@ export default function Profile({ onLogout, onSave, onShopAll, user }) {
 
   return (
     <div className="pt-32 pb-24">
-      {/* Back to Home */}
-      <div className="mx-auto max-w-container-max px-margin-mobile md:px-margin-desktop">
-        <button
-          className="flex items-center gap-2 text-sm text-on-surface-variant transition-colors hover:text-primary"
-          onClick={() => navigate("/")}
-          type="button"
-        >
-          <span className="material-symbols-outlined text-[20px]">
-            arrow_back
-          </span>
-          Back to home
-        </button>
-      </div>
-
-      <main className="mx-auto mt-6 max-w-3xl px-margin-mobile md:px-margin-desktop">
+      <main className="mx-auto max-w-3xl px-margin-mobile md:px-margin-desktop">
         {/* ====================================================
             PROFILE INFORMATION
             ==================================================== */}

@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import Reveal from "../components/Reveal.jsx";
 import { formatCurrency, parsePrice } from "../utils/productHelpers.js";
 
@@ -64,9 +63,6 @@ export default function Cart({
   onShopAll,
   onUpdateQuantity,
 }) {
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
   // Calculate the current cart total from product price × quantity.
   const total = cartItems.reduce(
     (sum, item) => sum + parsePrice(item.product.price) * item.quantity,
