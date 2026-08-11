@@ -14,6 +14,18 @@ const TOP_LEVEL_ROUTES = {
   "In-Store promotions": "/in-store-promotions",
 };
 
+const BEER_CIDER_ITEM_PAGES = {
+  Pilsner: "pilsner",
+  "Dark Lager": "dark-lager",
+  Helles: "helles",
+  "Pale Ale": "pale-ale",
+  IPA: "ipa",
+  "Stout & Porter": "stout-porter",
+  Apple: "apple-cider",
+  Pear: "pear-cider",
+  "Fruit Cider": "fruit-cider",
+};
+
 const mobileNavLinks = [
   "Offers & Services",
   "Beer & Cider",
@@ -176,6 +188,12 @@ export default function Navbar({ cartCount = 0, products = [], user }) {
   const desktopSearchRef = useRef(null);
   const mobileSearchRef = useRef(null);
   const blurTimeoutRef = useRef(null);
+<<<<<<< HEAD
+=======
+
+  const menuTimeoutRef = useRef(null);
+
+>>>>>>> 4bd8f7492ebf23d4adc0520ec7fcd4d9717905b4
   const navigate = useNavigate();
   const { data: navMenus = [] } = useNavMenus();
   const { data: siteAssets = {} } = useSiteAssets();
@@ -186,7 +204,42 @@ export default function Navbar({ cartCount = 0, products = [], user }) {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+<<<<<<< HEAD
   useEffect(() => () => clearTimeout(blurTimeoutRef.current), []);
+=======
+  // ========================================
+  // CLEANUP
+  // ========================================
+
+  useEffect(() => {
+    return () => {
+      clearTimeout(blurTimeoutRef.current);
+      clearTimeout(menuTimeoutRef.current);
+    };
+  }, []);
+
+  // ========================================
+  // MEGA MENU HOVER
+  // ========================================
+
+  // A small delay before closing keeps the menu open while the cursor
+  // crosses the gap between the nav link and the dropdown panel below it.
+  const handleMenuEnter = (label) => {
+    clearTimeout(menuTimeoutRef.current);
+
+    setOpenMenu(label);
+  };
+
+  const handleMenuLeave = () => {
+    menuTimeoutRef.current = setTimeout(() => {
+      setOpenMenu(null);
+    }, 200);
+  };
+
+  // ========================================
+  // SEARCH
+  // ========================================
+>>>>>>> 4bd8f7492ebf23d4adc0520ec7fcd4d9717905b4
 
   const normalizedTerm = searchTerm.trim().toLowerCase();
   const searchResults = normalizedTerm
@@ -234,6 +287,8 @@ export default function Navbar({ cartCount = 0, products = [], user }) {
   };
 
   const closeMenus = () => {
+    clearTimeout(menuTimeoutRef.current);
+
     setOpenMenu(null);
     setMobileOpen(false);
   };
@@ -252,29 +307,57 @@ export default function Navbar({ cartCount = 0, products = [], user }) {
             />
           </Link>
 
+<<<<<<< HEAD
           <div className="hidden lg:flex gap-10">
+=======
+          {/* DESKTOP NAV */}
+
+          <div className="hidden lg:flex items-center gap-8">
+>>>>>>> 4bd8f7492ebf23d4adc0520ec7fcd4d9717905b4
             {navMenus.map((menu) => (
               <div
                 className="nav-item py-2"
                 key={menu.label}
+<<<<<<< HEAD
                 onMouseEnter={() => setOpenMenu(menu.label)}
                 onMouseLeave={() => setOpenMenu(null)}
+=======
+                onMouseEnter={() => handleMenuEnter(menu.label)}
+                onMouseLeave={handleMenuLeave}
+>>>>>>> 4bd8f7492ebf23d4adc0520ec7fcd4d9717905b4
               >
                 <Link
                   to={TOP_LEVEL_ROUTES[menu.label] || `/${slugify(menu.label)}`}
+<<<<<<< HEAD
                   className={`flex items-center gap-1.5 font-label-md text-label-md transition-colors tracking-wide ${openMenu === menu.label ? "text-primary" : "text-on-surface/80 hover:text-primary"}`}
+=======
+                  className={`flex items-center gap-1.5 font-label-md text-label-md transition-colors tracking-wide cursor-default ${
+                    openMenu === menu.label
+                      ? "text-primary"
+                      : "text-on-surface/80 hover:text-primary"
+                  }`}
+>>>>>>> 4bd8f7492ebf23d4adc0520ec7fcd4d9717905b4
                   onClick={closeMenus}
                 >
                   {menu.label}
                   <span
+<<<<<<< HEAD
                     className={`material-symbols-outlined text-[18px] opacity-50 transition-transform ${openMenu === menu.label ? "rotate-180" : ""}`}
+=======
+                    className={`material-symbols-outlined text-[18px] opacity-50 transition-transform cursor-pointer ${
+                      openMenu === menu.label ? "rotate-180" : ""
+                    }`}
+>>>>>>> 4bd8f7492ebf23d4adc0520ec7fcd4d9717905b4
                   >
                     expand_more
                   </span>
                 </Link>
 
                 {openMenu === menu.label && (
-                  <div className="mega-menu absolute left-margin-desktop right-margin-desktop top-[100%] pt-4">
+                  <div
+                    className="mega-menu absolute top-full left-0 right-0 pt-0"
+                    onMouseEnter={() => setOpenMenu(menu.label)}
+                  >
                     <div className="mega-menu-panel glass-panel border border-outline-variant/30 rounded-2xl p-10 grid grid-cols-4 gap-12 shadow-2xl">
                       {menu.columns.map((col) =>
                         col.items?.length > 0 ? (

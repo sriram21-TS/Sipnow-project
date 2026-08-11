@@ -14,17 +14,64 @@
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
 }
-.mega-menu {
+
+/* =========================================================
+   NAV ITEM
+   ========================================================= */
+
+.nav-item {
+  position: static !important;
+}
+
+.in-store-promotion-card > :first-child {
+  height: 12.75rem;
+  aspect-ratio: auto;
+}
+/* .mega-menu {
   opacity: 0;
   visibility: hidden;
   transform: translateY(10px);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-.nav-item:hover .mega-menu {
+
+} */
+
+/* =========================================================
+   MEGA MENU
+   ========================================================= */
+
+.mega-menu {
+  position: absolute !important;
+
+  top: 100% !important;
+  left: 0 !important;
+  right: 0 !important;
+
+  width: 100%;
+
+  z-index: 100;
+
   opacity: 1;
   visibility: visible;
+
   transform: translateY(0);
+
+  pointer-events: auto;
 }
+
+.mega-menu-panel {
+  width: calc(100% - 40px);
+
+  max-width: 1600px;
+
+  margin-left: auto;
+  margin-right: auto;
+
+  background: rgba(18, 17, 18, 0.98);
+
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
 .mega-menu-panel {
   background: rgba(18, 17, 18, 0.98);
 }
@@ -61,6 +108,7 @@
   mask-composite: exclude;
   pointer-events: none;
 }
+
 .badge-glow {
   animation: badge-pulse-glow 2.4s ease-in-out infinite;
 }

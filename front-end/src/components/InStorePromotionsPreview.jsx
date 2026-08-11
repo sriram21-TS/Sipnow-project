@@ -117,7 +117,7 @@ export default function InStorePromotionsPreview({ onAddToCart, onNavigate }) {
     });
   };
 
-  const products = inStorePromotions.slice(0, 10);
+  const products = inStorePromotions.slice(0, 15);
 
   return (
     <Reveal>
@@ -139,21 +139,23 @@ export default function InStorePromotionsPreview({ onAddToCart, onNavigate }) {
           </div>
 
           {/* Product Carousel */}
-          <div className="relative mt-8 md:mt-10">
+          <div className="mt-8 grid grid-cols-[3rem_minmax(0,1fr)_3rem] items-center gap-3 md:mt-10">
             {/* Left Arrow */}
             <button
               type="button"
               aria-label="Previous promotion"
               onClick={() => scrollByCard(-1)}
-              className="absolute left-1 top-1/2 z-20 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-outline-variant/40 bg-background text-2xl font-bold text-white shadow-lg transition-all duration-300 hover:bg-primary"
+              className="z-10 flex h-12 w-12 items-center justify-center rounded-full border border-outline-variant/40 bg-background text-on-surface shadow-lg transition-all duration-300 hover:border-primary hover:bg-primary hover:text-on-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
             >
-              ←
+              <span className="material-symbols-outlined" aria-hidden="true">
+                chevron_left
+              </span>
             </button>
 
             {/* Product Track */}
             <div
               ref={trackRef}
-              className="flex gap-6 overflow-x-auto scroll-smooth snap-x snap-mandatory scrollbar-hide select-none px-16"
+              className="flex gap-6 overflow-x-auto scroll-smooth snap-x snap-mandatory scrollbar-hide select-none"
               style={{
                 scrollbarWidth: "none",
                 msOverflowStyle: "none",
@@ -162,16 +164,14 @@ export default function InStorePromotionsPreview({ onAddToCart, onNavigate }) {
               {products.map((product) => (
                 <div
                   key={product.name}
-                  className="shrink-0 snap-start w-[280px] min-w-[280px] h-[400px]"
+                  className="h-[400px] w-[85%] shrink-0 snap-start sm:w-[calc((100%-1.5rem)/2)] lg:w-[calc((100%-3rem)/3)] xl:w-[calc((100%-6rem)/5)]"
                 >
-                  <div className="h-full w-full">
-                    <ProductCard
-                      className="h-full w-full"
-                      isAdded={addedProduct === product.name}
-                      onAdd={handleAddToCart}
-                      product={product}
-                    />
-                  </div>
+                  <ProductCard
+                    className="in-store-promotion-card h-full w-full"
+                    isAdded={addedProduct === product.name}
+                    onAdd={handleAddToCart}
+                    product={product}
+                  />
                 </div>
               ))}
             </div>
@@ -181,9 +181,11 @@ export default function InStorePromotionsPreview({ onAddToCart, onNavigate }) {
               type="button"
               aria-label="Next promotion"
               onClick={() => scrollByCard(1)}
-              className="absolute right-1 top-1/2 z-20 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-outline-variant/40 bg-background text-2xl font-bold text-white shadow-lg transition-all duration-300 hover:bg-primary"
+              className="z-10 flex h-12 w-12 items-center justify-center rounded-full border border-outline-variant/40 bg-background text-on-surface shadow-lg transition-all duration-300 hover:border-primary hover:bg-primary hover:text-on-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
             >
-              →
+              <span className="material-symbols-outlined" aria-hidden="true">
+                chevron_right
+              </span>
             </button>
           </div>
 
@@ -194,7 +196,7 @@ export default function InStorePromotionsPreview({ onAddToCart, onNavigate }) {
               onClick={() => onNavigate?.("in-store-promotions")}
               className="inline-flex items-center font-label-md transition-opacity hover:opacity-80"
             >
-              View Promotions →
+              View All Promotions →
             </button>
           </div>
 

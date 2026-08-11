@@ -2,12 +2,13 @@ import { useMemo } from "react";
 import { getSubtype } from "../utils/productHelpers.js";
 
 const GROUP_LABELS = {
+  beer: "Beer",
+  cider: "Cider",
   wine: "Wine",
   spirits: "Spirits",
-  beer: "Beer",
 };
 
-const GROUP_ORDER = ["wine", "spirits", "beer"];
+const GROUP_ORDER = ["beer", "cider", "wine", "spirits"];
 
 const PRICE_RANGES = [
   { key: "all", label: "All Prices" },
@@ -74,7 +75,6 @@ export default function ProductFilters({
           </button>
         )}
       </div>
-
       {!hideAlcoholType && (
         <>
           {/* TYPE OF ALCOHOL */}
