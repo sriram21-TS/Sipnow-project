@@ -24,8 +24,11 @@ import PremixPage from "./pages/PremixPage.jsx";
 import Profile from "./pages/Profile.jsx";
 import ShopAll from "./pages/ShopAll.jsx";
 import ZeroCategoryPage from "./pages/ZeroCategoryPage.jsx";
-
+import Members from "./pages/Members.jsx";
 import Spirits from "./pages/Spirits.jsx";
+import GiftCards from "./pages/GiftCards.jsx";
+import Clearance from "./pages/Clearance.jsx";
+import GeneralPromotions from "./pages/GeneralPromotions.jsx";
 // Safely read JSON data from localStorage. If the key is missing or
 // contains invalid JSON, return the provided fallback value.
 function readStored(key, fallback) {
@@ -184,6 +187,16 @@ export default function App() {
               />
             }
           />
+          <Route
+            path="/offers/general-promotions"
+            element={<GeneralPromotions />}
+          />
+
+          <Route path="/offers/gift-cards" element={<GiftCards />} />
+
+          <Route path="/offers/members" element={<Members />} />
+
+          <Route path="/offers/clearance" element={<Clearance />} />
           <Route
             path="/profile"
             element={
@@ -411,17 +424,6 @@ export default function App() {
                 onBack={() => goToPage("/")}
                 products={products}
                 productsLoading={productsLoading}
-              />
-            }
-          />
-          <Route
-            path="/spirits"
-            element={
-              <CategoryPage
-                categoryKey="spirits"
-                onAddToCart={addToCart}
-                onBack={goHome}
-                products={products}
               />
             }
           />

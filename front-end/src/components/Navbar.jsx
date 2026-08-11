@@ -44,7 +44,6 @@ function slugify(text) {
 // ========================================
 
 function getMenuItemRoute(menuLabel, columnHeading, item) {
-  const columnSlug = slugify(columnHeading);
   const itemSlug = slugify(item);
 
   // ======================================
@@ -398,7 +397,7 @@ export default function Navbar({ cartCount = 0, products = [], user }) {
 
           {/* DESKTOP NAV */}
 
-          <div className="hidden lg:flex gap-10">
+          <div className="hidden lg:flex items-center gap-8">
             {navMenus.map((menu) => (
               <div
                 className="nav-item py-2"
@@ -406,15 +405,12 @@ export default function Navbar({ cartCount = 0, products = [], user }) {
                 onMouseEnter={() => {
                   setOpenMenu(menu.label);
                 }}
-                onMouseLeave={() => {
-                  setOpenMenu(null);
-                }}
               >
                 {/* TOP LEVEL LINK */}
 
                 <Link
                   to={TOP_LEVEL_ROUTES[menu.label] || `/${slugify(menu.label)}`}
-                  className={`flex items-center gap-1.5 font-label-md text-label-md transition-colors tracking-wide ${
+                  className={`flex items-center gap-1.5 font-label-md text-label-md transition-colors tracking-wide cursor-default ${
                     openMenu === menu.label
                       ? "text-primary"
                       : "text-on-surface/80 hover:text-primary"
@@ -424,7 +420,7 @@ export default function Navbar({ cartCount = 0, products = [], user }) {
                   {menu.label}
 
                   <span
-                    className={`material-symbols-outlined text-[18px] opacity-50 transition-transform ${
+                    className={`material-symbols-outlined text-[18px] opacity-50 transition-transform cursor-pointer ${
                       openMenu === menu.label ? "rotate-180" : ""
                     }`}
                   >
@@ -433,7 +429,10 @@ export default function Navbar({ cartCount = 0, products = [], user }) {
                 </Link>
 
                 {openMenu === menu.label && (
-                  <div className="mega-menu absolute left-margin-desktop right-margin-desktop top-[100%] pt-4">
+                  <div
+                    className="mega-menu absolute top-full left-0 right-0 pt-0"
+                    onMouseEnter={() => setOpenMenu(menu.label)}
+                  >
                     <div className="mega-menu-panel glass-panel border border-outline-variant/30 rounded-2xl p-10 grid grid-cols-4 gap-12 shadow-2xl">
                       {menu.columns.map((col) =>
                         col.items?.length > 0 ? (
