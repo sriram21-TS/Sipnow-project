@@ -377,14 +377,7 @@ export default function App() {
           />
           <Route
             path="/beer-cider"
-            element={
-              <CategoryPage
-                categoryKey="beer"
-                onAddToCart={addToCart}
-                onBack={goHome}
-                products={products}
-              />
-            }
+            element={<Navigate to="/beer-cider/pilsner" replace />}
           />
           <Route
             path="/beer-cider/:categoryKey"
