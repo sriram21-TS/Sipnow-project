@@ -44,7 +44,6 @@ function slugify(text) {
 // ========================================
 
 function getMenuItemRoute(menuLabel, columnHeading, item) {
-  const columnSlug = slugify(columnHeading);
   const itemSlug = slugify(item);
 
   // ======================================
@@ -251,6 +250,8 @@ export default function Navbar({ cartCount = 0, products = [], user }) {
 
   const blurTimeoutRef = useRef(null);
 
+  const menuTimeoutRef = useRef(null);
+
   const navigate = useNavigate();
 
   const { data: navMenus = [] } = useNavMenus();
@@ -280,8 +281,27 @@ export default function Navbar({ cartCount = 0, products = [], user }) {
   useEffect(() => {
     return () => {
       clearTimeout(blurTimeoutRef.current);
+      clearTimeout(menuTimeoutRef.current);
     };
   }, []);
+
+  // ========================================
+  // MEGA MENU HOVER
+  // ========================================
+
+  // A small delay before closing keeps the menu open while the cursor
+  // crosses the gap between the nav link and the dropdown panel below it.
+  const handleMenuEnter = (label) => {
+    clearTimeout(menuTimeoutRef.current);
+
+    setOpenMenu(label);
+  };
+
+  const handleMenuLeave = () => {
+    menuTimeoutRef.current = setTimeout(() => {
+      setOpenMenu(null);
+    }, 200);
+  };
 
   // ========================================
   // SEARCH
@@ -366,6 +386,8 @@ export default function Navbar({ cartCount = 0, products = [], user }) {
   // ========================================
 
   const closeMenus = () => {
+    clearTimeout(menuTimeoutRef.current);
+
     setOpenMenu(null);
     setMobileOpen(false);
   };
@@ -403,12 +425,8 @@ export default function Navbar({ cartCount = 0, products = [], user }) {
               <div
                 className="nav-item py-2"
                 key={menu.label}
-                onMouseEnter={() => {
-                  setOpenMenu(menu.label);
-                }}
-                onMouseLeave={() => {
-                  setOpenMenu(null);
-                }}
+                onMouseEnter={() => handleMenuEnter(menu.label)}
+                onMouseLeave={handleMenuLeave}
               >
                 {/* TOP LEVEL LINK */}
 

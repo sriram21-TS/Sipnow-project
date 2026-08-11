@@ -466,6 +466,7 @@ export default function App() {
               />
             }
           />
+>>>>>>> 89599af5c8bea1f03835a263dcf3027a53b8495f
 
           <Route path="*" element={<Navigate replace to="/" />} />
         </Routes>
