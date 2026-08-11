@@ -35,6 +35,21 @@ const SORT_OPTIONS = [
 ];
 
 const SUBCATEGORIES = {
+<<<<<<< HEAD
+=======
+  all: {
+    key: "all",
+    title: "Zero % Alcohol",
+    keyword: "all",
+    subtitle:
+      "Explore our complete collection of non-alcoholic wines, beers, spirits, premixes, and ciders.",
+    emptyMessage:
+      "No zero % alcohol products found matching your filter criteria.",
+    bannerTag: "Zero Alcohol Collection",
+    description:
+      "Enjoy your favourite drinks with zero alcohol. Explore our complete selection of non-alcoholic wines, beers, spirits, premixes, and ciders.",
+  },
+>>>>>>> fd18616e0be65897c1a064f9612faa5b966076aa
   wine: {
     title: "Zero % Alcohol Wine",
     keyword: "wine",
@@ -95,7 +110,13 @@ export default function ZeroCategoryPage({
     subcategoryProp || params.subcategory || params.categoryKey || "";
   if (!rawSub && location.pathname) {
     const parts = location.pathname.split("/").filter(Boolean);
+<<<<<<< HEAD
     rawSub = parts[parts.length - 1] || "wine";
+=======
+    const lastPart = parts[parts.length - 1] || "all";
+    rawSub =
+      lastPart === "zero-alcohol" || lastPart === "zero" ? "all" : lastPart;
+>>>>>>> fd18616e0be65897c1a064f9612faa5b966076aa
   }
 
   const subKey =
@@ -187,7 +208,18 @@ export default function ZeroCategoryPage({
     }
 
     return sorted;
+<<<<<<< HEAD
   }, [products, config.keyword, priceRange, rating, sortBy]);
+=======
+  }, [
+    baseProducts,
+    config.keyword,
+    selectedCategories,
+    priceRange,
+    rating,
+    sortBy,
+  ]);
+>>>>>>> fd18616e0be65897c1a064f9612faa5b966076aa
 
   const clearFilters = () => {
     setPriceRange("all");
@@ -234,8 +266,15 @@ export default function ZeroCategoryPage({
           <aside className="lg:w-72 shrink-0">
             <div className="lg:sticky lg:top-32 glass-panel rounded-2xl border border-primary/20 p-6">
               {/* FILTER HEADER */}
+<<<<<<< HEAD
               <div className="flex items-center justify-between mb-8">
                 <h2 className="font-headline-sm text-xl">Filters</h2>
+=======
+              <div className="flex items-center justify-between">
+                <h2 className="font-headline-sm text-xl text-on-surface">
+                  Filters
+                </h2>
+>>>>>>> fd18616e0be65897c1a064f9612faa5b966076aa
 
                 <button
                   type="button"
