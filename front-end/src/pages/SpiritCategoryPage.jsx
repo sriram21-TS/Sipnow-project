@@ -190,7 +190,7 @@ export default function SpiritCategoryPage({
           <div className="flex-1 min-w-0">
             {/* SECTION HEADER */}
 
-            <div className="flex items-center justify-between mb-6">
+            <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
               <p className="text-sm text-on-surface-variant">
                 {productsLoading
                   ? "Loading products…"

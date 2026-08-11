@@ -120,18 +120,28 @@ export default function InStorePromotionsPreview({ onAddToCart, onNavigate }) {
   const products = inStorePromotions.slice(0, 15);
 
   return (
-    <Reveal>
+    <Reveal className="py-24 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
       <section className="relative w-full overflow-hidden">
-        <div className="mx-auto w-[92%] max-w-[1500px]">
+        <div>
           {/* Section Header */}
+<<<<<<< HEAD
           <div className="flex items-end justify-between gap-6">
             <div>
               <p className="font-label-md uppercase tracking-[0.28em]">
                 Offers & Services
               </p>
+=======
+          <div className="mb-12 space-y-2">
+            <p className="text-on-surface-variant font-label-md uppercase tracking-[0.28em] text-xs">
+              Offers & Services
+            </p>
+>>>>>>> 25010d8d49048d258762fa242edf9dd757077704
 
-              <h2 className="font-display-lg text-4xl">In-Store Promotions</h2>
+            <h2 className="font-display-lg text-4xl text-on-surface">
+              In-Store Promotions
+            </h2>
 
+<<<<<<< HEAD
               <p className="text-on-surface-variant font-body-lg">
                 Exclusive offers available at your local SipNow store.
               </p>
@@ -143,6 +153,11 @@ export default function InStorePromotionsPreview({ onAddToCart, onNavigate }) {
             >
               View All Promotions →
             </button>
+=======
+            <p className="text-on-surface-variant font-body-lg">
+              Exclusive offers available at your local SipNow store.
+            </p>
+>>>>>>> 25010d8d49048d258762fa242edf9dd757077704
           </div>
 
           {/* Product Carousel */}

@@ -27,10 +27,11 @@ import Profile from "./pages/Profile.jsx";
 import ShopAll from "./pages/ShopAll.jsx";
 import ZeroCategoryPage from "./pages/ZeroCategoryPage.jsx";
 import Members from "./pages/Members.jsx";
-import Spirits from "./pages/Spirits.jsx";
+import Whisky from "./pages/Whisky.jsx";
 import GiftCards from "./pages/GiftCards.jsx";
 import Clearance from "./pages/Clearance.jsx";
 import GeneralPromotions from "./pages/GeneralPromotions.jsx";
+import Spirits from "./pages/Spirits.jsx";
 
 // Safely read JSON data from localStorage. If the key is missing or
 // contains invalid JSON, return the provided fallback value.
@@ -298,7 +299,43 @@ export default function App() {
             path="/zero-alcohol"
             element={
               <ZeroCategoryPage
-                subcategory="wine"
+                subcategory="all"
+                onAddToCart={addToCart}
+                onBack={goHome}
+                products={products}
+                productsLoading={productsLoading}
+              />
+            }
+          />
+          <Route
+            path="/zero-alcohol/all"
+            element={
+              <ZeroCategoryPage
+                subcategory="all"
+                onAddToCart={addToCart}
+                onBack={goHome}
+                products={products}
+                productsLoading={productsLoading}
+              />
+            }
+          />
+          <Route
+            path="/zero"
+            element={
+              <ZeroCategoryPage
+                subcategory="all"
+                onAddToCart={addToCart}
+                onBack={goHome}
+                products={products}
+                productsLoading={productsLoading}
+              />
+            }
+          />
+          <Route
+            path="/zero/all"
+            element={
+              <ZeroCategoryPage
+                subcategory="all"
                 onAddToCart={addToCart}
                 onBack={goHome}
                 products={products}
@@ -495,6 +532,18 @@ export default function App() {
               <Spirits
                 onAddToCart={addToCart}
                 onBack={() => goToPage("/")}
+                products={products}
+                productsLoading={productsLoading}
+              />
+            }
+          />
+
+          <Route
+            path="/whisky"
+            element={
+              <Whisky
+                onAddToCart={addToCart}
+                onBack={goHome}
                 products={products}
                 productsLoading={productsLoading}
               />
