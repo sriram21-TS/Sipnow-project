@@ -16,8 +16,29 @@ import { formatCurrency, parsePrice } from "../utils/productHelpers.js";
  */
 const NAME_PATTERN = /^[A-Za-z ]{2,50}$/;
 
+/*
+ * Coupon codes:
+ * - SAVE10 = 10% discount
+ * - SAVE20 = 20% discount
+ * - WELCOME15 = 15% discount
+ */
+const COUPONS = {
+  SAVE10: 10,
+  SAVE20: 20,
+  WELCOME15: 15,
+};
+
+/*
+ * City:
+ * - Letters and spaces only
+ * - Minimum 2 characters
+ * - Maximum 50 characters
+ */
 const CITY_PATTERN = /^[A-Za-z ]{2,50}$/;
 
+/*
+ * Australian cities supported by the checkout.
+ */
 const VALID_CITIES = [
   "Sydney",
   "Melbourne",
@@ -41,7 +62,15 @@ const VALID_CITIES = [
   "Mackay",
 ];
 
-const ADDRESS_PATTERN = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z0-9\s,./#-]{10,100}$/;
+/*
+ * Address:
+ * - Must contain at least one letter
+ * - Must contain at least one number
+ * - 10 to 100 characters
+ * - Allows normal address characters
+ */
+const ADDRESS_PATTERN =
+  /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z0-9\s,./#-]{10,100}$/;
 
 /*
  * ============================================================
@@ -51,25 +80,35 @@ const ADDRESS_PATTERN = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z0-9\s,./#-]{10,100}$/;
 
 export default function Checkout({ cartItems, user, onOrderComplete }) {
   /*
-   * Delivery or pickup.
+   * ==========================================================
+   * FULFILMENT
+   * ==========================================================
    */
+
   const [fulfilment, setFulfilment] = useState("delivery");
 
   /*
-   * Coupon and gift card values.
+   * ==========================================================
+   * COUPON / GIFT CARD
+   * ==========================================================
    */
-const [couponCode, setCouponCode] = useState("");
-const [giftCardCode, setGiftCardCode] = useState("");
-const [couponDiscount, setCouponDiscount] = useState(0);
+
+  const [couponCode, setCouponCode] = useState("");
+  const [giftCardCode, setGiftCardCode] = useState("");
+  const [couponDiscount, setCouponDiscount] = useState(0);
+
   /*
-   * Message displayed when coupon/gift card
-   * is applied.
+   * Message displayed after applying
+   * coupon or gift card.
    */
   const [codeNotice, setCodeNotice] = useState("");
 
   /*
-   * Checkout form values.
+   * ==========================================================
+   * CHECKOUT FORM VALUES
+   * ==========================================================
    */
+
   const [values, setValues] = useState({
     name: user?.name ?? "",
     phone: user?.mobile ?? "",
@@ -78,8 +117,11 @@ const [couponDiscount, setCouponDiscount] = useState(0);
   });
 
   /*
-   * Validation errors.
+   * ==========================================================
+   * VALIDATION ERRORS
+   * ==========================================================
    */
+
   const [errors, setErrors] = useState({});
 
   /*
@@ -92,8 +134,16 @@ const [couponDiscount, setCouponDiscount] = useState(0);
     (sum, item) => sum + parsePrice(item.product.price) * item.quantity,
     0
   );
+
+  /*
+   * Calculate coupon discount.
+   */
   const discount = (subtotal * couponDiscount) / 100;
-const total = subtotal - discount;
+
+  /*
+   * Calculate final order total.
+   */
+  const total = subtotal - discount;
 
   /*
    * ==========================================================
@@ -119,25 +169,17 @@ const total = subtotal - discount;
       nextErrors.name = "Name can contain letters and spaces only.";
     }
 
-    const COUPONS = {
-  SAVE10: 10,
-  SAVE20: 20,
-  WELCOME15: 15,
-};
     /*
      * --------------------------------------------------------
      * PHONE VALIDATION
      * --------------------------------------------------------
      *
-     * Remove spaces before checking the number.
-     *
-     * Example:
-     * 98765 43210
-     * becomes:
-     * 9876543210
+     * Exactly 9 digits.
      */
 
-    if (!/^[6-9]\d{8}$/.test(values.phone.replace(/\s/g, ""))) {
+    const phone = values.phone.replace(/\s/g, "");
+
+    if (!/^[6-9]\d{8}$/.test(phone)) {
       nextErrors.phone = "Enter a valid 9-digit phone number.";
     }
 
@@ -146,7 +188,7 @@ const total = subtotal - discount;
      * DELIVERY ADDRESS
      * --------------------------------------------------------
      *
-     * Address and city are only required for delivery.
+     * Address is only required for delivery.
      */
 
     if (
@@ -156,6 +198,7 @@ const total = subtotal - discount;
       nextErrors.address =
         "Enter a valid delivery address with a house/building number.";
     }
+
     /*
      * --------------------------------------------------------
      * CITY
@@ -171,7 +214,7 @@ const total = subtotal - discount;
           (city) => city.toLowerCase() === enteredCity.toLowerCase()
         ))
     ) {
-      nextErrors.city = "Enter a valid city name.";
+      nextErrors.city = "Enter a valid Australian city name.";
     }
 
     /*
@@ -194,29 +237,38 @@ const total = subtotal - discount;
     const order = {
       cartItems,
       couponCode: couponCode.trim(),
+      couponDiscount,
+      discount,
       fulfilment,
       giftCardCode: giftCardCode.trim(),
       subtotal,
+      total,
       placedAt: new Date().toISOString(),
     };
 
     /*
-     * Read previous orders.
+     * ========================================================
+     * READ PREVIOUS ORDERS
+     * ========================================================
      */
+
     const previousOrders = JSON.parse(
       window.localStorage.getItem("sipnow-orders") || "[]"
     );
 
     /*
-     * Add the new order to the beginning.
+     * ========================================================
+     * SAVE ORDER HISTORY
+     * ========================================================
      */
+
     window.localStorage.setItem(
       "sipnow-orders",
       JSON.stringify([order, ...previousOrders])
     );
 
     /*
-     * Save the most recent order.
+     * Save most recent order.
      */
     window.localStorage.setItem("sipnow-last-order", JSON.stringify(order));
 
@@ -250,23 +302,44 @@ const total = subtotal - discount;
 
     let cleanedValue = value;
 
+    /*
+     * Name:
+     * Remove numbers and special characters.
+     */
     if (name === "name") {
       cleanedValue = value.replace(/[^A-Za-z ]/g, "");
     }
 
+    /*
+     * Phone:
+     * Allow numbers only and maximum 9 digits.
+     */
     if (name === "phone") {
       cleanedValue = value.replace(/\D/g, "").slice(0, 9);
     }
 
+    /*
+     * City:
+     * Allow letters and spaces only.
+     */
     if (name === "city") {
       cleanedValue = value.replace(/[^A-Za-z ]/g, "");
     }
+
+    /*
+     * Address:
+     * Keep normal address characters.
+     */
 
     setValues((current) => ({
       ...current,
       [name]: cleanedValue,
     }));
 
+    /*
+     * Remove validation error when
+     * the user starts correcting the field.
+     */
     if (errors[name]) {
       setErrors((current) => {
         const next = { ...current };
@@ -278,38 +351,70 @@ const total = subtotal - discount;
 
   /*
    * ==========================================================
-   * COUPON / GIFT CARD
+   * APPLY COUPON
    * ==========================================================
-   *
-   * Current implementation only checks whether
-   * the user entered something.
    */
 
   const applyCoupon = () => {
-  const code = couponCode.trim().toUpperCase();
+    const code = couponCode.trim().toUpperCase();
 
-  if (!code) {
-    setCodeNotice("Please enter a coupon code.");
-    setCouponDiscount(0);
-    return;
-  }
+    /*
+     * Empty coupon.
+     */
+    if (!code) {
+      setCodeNotice("Please enter a coupon code.");
+      setCouponDiscount(0);
+      return;
+    }
 
-  if (!/^[A-Z0-9-]{3,20}$/.test(code)) {
-    setCodeNotice("Enter a valid coupon code.");
-    setCouponDiscount(0);
-    return;
-  }
+    /*
+     * Coupon format validation.
+     */
+    if (!/^[A-Z0-9-]{3,20}$/.test(code)) {
+      setCodeNotice("Enter a valid coupon code.");
+      setCouponDiscount(0);
+      return;
+    }
 
-  if (!COUPONS[code]) {
-    setCodeNotice("Invalid or expired coupon code.");
-    setCouponDiscount(0);
-    return;
-  }
+    /*
+     * Check whether the coupon exists.
+     */
+    if (!COUPONS[code]) {
+      setCodeNotice("Invalid or expired coupon code.");
+      setCouponDiscount(0);
+      return;
+    }
 
-  setCouponCode(code);
-  setCouponDiscount(COUPONS[code]);
-  setCodeNotice(`Coupon ${code} applied successfully.`);
-};
+    /*
+     * Apply coupon.
+     */
+    setCouponCode(code);
+    setCouponDiscount(COUPONS[code]);
+    setCodeNotice(`Coupon ${code} applied successfully.`);
+  };
+
+  /*
+   * ==========================================================
+   * APPLY GIFT CARD
+   * ==========================================================
+   */
+
+  const applyGiftCard = () => {
+    const code = giftCardCode.trim();
+
+    /*
+     * Empty gift card.
+     */
+    if (!code) {
+      setCodeNotice("Enter a gift card code first.");
+      return;
+    }
+
+    /*
+     * For now, save the gift card code to the order.
+     */
+    setCodeNotice("Gift card saved for this order.");
+  };
 
   /*
    * ==========================================================
@@ -329,7 +434,10 @@ const total = subtotal - discount;
             Order summary
           </h1>
 
-          {/* Cart items */}
+          {/* ====================================================
+              CART ITEMS
+              ==================================================== */}
+
           <div className="mt-3">
             {cartItems.map(({ product, quantity }) => (
               <div
@@ -351,13 +459,18 @@ const total = subtotal - discount;
                 </div>
 
                 <p className="font-headline-md text-primary">
-                  {formatCurrency(parsePrice(product.price) * quantity)}
+                  {formatCurrency(
+                    parsePrice(product.price) * quantity
+                  )}
                 </p>
               </div>
             ))}
           </div>
 
-          {/* Coupon and gift card */}
+          {/* ====================================================
+              COUPON AND GIFT CARD
+              ==================================================== */}
+
           <div className="mt-5 space-y-3 border-t border-primary/10 pt-5">
             {/* Coupon */}
             <div className="flex gap-2">
@@ -370,12 +483,12 @@ const total = subtotal - discount;
               />
 
               <button
-  className="rounded-full px-5 text-sm text-white primary-gradient"
-  onClick={applyCoupon}
-  type="button"
->
-  Apply
-</button>
+                className="rounded-full px-5 text-sm text-white primary-gradient"
+                onClick={applyCoupon}
+                type="button"
+              >
+                Apply
+              </button>
             </div>
 
             {/* Gift card */}
@@ -390,17 +503,22 @@ const total = subtotal - discount;
 
               <button
                 className="rounded-full px-5 text-sm text-white primary-gradient"
-                onClick={() => applyCode(giftCardCode, "Gift card code")}
+                onClick={applyGiftCard}
                 type="button"
               >
                 Apply
               </button>
             </div>
 
-            {codeNotice && <p className="text-xs text-primary">{codeNotice}</p>}
+            {codeNotice && (
+              <p className="text-xs text-primary">{codeNotice}</p>
+            )}
           </div>
 
-          {/* Contact details */}
+          {/* ====================================================
+              CONTACT DETAILS
+              ==================================================== */}
+
           <div className="mt-6 border-t border-primary/10 pt-6">
             <h2 className="font-headline-md text-lg uppercase tracking-[0.12em]">
               Contact details
@@ -423,43 +541,59 @@ const total = subtotal - discount;
                 />
 
                 {errors.name && (
-                  <span className="text-xs text-error">{errors.name}</span>
+                  <span className="text-xs text-error">
+                    {errors.name}
+                  </span>
                 )}
               </label>
 
               {/* Mobile */}
               <label>
-                <span className="mb-2 block text-sm">Mobile number</span>
+                <span className="mb-2 block text-sm">
+                  Mobile number
+                </span>
 
                 <input
                   className={inputClass("phone")}
                   name="phone"
                   onChange={update}
                   value={values.phone}
+                  inputMode="numeric"
+                  maxLength={9}
                 />
 
                 {errors.phone && (
-                  <span className="text-xs text-error">{errors.phone}</span>
+                  <span className="text-xs text-error">
+                    {errors.phone}
+                  </span>
                 )}
               </label>
             </div>
 
-            {/* Delivery-only fields */}
+            {/* ====================================================
+                DELIVERY-ONLY FIELDS
+                ==================================================== */}
+
             {fulfilment === "delivery" && (
               <div className="mt-4 grid gap-4 sm:grid-cols-2">
                 {/* Address */}
                 <label>
-                  <span className="mb-2 block text-sm">Delivery address</span>
+                  <span className="mb-2 block text-sm">
+                    Delivery address
+                  </span>
 
                   <input
                     className={inputClass("address")}
                     name="address"
                     onChange={update}
                     value={values.address}
+                    placeholder="123 George Street, Sydney"
                   />
 
                   {errors.address && (
-                    <span className="text-xs text-error">{errors.address}</span>
+                    <span className="text-xs text-error">
+                      {errors.address}
+                    </span>
                   )}
                 </label>
 
@@ -472,17 +606,23 @@ const total = subtotal - discount;
                     name="city"
                     onChange={update}
                     value={values.city}
+                    placeholder="Sydney"
                   />
 
                   {errors.city && (
-                    <span className="text-xs text-error">{errors.city}</span>
+                    <span className="text-xs text-error">
+                      {errors.city}
+                    </span>
                   )}
                 </label>
               </div>
             )}
           </div>
 
-          {/* Place order */}
+          {/* ====================================================
+              PLACE ORDER
+              ==================================================== */}
+
           <button
             className="mt-7 w-full rounded-lg py-3 text-sm uppercase tracking-widest text-white primary-gradient"
             type="submit"
@@ -500,10 +640,16 @@ const total = subtotal - discount;
             How would you like your order?
           </h2>
 
+          {/* Fulfilment */}
           <div className="mt-5 space-y-3">
             {[
               ["delivery", "local_shipping", "Delivery", "Paid by card"],
-              ["pickup", "storefront", "Pickup", "Pay cash or card in store"],
+              [
+                "pickup",
+                "storefront",
+                "Pickup",
+                "Pay cash or card in store",
+              ],
             ].map(([value, icon, title, text]) => (
               <button
                 aria-pressed={fulfilment === value}
@@ -531,25 +677,45 @@ const total = subtotal - discount;
             ))}
           </div>
 
-          {/* Order totals */}
+          {/* ====================================================
+              ORDER TOTALS
+              ==================================================== */}
+
           <div className="mt-6 space-y-3 border-t border-primary/10 pt-5 text-sm">
+            {/* Subtotal */}
             <div className="flex justify-between text-on-surface-variant">
               <span>Subtotal</span>
+
               <span>{formatCurrency(subtotal)}</span>
             </div>
 
+            {/* Discount */}
+            {couponDiscount > 0 && (
+              <div className="flex justify-between text-on-surface-variant">
+                <span>Discount ({couponDiscount}%)</span>
+
+                <span>-{formatCurrency(discount)}</span>
+              </div>
+            )}
+
+            {/* Delivery */}
             <div className="flex justify-between text-on-surface-variant">
               <span>Delivery</span>
 
               <span>
-                {fulfilment === "delivery" ? "To be confirmed" : "Free"}
+                {fulfilment === "delivery"
+                  ? "To be confirmed"
+                  : "Free"}
               </span>
             </div>
 
+            {/* Total */}
             <div className="flex justify-between border-t border-primary/10 pt-3 font-headline-md text-lg">
               <span>Total</span>
 
-              <span className="text-primary">{formatCurrency(subtotal)}</span>
+              <span className="text-primary">
+                {formatCurrency(total)}
+              </span>
             </div>
           </div>
         </aside>
