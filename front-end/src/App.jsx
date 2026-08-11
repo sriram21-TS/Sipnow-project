@@ -15,6 +15,7 @@ import QuizModal from "./components/QuizModal.jsx";
 import BeerCiderCategoryPage from "./pages/BeerCiderCategoryPage.jsx";
 import { useProducts } from "./hooks/useProducts.js";
 import Wine from "./pages/Wine.jsx";
+import Spirits from "./pages/Spirits.jsx";
 
 import Auth from "./pages/Auth.jsx";
 import Cart from "./pages/Cart.jsx";
@@ -26,10 +27,6 @@ import PremixPage from "./pages/PremixPage.jsx";
 import Profile from "./pages/Profile.jsx";
 import ShopAll from "./pages/ShopAll.jsx";
 import ZeroCategoryPage from "./pages/ZeroCategoryPage.jsx";
-<<<<<<< HEAD
-
-=======
->>>>>>> 1a799397b61f218dfda2894109cdc4836d448048
 import Members from "./pages/Members.jsx";
 import Whisky from "./pages/Whisky.jsx";
 import GiftCards from "./pages/GiftCards.jsx";
@@ -212,6 +209,18 @@ export default function App() {
             path="/offers/general-promotions"
             element={<GeneralPromotions />}
           />
+          <Route
+           path="/spirits/whisky"
+           element={
+              <Whisky
+           onAddToCart={addToCart}
+           onBack={goHome}
+           products={products}
+           productsLoading={productsLoading}
+        />
+        }
+        
+       />
 
           <Route path="/offers/gift-cards" element={<GiftCards />} />
 
@@ -506,6 +515,19 @@ export default function App() {
           />
 
           <Route
+            path="/whisky/:categoryKey"
+            element={
+              <Whisky
+                onAddToCart={addToCart}
+                onBack={goHome}
+                products={products}
+                productsLoading={productsLoading}
+                cartItems={cartItems}
+                onRemove={removeFromCart}
+              />
+            }
+          />
+          <Route
             path="/whisky"
             element={
               <Whisky
@@ -513,16 +535,34 @@ export default function App() {
                 onBack={goHome}
                 products={products}
                 productsLoading={productsLoading}
+                cartItems={cartItems}
+                onRemove={removeFromCart}
               />
             }
           />
           <Route
             path="/spirits/whisky/:categoryKey"
             element={
-              <CategoryPage
+              <Whisky
                 onAddToCart={addToCart}
                 onBack={goHome}
                 products={products}
+                productsLoading={productsLoading}
+                cartItems={cartItems}
+                onRemove={removeFromCart}
+              />
+            }
+          />
+          <Route
+            path="/spirits/whisky"
+            element={
+              <Whisky
+                onAddToCart={addToCart}
+                onBack={goHome}
+                products={products}
+                productsLoading={productsLoading}
+                cartItems={cartItems}
+                onRemove={removeFromCart}
               />
             }
           />

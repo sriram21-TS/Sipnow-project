@@ -1,5 +1,5 @@
-import { useMemo, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useEffect, useMemo, useState } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 import PageHero from "../components/PageHero.jsx";
 import ProductFilters from "../components/ProductFilters.jsx";
@@ -8,6 +8,18 @@ import Reveal from "../components/Reveal.jsx";
 
 import { useAddToCartFeedback } from "../hooks/useAddToCartFeedback.js";
 import { parsePrice } from "../utils/productHelpers.js";
+
+const WHISKY_TYPE_REDIRECTS = {
+  whisky: "/spirits/whisky",
+  whiskey: "/spirits/whisky",
+  "other whisky": "/spirits/whisky/other-whisky",
+  "scotch whisky": "/spirits/whisky/scotch-whisky",
+  "japanese whisky": "/spirits/whisky/japanese-whisky",
+  "irish whisky": "/spirits/whisky/irish-whisky",
+  "american whisky": "/spirits/whisky/american-whisky",
+  "australian whisky": "/spirits/whisky/australian-whisky",
+  "austrialian whisky": "/spirits/whisky/australian-whisky",
+};
 
 // =====================================================
 // PRICE RANGE
@@ -125,10 +137,18 @@ export default function Spirits({
   // ===================================================
 
   const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
 
   const selectedType = searchParams.get("type");
-
   const normalizedSelectedType = selectedType?.toLowerCase().trim() || "";
+
+  useEffect(() => {
+    if (WHISKY_TYPE_REDIRECTS[normalizedSelectedType]) {
+      navigate(`/${WHISKY_TYPE_REDIRECTS[normalizedSelectedType]}`, {
+        replace: true,
+      });
+    }
+  }, [normalizedSelectedType, navigate]);
 
   // ===================================================
   // CART
@@ -165,13 +185,12 @@ export default function Spirits({
 
     return [...existingSpirits, ...DUMMY_SPIRIT_PRODUCTS];
   }, [products]);
-<<<<<<< HEAD
+
 
   // ===================================================
   // GET AVAILABLE TYPES
   // ===================================================
-=======
->>>>>>> 1a799397b61f218dfda2894109cdc4836d448048
+
 
   // ===================================================
   // TYPE FILTER

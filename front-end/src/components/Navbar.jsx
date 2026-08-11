@@ -94,8 +94,22 @@ function getMenuItemRoute(menuLabel, columnHeading, item) {
   if (menuLabel === "Spirits") {
     const spiritType = item.toLowerCase().trim();
 
-    if (spiritType === "whisky" || spiritType === "whiskey") {
-      return "/whisky";
+    const whiskyTypes = [
+      "whisky",
+      "whiskey",
+      "other whisky",
+      "scotch whisky",
+      "japanese whisky",
+      "irish whisky",
+      "american whisky",
+      "australian whisky",
+      "austrialian whisky",
+    ];
+
+    if (whiskyTypes.includes(spiritType)) {
+      return spiritType === "whisky" || spiritType === "whiskey"
+        ? "/spirits/whisky"
+        : `/spirits/whisky/${itemSlug}`;
     }
 
     return `/spirits?type=${encodeURIComponent(spiritType)}`;
@@ -269,10 +283,6 @@ export default function Navbar({ cartCount = 0, products = [], user }) {
   const blurTimeoutRef = useRef(null);
 
   const menuTimeoutRef = useRef(null);
-<<<<<<< HEAD
-=======
-
->>>>>>> 1a799397b61f218dfda2894109cdc4836d448048
   const navigate = useNavigate();
 
   const { data: navMenus = [] } = useNavMenus();

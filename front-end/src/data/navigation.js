@@ -64,7 +64,7 @@ export const navMenus = [
           "Japanese Whisky",
           "Irish Whisky",
           "American Whisky",
-          "Austrialian Whisky",
+          "Australian Whisky",
         ],
       },
     ],

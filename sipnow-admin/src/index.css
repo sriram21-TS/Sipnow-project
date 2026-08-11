@@ -1,13 +1,309 @@
-@import url("https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Inter:wght@400;500;600&display=swap");
-@import "tailwindcss";
+/* =========================================
+   WHISKY PAGE
+========================================= */
 
-@theme {
-  --color-primary: #c0392b;
-  --color-primary-dark: #a93226;
-  --color-sidebar: #111827;
-  --color-sidebar-hover: #1f2937;
+.whisky-page {
+  width: 100%;
+  min-height: 100vh;
+  background: #0d0b0f;
+  color: #f5edf7;
+  padding-bottom: 80px;
+  box-sizing: border-box;
 }
 
-body {
-  font-family: "Inter", sans-serif;
+/* Hero */
+.whisky-hero {
+  min-height: 430px;
+  padding: 90px 8%;
+  display: flex;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  background:
+    linear-gradient(
+      90deg,
+      rgba(13, 11, 15, 0.98) 0%,
+      rgba(13, 11, 15, 0.75) 45%,
+      rgba(13, 11, 15, 0.35) 100%
+    );
 }
+
+.whisky-hero-content {
+  max-width: 650px;
+  position: relative;
+  z-index: 2;
+}
+
+.whisky-label {
+  color: #d9a9e6;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  margin-bottom: 15px;
+}
+
+.whisky-hero h1 {
+  margin: 0 0 18px;
+  font-size: 64px;
+  line-height: 1.1;
+  color: #f1c7fa;
+}
+
+.whisky-hero p {
+  margin: 0 0 25px;
+  color: #c9c0ca;
+  font-size: 18px;
+  line-height: 1.7;
+}
+
+.whisky-shop-btn {
+  border: none;
+  padding: 14px 32px;
+  border-radius: 8px;
+  background: #b86cc9;
+  color: white;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.whisky-shop-btn:hover {
+  background: #cf86df;
+  transform: translateY(-2px);
+}
+
+
+/* =========================================
+   COLLECTION
+========================================= */
+
+.whisky-collection {
+  width: 100%;
+  padding: 70px 8%;
+  box-sizing: border-box;
+}
+
+.whisky-collection h2 {
+  margin: 0 0 10px;
+  color: #d9a9e6;
+  font-size: 14px;
+  letter-spacing: 3px;
+}
+
+.whisky-collection h3 {
+  margin: 0 0 12px;
+  font-size: 38px;
+  color: #ffffff;
+}
+
+.whisky-collection > p {
+  margin: 0 0 30px;
+  color: #bdb4bf;
+  font-size: 17px;
+}
+
+
+/* =========================================
+   CATEGORY BUTTONS
+========================================= */
+
+.whisky-categories {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+  margin-top: 30px;
+}
+
+.whisky-categories button {
+  min-height: 70px;
+  padding: 20px;
+  border: 1px solid #3d3242;
+  border-radius: 12px;
+  background: #19151d;
+  color: #eee5f0;
+  font-size: 16px;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.whisky-categories button:hover {
+  border-color: #c47bd4;
+  background: #251b29;
+  transform: translateY(-3px);
+}
+
+
+/* =========================================
+   SEARCH
+========================================= */
+
+.whisky-search-section {
+  padding: 20px 8% 50px;
+}
+
+.whisky-search {
+  width: 100%;
+  max-width: 500px;
+  padding: 15px 18px;
+  box-sizing: border-box;
+  border: 1px solid #4a3d4f;
+  border-radius: 8px;
+  outline: none;
+  background: #19151d;
+  color: white;
+  font-size: 16px;
+}
+
+.whisky-search::placeholder {
+  color: #8f8592;
+}
+
+.whisky-search:focus {
+  border-color: #c47bd4;
+}
+
+
+/* =========================================
+   PRODUCT SECTION
+========================================= */
+
+.whisky-products-section {
+  padding: 50px 8%;
+}
+
+.whisky-products-section h2 {
+  margin-bottom: 30px;
+  color: #f1c7fa;
+  font-size: 32px;
+}
+
+.whisky-products-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+}
+
+
+/* =========================================
+   PRODUCT CARD
+========================================= */
+
+.whisky-product-card {
+  overflow: hidden;
+  border: 1px solid #342b38;
+  border-radius: 14px;
+  background: #18141b;
+  transition: transform 0.25s ease, border-color 0.25s ease;
+}
+
+.whisky-product-card:hover {
+  transform: translateY(-5px);
+  border-color: #b86cc9;
+}
+
+.whisky-product-image {
+  width: 100%;
+  height: 280px;
+  object-fit: cover;
+  display: block;
+}
+
+.whisky-product-info {
+  padding: 20px;
+}
+
+.whisky-product-info h3 {
+  margin: 0 0 10px;
+  color: #ffffff;
+  font-size: 19px;
+}
+
+.whisky-product-info p {
+  color: #aaa0ad;
+  line-height: 1.5;
+}
+
+.whisky-product-price {
+  margin: 15px 0;
+  color: #e6aaf1;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.whisky-add-cart {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 7px;
+  background: #b86cc9;
+  color: white;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.whisky-add-cart:hover {
+  background: #cf86df;
+}
+
+
+/* =========================================
+   WHISKY INFORMATION
+========================================= */
+
+.whisky-info {
+  padding: 70px 8%;
+  background: #151118;
+}
+
+.whisky-info h2 {
+  margin-bottom: 15px;
+  color: #e0a9eb;
+  font-size: 32px;
+}
+
+.whisky-info p {
+  max-width: 900px;
+  color: #bdb4bf;
+  font-size: 17px;
+  line-height: 1.8;
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 1000px) {
+  .whisky-products-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .whisky-categories {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .whisky-hero {
+    min-height: 350px;
+    padding: 60px 6%;
+  }
+
+  .whisky-hero h1 {
+    font-size: 42px;
+  }
+
+  .whisky-collection,
+  .whisky-products-section,
+  .whisky-info {
+    padding-left: 6%;
+    padding-right: 6%;
+  }
+
+  .whisky-categories,
+  .whisky-products-grid {
+    grid-template-columns: 1fr;
+  }
+}
+  
