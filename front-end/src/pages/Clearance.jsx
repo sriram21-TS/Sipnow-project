@@ -3,9 +3,22 @@ import ProductGrid from "../components/ProductGrid.jsx";
 import Reveal from "../components/Reveal.jsx";
 
 import { useAddToCartFeedback } from "../hooks/useAddToCartFeedback.js";
+import { useInStorePromotions } from "../hooks/useContent.js";
 
 export default function Clearance({ onAddToCart, onBack, products = [] }) {
   const { addedProduct, handleAddToCart } = useAddToCartFeedback(onAddToCart);
+  const { data: inStorePromotions = [] } = useInStorePromotions();
+
+  const sectionProducts = products.filter(
+    (p) => p.section === "clearance" || p.categoryGroup === "offers"
+  );
+  const displayProducts =
+    sectionProducts.length > 0
+      ? sectionProducts
+      : inStorePromotions.map((p) => ({
+          ...p,
+          badgeText: p.badgeText || "Clearance",
+        }));
 
   return (
     <>
@@ -20,8 +33,9 @@ export default function Clearance({ onAddToCart, onBack, products = [] }) {
         <ProductGrid
           addedProduct={addedProduct}
           emptyMessage="New clearance products are on the way. Check back soon."
+          isInStorePromotion={true}
           onAddToCart={handleAddToCart}
-          products={products}
+          products={displayProducts}
         />
       </Reveal>
     </>

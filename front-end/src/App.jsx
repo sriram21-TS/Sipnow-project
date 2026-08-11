@@ -194,14 +194,47 @@ export default function App() {
           />
           <Route
             path="/offers/general-promotions"
-            element={<GeneralPromotions />}
+            element={
+              <GeneralPromotions
+                onAddToCart={addToCart}
+                onBack={goHome}
+                products={products}
+              />
+            }
           />
 
-          <Route path="/offers/gift-cards" element={<GiftCards />} />
+          <Route
+            path="/offers/gift-cards"
+            element={
+              <GiftCards
+                onAddToCart={addToCart}
+                onBack={goHome}
+                products={products}
+              />
+            }
+          />
 
-          <Route path="/offers/members" element={<Members />} />
+          <Route
+            path="/offers/members"
+            element={
+              <Members
+                onAddToCart={addToCart}
+                onBack={goHome}
+                products={products}
+              />
+            }
+          />
 
-          <Route path="/offers/clearance" element={<Clearance />} />
+          <Route
+            path="/offers/clearance"
+            element={
+              <Clearance
+                onAddToCart={addToCart}
+                onBack={goHome}
+                products={products}
+              />
+            }
+          />
           <Route
             path="/profile"
             element={
