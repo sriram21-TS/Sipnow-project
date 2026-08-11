@@ -1,21 +1,32 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
+import PageHero from "../components/PageHero.jsx";
+import ProductGrid from "../components/ProductGrid.jsx";
+import Reveal from "../components/Reveal.jsx";
 
-const Members = () => {
-  const navigate = useNavigate();
+import { useAddToCartFeedback } from "../hooks/useAddToCartFeedback.js";
+
+export default function Members({ onAddToCart, onBack, products = [] }) {
+  const { addedProduct, handleAddToCart } = useAddToCartFeedback(onAddToCart);
 
   return (
-    <div className="px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto pt-28 pb-16">
-      {/* Back to Home */}
-      <button
-        type="button"
-        onClick={() => navigate("/")}
-        className="flex items-center gap-2 text-sm text-on-surface-variant hover:text-primary transition-colors mb-8"
-      >
-        <span className="material-symbols-outlined text-[18px]">west</span>
-        Back to home
-      </button>
+    <>
+      <PageHero
+        description="Enjoy exclusive benefits, offers, and rewards available to SipNow members."
+        onBack={onBack}
+        tag="Offers & Services"
+        title="Members"
+      />
 
+<<<<<<< HEAD
+      <Reveal className="px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
+        <ProductGrid
+          addedProduct={addedProduct}
+          emptyMessage="Exclusive member offers are coming soon."
+          onAddToCart={handleAddToCart}
+          products={products}
+        />
+      </Reveal>
+    </>
+=======
       {/* Full Collection */}
       <button
         type="button"
@@ -52,7 +63,6 @@ const Members = () => {
         members.
       </p>
     </div>
+>>>>>>> 11ab939174429f8c1b9a049a0394e239f2fd8b85
   );
-};
-
-export default Members;
+}

@@ -1,20 +1,32 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
+import PageHero from "../components/PageHero.jsx";
+import ProductGrid from "../components/ProductGrid.jsx";
+import Reveal from "../components/Reveal.jsx";
 
-const Clearance = () => {
-  const navigate = useNavigate();
+import { useAddToCartFeedback } from "../hooks/useAddToCartFeedback.js";
+
+export default function Clearance({ onAddToCart, onBack, products = [] }) {
+  const { addedProduct, handleAddToCart } = useAddToCartFeedback(onAddToCart);
 
   return (
-    <div className="px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto pt-28 pb-16">
-      <button
-        type="button"
-        onClick={() => navigate("/")}
-        className="flex items-center gap-2 text-sm text-on-surface-variant hover:text-primary transition-colors mb-8"
-      >
-        <span className="material-symbols-outlined text-[18px]">west</span>
-        Back to home
-      </button>
+    <>
+      <PageHero
+        description="Shop selected products at special clearance prices while stocks last."
+        onBack={onBack}
+        tag="Offers & Services"
+        title="Clearance"
+      />
 
+<<<<<<< HEAD
+      <Reveal className="px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
+        <ProductGrid
+          addedProduct={addedProduct}
+          emptyMessage="New clearance products are on the way. Check back soon."
+          onAddToCart={handleAddToCart}
+          products={products}
+        />
+      </Reveal>
+    </>
+=======
       <button
         type="button"
         onClick={() => navigate("/offers/clearance/products")}
@@ -31,7 +43,6 @@ const Clearance = () => {
         Shop selected products at special clearance prices while stocks last.
       </p>
     </div>
+>>>>>>> 11ab939174429f8c1b9a049a0394e239f2fd8b85
   );
-};
-
-export default Clearance;
+}

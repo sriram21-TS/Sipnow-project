@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from "react";
+
 import { Link, useNavigate } from "react-router-dom";
-import { useNavMenus } from "../hooks/useContent.js";
-import sipnowLogo from "../assets/sipnow-logo.png";
+import { useNavMenus, useSiteAssets } from "../hooks/useContent.js";
+
 // ========================================
 // TOP LEVEL ROUTES
 // ========================================
@@ -12,23 +13,8 @@ const TOP_LEVEL_ROUTES = {
   Premix: "/premix",
   Spirits: "/spirits",
   Wine: "/wine",
-  "Zero %": "/zero-alcohol",
-  Zero: "/zero-alcohol",
-  "Zero%": "/zero-alcohol",
   "Shop All": "/shop-all",
   "In-Store promotions": "/in-store-promotions",
-};
-
-const BEER_CIDER_ITEM_PAGES = {
-  Pilsner: "pilsner",
-  "Dark Lager": "dark-lager",
-  Helles: "helles",
-  "Pale Ale": "pale-ale",
-  IPA: "ipa",
-  "Stout & Porter": "stout-porter",
-  Apple: "apple-cider",
-  Pear: "pear-cider",
-  "Fruit Cider": "fruit-cider",
 };
 
 const mobileNavLinks = [
@@ -37,7 +23,6 @@ const mobileNavLinks = [
   "Premix",
   "Wine",
   "Spirits",
-  "Zero %",
 ];
 
 // ========================================
@@ -94,13 +79,7 @@ function getMenuItemRoute(menuLabel, columnHeading, item) {
   // ======================================
 
   if (menuLabel === "Spirits") {
-    const spiritType = item.toLowerCase().trim();
-
-    if (spiritType === "whisky" || spiritType === "whiskey") {
-      return "/whisky";
-    }
-
-    return `/spirits?type=${encodeURIComponent(spiritType)}`;
+    return `/spirits?type=${encodeURIComponent(item.toLowerCase().trim())}`;
   }
 
   // ======================================
@@ -131,12 +110,16 @@ function getMenuItemRoute(menuLabel, columnHeading, item) {
   // ZERO %
   // ======================================
 
+<<<<<<< HEAD
+  if (menuLabel === "Zero %" || menuLabel.toLowerCase().includes("zero")) {
+=======
   if (
     menuLabel === "Zero %" ||
     menuLabel === "Zero" ||
     menuLabel === "Zero%" ||
     menuLabel.toLowerCase().includes("zero")
   ) {
+>>>>>>> 11ab939174429f8c1b9a049a0394e239f2fd8b85
     const sub = itemSlug.replace("zero-alcohol-", "").replace("zero-", "");
 
     return `/zero-alcohol/${sub}`;
@@ -153,6 +136,7 @@ function getMenuItemRoute(menuLabel, columnHeading, item) {
 // FEATURED PANEL
 // ========================================
 
+// Renders the promotional/featured card displayed inside a mega menu.
 function FeaturedPanel({ featured }) {
   if (!featured) {
     return null;
@@ -206,15 +190,10 @@ function FeaturedPanel({ featured }) {
   );
 }
 
-// ========================================
-// SEARCH RESULTS
-// ========================================
-
 function SearchResults({ results, searched, onSelect }) {
   if (!searched) return null;
-
   return (
-    <div className="absolute top-full left-0 right-0 mt-2 w-full sm:w-[420px] glass-panel border border-outline-variant/30 rounded-2xl shadow-2xl overflow-hidden z-50">
+    <div className="absolute top-full left-0 right-0 mt-2 w-[420px] glass-panel border border-outline-variant/30 rounded-2xl shadow-2xl overflow-hidden z-50">
       {results.length === 0 ? (
         <p className="px-6 py-5 text-sm text-on-surface-variant">
           No products match your search.
@@ -269,19 +248,28 @@ function SearchResults({ results, searched, onSelect }) {
 
 export default function Navbar({ cartCount = 0, products = [], user }) {
   const [scrolled, setScrolled] = useState(false);
+
   const [mobileOpen, setMobileOpen] = useState(false);
+
   const [openMenu, setOpenMenu] = useState(null);
+
   const [searchTerm, setSearchTerm] = useState("");
+
   const [searchFocused, setSearchFocused] = useState(false);
 
   const desktopSearchRef = useRef(null);
+
   const mobileSearchRef = useRef(null);
+
   const blurTimeoutRef = useRef(null);
+
   const menuTimeoutRef = useRef(null);
 
   const navigate = useNavigate();
 
-const { data: navMenus = [] } = useNavMenus();
+  const { data: navMenus = [] } = useNavMenus();
+  const { data: siteAssets = {} } = useSiteAssets();
+
   // ========================================
   // SCROLL
   // ========================================
@@ -313,8 +301,11 @@ const { data: navMenus = [] } = useNavMenus();
   // MEGA MENU HOVER
   // ========================================
 
+  // A small delay before closing keeps the menu open while the cursor
+  // crosses the gap between the nav link and the dropdown panel below it.
   const handleMenuEnter = (label) => {
     clearTimeout(menuTimeoutRef.current);
+
     setOpenMenu(label);
   };
 
@@ -329,11 +320,11 @@ const { data: navMenus = [] } = useNavMenus();
   // ========================================
 
   const normalizedTerm = searchTerm.trim().toLowerCase();
-
   const searchResults = normalizedTerm
     ? products
         .filter((product) => {
           const name = product.name?.toLowerCase() || "";
+
           const category = product.category?.toLowerCase() || "";
 
           return (
@@ -349,6 +340,7 @@ const { data: navMenus = [] } = useNavMenus();
 
   const handleSearchFocus = () => {
     clearTimeout(blurTimeoutRef.current);
+
     setSearchFocused(true);
   };
 
@@ -366,6 +358,7 @@ const { data: navMenus = [] } = useNavMenus();
   // SEARCH RESULT
   // ========================================
 
+  // Selecting a result returns to the home page and scrolls to Best Sellers.
   const handleSelectResult = () => {
     clearTimeout(blurTimeoutRef.current);
 
@@ -412,18 +405,6 @@ const { data: navMenus = [] } = useNavMenus();
   };
 
   // ========================================
-  // GET DISPLAY LABEL
-  // ========================================
-
-  const getDisplayLabel = (label) => {
-    if (label === "Zero" || label === "Zero%") {
-      return "Zero %";
-    }
-
-    return label;
-  };
-
-  // ========================================
   // RENDER
   // ========================================
 
@@ -455,7 +436,7 @@ const { data: navMenus = [] } = useNavMenus();
 
           {/* DESKTOP NAV */}
 
-          <div className="hidden lg:flex items-center gap-3 lg:gap-5 xl:gap-7">
+          <div className="hidden lg:flex items-center gap-4 xl:gap-8">
             {navMenus.map((menu) => (
               <div
                 className="nav-item py-2"
@@ -467,19 +448,21 @@ const { data: navMenus = [] } = useNavMenus();
 
                 <Link
                   to={TOP_LEVEL_ROUTES[menu.label] || `/${slugify(menu.label)}`}
+<<<<<<< HEAD
+                  className={`flex items-center gap-1.5 font-label-md text-label-md transition-colors tracking-wide ${
+=======
                   className={`flex items-center gap-1.5 whitespace-nowrap font-label-md text-label-md transition-colors tracking-wide cursor-default ${
+>>>>>>> 11ab939174429f8c1b9a049a0394e239f2fd8b85
                     openMenu === menu.label
                       ? "text-primary"
                       : "text-on-surface/80 hover:text-primary"
                   }`}
                   onClick={closeMenus}
                 >
-                  {/* ZERO % WILL ALWAYS STAY ON ONE LINE */}
-
-                  {getDisplayLabel(menu.label)}
+                  {menu.label}
 
                   <span
-                    className={`material-symbols-outlined text-[18px] opacity-50 transition-transform cursor-pointer ${
+                    className={`material-symbols-outlined text-[18px] opacity-50 transition-transform ${
                       openMenu === menu.label ? "rotate-180" : ""
                     }`}
                   >
@@ -487,13 +470,8 @@ const { data: navMenus = [] } = useNavMenus();
                   </span>
                 </Link>
 
-                {/* MEGA MENU */}
-
                 {openMenu === menu.label && (
-                  <div
-                    className="mega-menu absolute top-full left-0 right-0 pt-0"
-                    onMouseEnter={() => setOpenMenu(menu.label)}
-                  >
+                  <div className="mega-menu absolute left-margin-desktop right-margin-desktop top-[100%] pt-4">
                     <div className="mega-menu-panel glass-panel border border-outline-variant/30 rounded-2xl p-10 grid grid-cols-4 gap-12 shadow-2xl">
                       {menu.columns.map((col) =>
                         col.items?.length > 0 ? (
@@ -501,7 +479,6 @@ const { data: navMenus = [] } = useNavMenus();
                             <h4 className="font-headline-sm text-lg text-primary">
                               {col.heading}
                             </h4>
-
                             <ul className="space-y-3 text-sm text-on-surface-variant">
                               {col.items.map((item) => (
                                 <li key={item}>
@@ -536,7 +513,6 @@ const { data: navMenus = [] } = useNavMenus();
                           </div>
                         )
                       )}
-
                       {menu.featured && (
                         <FeaturedPanel featured={menu.featured} />
                       )}
@@ -645,16 +621,14 @@ const { data: navMenus = [] } = useNavMenus();
         <div className="glass-panel border-t border-outline-variant/20 px-margin-mobile py-6 space-y-6">
           {mobileNavLinks.map((link) => (
             <Link
-              className="block whitespace-nowrap font-label-md text-label-md text-on-surface/80 hover:text-primary transition-colors tracking-wide"
+              className="block font-label-md text-label-md text-on-surface/80 hover:text-primary transition-colors tracking-wide"
               key={link}
               onClick={closeMenus}
               to={TOP_LEVEL_ROUTES[link] || `/${slugify(link)}`}
             >
-              {getDisplayLabel(link)}
+              {link}
             </Link>
           ))}
-
-          {/* MY ACCOUNT */}
 
           <Link
             className="block font-label-md text-label-md text-on-surface/80 hover:text-primary transition-colors tracking-wide"
@@ -663,8 +637,6 @@ const { data: navMenus = [] } = useNavMenus();
           >
             My Account
           </Link>
-
-          {/* MOBILE SEARCH */}
 
           <div className="relative">
             <div className="flex items-center gap-2 border-b border-outline-variant/30 py-2">

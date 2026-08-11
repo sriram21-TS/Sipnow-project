@@ -6,7 +6,7 @@ export default function CategoryGrid({ onNavigate }) {
   const { data: categories } = useCategories();
 
   return (
-    <Reveal className="py-24 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
+    <Reveal className="pt-20 pb-16 md:pt-32 md:pb-24 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
       <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
         <div className="space-y-2">
           <h2 className="font-display-lg text-4xl">Our Range</h2>
@@ -33,11 +33,7 @@ export default function CategoryGrid({ onNavigate }) {
             key={category.name}
             onClick={(e) => {
               e.preventDefault();
-              onNavigate?.(
-                category.key === "beer"
-                  ? "beer-cider"
-                  : `category:${category.key}`
-              );
+              onNavigate?.(`category:${category.key}`);
             }}
           >
             <img
