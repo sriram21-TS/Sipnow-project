@@ -450,20 +450,23 @@ export default function App() {
           <Route
             path="/spirits/whisky/:categoryKey"
             element={
-              <CategoryPage
+              <Spirits
                 onAddToCart={addToCart}
                 onBack={goHome}
                 products={products}
+                productsLoading={productsLoading}
               />
             }
           />
+
           <Route
             path="/spirits/:categoryKey"
             element={
-              <CategoryPage
+              <Spirits
                 onAddToCart={addToCart}
                 onBack={goHome}
                 products={products}
+                productsLoading={productsLoading}
               />
             }
           />
