@@ -199,7 +199,7 @@ export default function InStorePromotionsPreview({ onAddToCart, onNavigate }) {
           </div>
 
           {/* View Promotions */}
-          <div className="mt-6 flex justify-end">
+          {/* <div className="mt-6 flex justify-end">
             <button
               type="button"
               onClick={() => onNavigate?.("in-store-promotions")}
@@ -207,7 +207,7 @@ export default function InStorePromotionsPreview({ onAddToCart, onNavigate }) {
             >
               View All Promotions →
             </button>
-          </div>
+          </div> */}
 
           {/* Empty State */}
           {products.length === 0 && (
