@@ -5,14 +5,12 @@ import {
   Routes,
   useLocation,
   useNavigate,
-  useParams,
 } from "react-router-dom";
 
 import AmbientBackground from "./components/AmbientBackground.jsx";
 import Footer from "./components/Footer.jsx";
 import Navbar from "./components/Navbar.jsx";
 import QuizModal from "./components/QuizModal.jsx";
-import BeerCiderCategoryPage from "./pages/BeerCiderCategoryPage.jsx";
 import { useProducts } from "./hooks/useProducts.js";
 import Wine from "./pages/Wine.jsx";
 import Spirits from "./pages/Spirits.jsx";
@@ -21,17 +19,26 @@ import Auth from "./pages/Auth.jsx";
 import Cart from "./pages/Cart.jsx";
 import CategoryPage from "./pages/CategoryPage.jsx";
 import Checkout from "./pages/Checkout.jsx";
+import Clearance from "./pages/Clearance.jsx";
+import GeneralPromotions from "./pages/GeneralPromotions.jsx";
+import GiftCards from "./pages/GiftCards.jsx";
 import Home from "./pages/Home.jsx";
 import InStorePromotions from "./pages/InStorePromotions.jsx";
+import Members from "./pages/Members.jsx";
 import PremixPage from "./pages/PremixPage.jsx";
 import Profile from "./pages/Profile.jsx";
 import ShopAll from "./pages/ShopAll.jsx";
 import ZeroCategoryPage from "./pages/ZeroCategoryPage.jsx";
+<<<<<<< HEAD
 import Members from "./pages/Members.jsx";
 import Whisky from "./pages/Whisky.jsx";
 import GiftCards from "./pages/GiftCards.jsx";
 import Clearance from "./pages/Clearance.jsx";
 import GeneralPromotions from "./pages/GeneralPromotions.jsx";
+=======
+
+import Spirits from "./pages/Spirits.jsx";
+>>>>>>> 4b07a701d4eb5504d278e174a940bcf4311c59d5
 
 // Safely read JSON data from localStorage. If the key is missing or
 // contains invalid JSON, return the provided fallback value.
@@ -41,20 +48,6 @@ function readStored(key, fallback) {
   } catch {
     return fallback;
   }
-}
-
-function OfferProductsRoute({ products, addToCart }) {
-  const { category } = useParams();
-  const navigate = useNavigate();
-
-  return (
-    <CategoryPage
-      categoryKey={category}
-      products={products}
-      onAddToCart={addToCart}
-      onBack={() => navigate(`/offers/${category}`)}
-    />
-  );
 }
 
 export default function App() {
@@ -165,6 +158,7 @@ export default function App() {
     <>
       <AmbientBackground />
       <Navbar cartCount={cartCount} products={products} user={user} />
+
       <main className="relative z-10">
         <Routes>
           <Route
@@ -178,6 +172,7 @@ export default function App() {
               />
             }
           />
+
           <Route
             path="/cart"
             element={
@@ -192,6 +187,7 @@ export default function App() {
               />
             }
           />
+
           <Route
             path="/checkout"
             element={
@@ -246,6 +242,7 @@ export default function App() {
               )
             }
           />
+
           <Route
             path="/login"
             element={
@@ -256,6 +253,7 @@ export default function App() {
               />
             }
           />
+
           <Route
             path="/signup"
             element={
@@ -266,6 +264,7 @@ export default function App() {
               />
             }
           />
+
           <Route
             path="/shop-all"
             element={
@@ -277,10 +276,14 @@ export default function App() {
               />
             }
           />
+
           <Route
             path="/in-store-promotions"
             element={
-              <InStorePromotions onAddToCart={addToCart} onBack={goHome} />
+              <InStorePromotions
+                onAddToCart={addToCart}
+                onBack={goHome}
+              />
             }
           />
 
@@ -296,6 +299,7 @@ export default function App() {
               />
             }
           />
+
           <Route
             path="/zero/:subcategory"
             element={
@@ -307,6 +311,7 @@ export default function App() {
               />
             }
           />
+
           <Route
             path="/zero-alcohol"
             element={
@@ -319,6 +324,7 @@ export default function App() {
               />
             }
           />
+
           <Route
             path="/zero-wine"
             element={
@@ -331,6 +337,7 @@ export default function App() {
               />
             }
           />
+
           <Route
             path="/zero-beer"
             element={
@@ -343,6 +350,7 @@ export default function App() {
               />
             }
           />
+
           <Route
             path="/zero-spirits"
             element={
@@ -355,6 +363,7 @@ export default function App() {
               />
             }
           />
+
           <Route
             path="/zero-premix"
             element={
@@ -367,6 +376,7 @@ export default function App() {
               />
             }
           />
+
           <Route
             path="/zero-cider"
             element={
@@ -396,12 +406,6 @@ export default function App() {
           />
 
           <Route
-            path="/offers/:category/products"
-            element={
-              <OfferProductsRoute products={products} addToCart={addToCart} />
-            }
-          />
-          <Route
             path="/offers/:categoryKey"
             element={
               <CategoryPage
@@ -413,74 +417,21 @@ export default function App() {
           />
 
           <Route
-            path="/offers/general-promotions/products"
-            element={
-              <CategoryPage
-                categoryKey="general-promotions"
-                products={products}
-                onAddToCart={addToCart}
-                onBack={() => navigate("/offers/general-promotions")}
-              />
-            }
-          />
-
-          <Route
-            path="/offers/gift-cards/products"
-            element={
-              <CategoryPage
-                categoryKey="gift-cards"
-                products={products}
-                onAddToCart={addToCart}
-                onBack={() => navigate("/offers/gift-cards")}
-              />
-            }
-          />
-
-          <Route
-            path="/offers/members/products"
-            element={
-              <CategoryPage
-                categoryKey="members"
-                products={products}
-                onAddToCart={addToCart}
-                onBack={() => navigate("/offers/members")}
-              />
-            }
-          />
-
-          <Route
-            path="/offers/clearance/products"
-            element={
-              <CategoryPage
-                categoryKey="clearance"
-                products={products}
-                onAddToCart={addToCart}
-                onBack={() => navigate("/offers/clearance")}
-              />
-            }
-          />
-          <Route
             path="/beer-cider"
-            element={
-              <BeerCiderCategoryPage
-                onAddToCart={addToCart}
-                onBack={goHome}
-                products={products}
-                productsLoading={productsLoading}
-              />
-            }
+            element={<Navigate to="/beer-cider/pilsner" replace />}
           />
+
           <Route
             path="/beer-cider/:categoryKey"
             element={
-              <BeerCiderCategoryPage
+              <CategoryPage
                 onAddToCart={addToCart}
                 onBack={goHome}
                 products={products}
-                productsLoading={productsLoading}
               />
             }
           />
+
           <Route
             path="/premix"
             element={
@@ -492,6 +443,7 @@ export default function App() {
               />
             }
           />
+
           <Route
             path="/premix/:categoryKey"
             element={
@@ -502,6 +454,7 @@ export default function App() {
               />
             }
           />
+
           <Route
             path="/spirits"
             element={
@@ -515,6 +468,7 @@ export default function App() {
           />
 
           <Route
+<<<<<<< HEAD
             path="/whisky/:categoryKey"
             element={
               <Whisky
@@ -541,6 +495,8 @@ export default function App() {
             }
           />
           <Route
+=======
+>>>>>>> 4b07a701d4eb5504d278e174a940bcf4311c59d5
             path="/spirits/whisky/:categoryKey"
             element={
               <Whisky
@@ -566,6 +522,7 @@ export default function App() {
               />
             }
           />
+
           <Route
             path="/spirits/:categoryKey"
             element={
@@ -576,6 +533,7 @@ export default function App() {
               />
             }
           />
+
           <Route
             path="/wine"
             element={
@@ -586,6 +544,7 @@ export default function App() {
               />
             }
           />
+
           <Route
             path="/wine/:wineType"
             element={
@@ -600,8 +559,13 @@ export default function App() {
           <Route path="*" element={<Navigate replace to="/" />} />
         </Routes>
       </main>
+
       {!["/login", "/signup"].includes(location.pathname) && <Footer />}
-      <QuizModal isOpen={quizOpen} onClose={() => setQuizOpen(false)} />
+
+      <QuizModal
+        isOpen={quizOpen}
+        onClose={() => setQuizOpen(false)}
+      />
     </>
   );
 }

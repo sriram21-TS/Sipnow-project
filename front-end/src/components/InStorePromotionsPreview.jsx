@@ -120,22 +120,31 @@ export default function InStorePromotionsPreview({ onAddToCart, onNavigate }) {
   const products = inStorePromotions.slice(0, 15);
 
   return (
-    <Reveal>
+    <Reveal className="py-24 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
       <section className="relative w-full overflow-hidden">
-        <div className="mx-auto w-[92%] max-w-[1500px]">
+        <div>
           {/* Section Header */}
-          <div className="flex items-start justify-between gap-6">
+          <div className="flex items-end justify-between gap-6">
             <div>
               <p className="font-label-md uppercase tracking-[0.28em]">
                 Offers & Services
               </p>
 
-              <h2 className="font-display-lg text-4xl">In-Store Promotions</h2>
+              <h2 className="font-display-lg text-4xl text-on-surface">
+                In-Store Promotions
+              </h2>
 
               <p className="text-on-surface-variant font-body-lg">
                 Exclusive offers available at your local SipNow store.
               </p>
             </div>
+            <button
+              type="button"
+              onClick={() => onNavigate?.("in-store-promotions")}
+              className="inline-flex shrink-0 items-center font-label-md transition-opacity hover:opacity-80"
+            >
+              View All Promotions →
+            </button>
           </div>
 
           {/* Product Carousel */}
@@ -171,6 +180,7 @@ export default function InStorePromotionsPreview({ onAddToCart, onNavigate }) {
                     isAdded={addedProduct === product.name}
                     onAdd={handleAddToCart}
                     product={product}
+                    isInStorePromotion={true}
                   />
                 </div>
               ))}
@@ -189,8 +199,9 @@ export default function InStorePromotionsPreview({ onAddToCart, onNavigate }) {
             </button>
           </div>
 
+<<<<<<< HEAD
           {/* View Promotions */}
-          <div className="mt-6 flex justify-end">
+          {/* <div className="mt-6 flex justify-end">
             <button
               type="button"
               onClick={() => onNavigate?.("in-store-promotions")}
@@ -198,8 +209,10 @@ export default function InStorePromotionsPreview({ onAddToCart, onNavigate }) {
             >
               View All Promotions →
             </button>
-          </div>
+          </div> */}
 
+=======
+>>>>>>> 8dd56d27d66fa2f01c88489e709eec2212a29fd5
           {/* Empty State */}
           {products.length === 0 && (
             <div className="mt-8">

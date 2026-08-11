@@ -14,64 +14,21 @@
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
 }
-
-/* =========================================================
-   NAV ITEM
-   ========================================================= */
-
-.nav-item {
-  position: static !important;
-}
-
 .in-store-promotion-card > :first-child {
   height: 12.75rem;
   aspect-ratio: auto;
 }
-/* .mega-menu {
+.mega-menu {
   opacity: 0;
   visibility: hidden;
   transform: translateY(10px);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-
-} */
-
-/* =========================================================
-   MEGA MENU
-   ========================================================= */
-
-.mega-menu {
-  position: absolute !important;
-
-  top: 100% !important;
-  left: 0 !important;
-  right: 0 !important;
-
-  width: 100%;
-
-  z-index: 100;
-
+}
+.nav-item:hover .mega-menu {
   opacity: 1;
   visibility: visible;
-
   transform: translateY(0);
-
-  pointer-events: auto;
 }
-
-.mega-menu-panel {
-  width: calc(100% - 40px);
-
-  max-width: 1600px;
-
-  margin-left: auto;
-  margin-right: auto;
-
-  background: rgba(18, 17, 18, 0.98);
-
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-}
-
 .mega-menu-panel {
   background: rgba(18, 17, 18, 0.98);
 }
@@ -108,7 +65,6 @@
   mask-composite: exclude;
   pointer-events: none;
 }
-
 .badge-glow {
   animation: badge-pulse-glow 2.4s ease-in-out infinite;
 }
@@ -150,6 +106,24 @@
 }
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
+}
+.promo-ribbon {
+  position: absolute;
+  top: 14px;
+  left: -46px;
+  width: 150px;
+  background: linear-gradient(135deg, #f6a31a 0%, #f08f2b 100%);
+  color: #111;
+  padding: 4px 44px;
+  transform: rotate(-45deg);
+  font-weight: 800;
+  font-size: 10px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  z-index: 40;
+  pointer-events: none;
 }
 .full-bleed-hero {
   height: 84vh;

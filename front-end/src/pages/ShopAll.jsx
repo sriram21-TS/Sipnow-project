@@ -76,6 +76,7 @@ export default function ShopAll({
     }
     return sorted;
   }, [products, selectedSubtypes, priceRange, rating, sort]);
+
   return (
     <div className="pt-32 pb-24">
       <PageHero
@@ -85,7 +86,7 @@ export default function ShopAll({
         title="All Products"
       />
 
-      <div className="px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
+      <Reveal className="px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
         <button
           className="lg:hidden w-full flex items-center justify-center gap-2 glass-panel rounded-lg px-4 py-3 mb-6 text-sm font-label-md uppercase tracking-widest border border-primary/20"
           onClick={() => setFiltersOpen((open) => !open)}
@@ -115,7 +116,7 @@ export default function ShopAll({
           </aside>
 
           <div className="flex-1 min-w-0">
-            <div className="flex items-center justify-between mb-6">
+            <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
               <p className="text-sm text-on-surface-variant">
                 {productsLoading
                   ? "Loading products…"
@@ -145,7 +146,7 @@ export default function ShopAll({
             />
           </div>
         </div>
-      </div>
+      </Reveal>
     </div>
   );
 }

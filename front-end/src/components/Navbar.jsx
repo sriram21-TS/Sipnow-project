@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 
 import { Link, useNavigate } from "react-router-dom";
-
-import { useNavMenus, useSiteAssets } from "../hooks/useContent.js";
+import { useNavMenus } from "../hooks/useContent.js";
+import sipnowLogo from "../assets/sipnow-logo.png";
 
 // ========================================
 // TOP LEVEL ROUTES
@@ -10,24 +10,12 @@ import { useNavMenus, useSiteAssets } from "../hooks/useContent.js";
 
 const TOP_LEVEL_ROUTES = {
   "Offers & Services": "/offers",
-  "Beer & Cider": "/beer-cider",
+  "Beer & Cider": "/beer-cider/pilsner",
   Premix: "/premix",
   Spirits: "/spirits",
   Wine: "/wine",
   "Shop All": "/shop-all",
   "In-Store promotions": "/in-store-promotions",
-};
-
-const BEER_CIDER_ITEM_PAGES = {
-  Pilsner: "pilsner",
-  "Dark Lager": "dark-lager",
-  Helles: "helles",
-  "Pale Ale": "pale-ale",
-  IPA: "ipa",
-  "Stout & Porter": "stout-porter",
-  Apple: "apple-cider",
-  Pear: "pear-cider",
-  "Fruit Cider": "fruit-cider",
 };
 
 const mobileNavLinks = [
@@ -92,6 +80,7 @@ function getMenuItemRoute(menuLabel, columnHeading, item) {
   // ======================================
 
   if (menuLabel === "Spirits") {
+<<<<<<< HEAD
     const spiritType = item.toLowerCase().trim();
 
     const whiskyTypes = [
@@ -113,6 +102,9 @@ function getMenuItemRoute(menuLabel, columnHeading, item) {
     }
 
     return `/spirits?type=${encodeURIComponent(spiritType)}`;
+=======
+    return `/spirits?type=${encodeURIComponent(item.toLowerCase().trim())}`;
+>>>>>>> 4b07a701d4eb5504d278e174a940bcf4311c59d5
   }
 
   // ======================================
@@ -143,7 +135,12 @@ function getMenuItemRoute(menuLabel, columnHeading, item) {
   // ZERO %
   // ======================================
 
-  if (menuLabel === "Zero %" || menuLabel.toLowerCase().includes("zero")) {
+  if (
+    menuLabel === "Zero %" ||
+    menuLabel === "Zero" ||
+    menuLabel === "Zero%" ||
+    menuLabel.toLowerCase().includes("zero")
+  ) {
     const sub = itemSlug.replace("zero-alcohol-", "").replace("zero-", "");
     return `/zero-alcohol/${sub}`;
   }
@@ -265,6 +262,10 @@ function SearchResults({ results, searched, onSelect }) {
   );
 }
 
+// ========================================
+// NAVBAR
+// ========================================
+
 export default function Navbar({ cartCount = 0, products = [], user }) {
   const [scrolled, setScrolled] = useState(false);
 
@@ -283,11 +284,13 @@ export default function Navbar({ cartCount = 0, products = [], user }) {
   const blurTimeoutRef = useRef(null);
 
   const menuTimeoutRef = useRef(null);
+<<<<<<< HEAD
+=======
+
+>>>>>>> 4b07a701d4eb5504d278e174a940bcf4311c59d5
   const navigate = useNavigate();
 
   const { data: navMenus = [] } = useNavMenus();
-
-  const { data: siteAssets = {} } = useSiteAssets();
 
   // ========================================
   // SCROLL
@@ -438,20 +441,24 @@ export default function Navbar({ cartCount = 0, products = [], user }) {
       <div className="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop flex justify-between items-center relative">
         {/* LOGO + NAV */}
 
-        <div className="flex items-center gap-16">
+        <div className="flex items-center gap-4 lg:gap-6 xl:gap-10 min-w-0">
           {/* LOGO */}
 
-          <Link to="/" className="relative z-10" onClick={closeMenus}>
-            <img
-              alt="SipNow Logo"
-              className="h-10 md:h-12 object-contain brightness-110"
-              src={siteAssets.LOGO_URL}
-            />
-          </Link>
+   <Link
+  to="/"
+  className="relative z-10 flex items-center shrink-0"
+  onClick={closeMenus}
+>
+  <img
+    src={sipnowLogo}
+    alt="SipNow Logo"
+    className="h-10 md:h-12 w-auto object-contain brightness-110"
+  />
+</Link>
 
           {/* DESKTOP NAV */}
 
-          <div className="hidden lg:flex items-center gap-8">
+          <div className="hidden lg:flex items-center gap-4 xl:gap-8">
             {navMenus.map((menu) => (
               <div
                 className="nav-item py-2"
@@ -463,17 +470,23 @@ export default function Navbar({ cartCount = 0, products = [], user }) {
 
                 <Link
                   to={TOP_LEVEL_ROUTES[menu.label] || `/${slugify(menu.label)}`}
-                  className={`flex items-center gap-1.5 font-label-md text-label-md transition-colors tracking-wide cursor-default ${
+                  className={`flex items-center gap-1.5 whitespace-nowrap font-label-md text-label-md transition-colors tracking-wide cursor-default ${
                     openMenu === menu.label
                       ? "text-primary"
                       : "text-on-surface/80 hover:text-primary"
                   }`}
-                  onClick={closeMenus}
+                  onClick={(e) => {
+                    if (menu.label === "Beer & Cider") {
+                      e.preventDefault();
+                    } else {
+                      closeMenus();
+                    }
+                  }}
                 >
                   {menu.label}
 
                   <span
-                    className={`material-symbols-outlined text-[18px] opacity-50 transition-transform cursor-pointer ${
+                    className={`material-symbols-outlined text-[18px] opacity-50 transition-transform ${
                       openMenu === menu.label ? "rotate-180" : ""
                     }`}
                   >
@@ -482,10 +495,7 @@ export default function Navbar({ cartCount = 0, products = [], user }) {
                 </Link>
 
                 {openMenu === menu.label && (
-                  <div
-                    className="mega-menu absolute top-full left-0 right-0 pt-0"
-                    onMouseEnter={() => setOpenMenu(menu.label)}
-                  >
+                  <div className="mega-menu absolute left-margin-desktop right-margin-desktop top-[100%] pt-4">
                     <div className="mega-menu-panel glass-panel border border-outline-variant/30 rounded-2xl p-10 grid grid-cols-4 gap-12 shadow-2xl">
                       {menu.columns.map((col) =>
                         col.items?.length > 0 ? (
@@ -540,7 +550,7 @@ export default function Navbar({ cartCount = 0, products = [], user }) {
 
         {/* RIGHT SIDE */}
 
-        <div className="flex items-center gap-5 md:gap-8 relative z-10">
+        <div className="shrink-0 flex items-center gap-4 md:gap-6 relative z-10 ml-4">
           {/* DESKTOP SEARCH */}
 
           <div className="hidden md:flex flex-col relative">
@@ -550,7 +560,7 @@ export default function Navbar({ cartCount = 0, products = [], user }) {
               </span>
 
               <input
-                className="bg-transparent border-none focus:ring-0 text-sm w-44 placeholder:text-on-surface-variant/50"
+                className="bg-transparent border-none focus:ring-0 text-sm w-36 lg:w-44 placeholder:text-on-surface-variant/50"
                 onBlur={handleSearchBlur}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 onFocus={handleSearchFocus}
@@ -568,10 +578,10 @@ export default function Navbar({ cartCount = 0, products = [], user }) {
             />
           </div>
 
-          {/* SEARCH BUTTON */}
+          {/* MOBILE SEARCH BUTTON */}
 
           <button
-            className="material-symbols-outlined hover:text-primary transition-colors"
+            className="md:hidden material-symbols-outlined hover:text-primary transition-colors"
             onClick={focusSearch}
             type="button"
           >
@@ -637,7 +647,13 @@ export default function Navbar({ cartCount = 0, products = [], user }) {
             <Link
               className="block font-label-md text-label-md text-on-surface/80 hover:text-primary transition-colors tracking-wide"
               key={link}
-              onClick={closeMenus}
+              onClick={(e) => {
+                if (link === "Beer & Cider") {
+                  e.preventDefault();
+                } else {
+                  closeMenus();
+                }
+              }}
               to={TOP_LEVEL_ROUTES[link] || `/${slugify(link)}`}
             >
               {link}

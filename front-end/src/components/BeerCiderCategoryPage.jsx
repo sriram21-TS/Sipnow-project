@@ -1,9 +1,9 @@
 import { useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
-import PageHero from "../components/PageHero.jsx";
-import ProductFilters from "../components/ProductFilters.jsx";
-import ProductGrid from "../components/ProductGrid.jsx";
-import Reveal from "../components/Reveal.jsx";
+import PageHero from "./PageHero.jsx";
+import ProductFilters from "./ProductFilters.jsx";
+import ProductGrid from "./ProductGrid.jsx";
+import Reveal from "./Reveal.jsx";
 import { useAddToCartFeedback } from "../hooks/useAddToCartFeedback.js";
 import { getSubtype, parsePrice } from "../utils/productHelpers.js";
 
@@ -40,6 +40,7 @@ const KEY_ALIASES = {
 };
 
 const BEER_CIDER_SUBCATEGORIES = {
+<<<<<<< HEAD:front-end/src/pages/BeerCiderCategoryPage.jsx
   all: {
     key: "all",
     title: "All Beer & Cider",
@@ -67,6 +68,8 @@ const BEER_CIDER_SUBCATEGORIES = {
       "Cider",
     ],
   },
+=======
+>>>>>>> 4b07a701d4eb5504d278e174a940bcf4311c59d5:front-end/src/components/BeerCiderCategoryPage.jsx
   lager: {
     key: "lager",
     title: "Lager",
@@ -444,7 +447,7 @@ export default function BeerCiderCategoryPage({
   const { categoryKey: categoryKeyParam } = useParams();
 
   // Normalize key from param or prop
-  const rawKey = (categoryKeyProp || categoryKeyParam || "all")
+  const rawKey = (categoryKeyProp || categoryKeyParam || "pilsner")
     .toLowerCase()
     .trim();
 
@@ -453,7 +456,7 @@ export default function BeerCiderCategoryPage({
   const activeConfig =
     BEER_CIDER_SUBCATEGORIES[activeSubcategoryKey] ||
     BEER_CIDER_SUBCATEGORIES[rawKey] ||
-    BEER_CIDER_SUBCATEGORIES.all;
+    BEER_CIDER_SUBCATEGORIES.pilsner;
 
   const { addedProduct, handleAddToCart } = useAddToCartFeedback(onAddToCart);
 
@@ -479,7 +482,6 @@ export default function BeerCiderCategoryPage({
 
   // Base products for Beer & Cider
   const categoryProducts = useMemo(() => {
-    const isAll = activeSubcategoryKey === "all";
     const allowedSubtypes = activeConfig.subtypes || [];
 
     // Filter real products from store/db
@@ -488,7 +490,6 @@ export default function BeerCiderCategoryPage({
         product.categoryGroup === "beer" || product.categoryGroup === "cider";
 
       if (!isBeerOrCider) return false;
-      if (isAll) return true;
 
       const subtype = getSubtype(product);
 
@@ -582,14 +583,14 @@ export default function BeerCiderCategoryPage({
                 rating={rating}
                 resultCount={filteredProducts.length}
                 selectedSubtypes={selectedSubtypes}
-                hideAlcoholType={true}
+                hideAlcoholType={false}
               />
             </div>
           </aside>
 
           {/* MAIN PRODUCT LIST & CONTROLS */}
           <div className="flex-1 min-w-0">
-            <div className="flex items-center justify-between mb-6">
+            <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
               <p className="text-sm text-on-surface-variant">
                 {productsLoading
                   ? "Loading products…"
