@@ -16,36 +16,37 @@ import { formatCurrency, parsePrice } from "../utils/productHelpers.js";
  */
 const NAME_PATTERN = /^[A-Za-z ]{2,50}$/;
 
-const CITY_PATTERN = /^[A-Za-z ]{2,50}$/;
+const SUBURB_PATTERN = /^[A-Za-z][A-Za-z' -]{1,49}$/;
 
-const VALID_CITIES = [
-  "Hyderabad",
-  "Chennai",
-  "Bangalore",
-  "Bengaluru",
-  "Mumbai",
-  "Delhi",
-  "New Delhi",
-  "Kolkata",
-  "Pune",
-  "Ahmedabad",
-  "Jaipur",
-  "Surat",
-  "Visakhapatnam",
-  "Vijayawada",
-  "Warangal",
-  "Guntur",
-  "Tirupati",
-  "Coimbatore",
-  "Kochi",
-  "Bhopal",
-  "Indore",
-  "Lucknow",
-  "Nagpur",
-  "Nashik",
+const VALID_STATES = [
+  "New South Wales",
+  "Victoria",
+  "Queensland",
+  "Western Australia",
+  "South Australia",
+  "Tasmania",
+  "Australian Capital Territory",
+  "Northern Territory",
+];
+
+const VALID_STATE_CODES = [
+  "NSW",
+  "VIC",
+  "QLD",
+  "WA",
+  "SA",
+  "TAS",
+  "ACT",
+  "NT",
 ];
 
 const ADDRESS_PATTERN = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z0-9\s,./#-]{10,100}$/;
+
+const COUPONS = {
+  SIPSAVE10: 10,
+  SIPSAVE15: 15,
+  SIPNOW25: 25,
+};
 
 /*
  * ============================================================
@@ -55,35 +56,50 @@ const ADDRESS_PATTERN = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z0-9\s,./#-]{10,100}$/;
 
 export default function Checkout({ cartItems, user, onOrderComplete }) {
   /*
-   * Delivery or pickup.
+   * ==========================================================
+   * FULFILMENT
+   * ==========================================================
    */
+
   const [fulfilment, setFulfilment] = useState("delivery");
 
   /*
-   * Coupon and gift card values.
+   * ==========================================================
+   * COUPON / GIFT CARD
+   * ==========================================================
    */
+
   const [couponCode, setCouponCode] = useState("");
   const [giftCardCode, setGiftCardCode] = useState("");
+  const [couponDiscount, setCouponDiscount] = useState(0);
 
   /*
-   * Message displayed when coupon/gift card
-   * is applied.
+   * Message displayed after applying
+   * coupon or gift card.
    */
   const [codeNotice, setCodeNotice] = useState("");
 
   /*
-   * Checkout form values.
+   * ==========================================================
+   * CHECKOUT FORM VALUES
+   * ==========================================================
    */
+
   const [values, setValues] = useState({
-    name: user?.name ?? "",
-    phone: user?.mobile ?? "",
-    address: "",
-    city: "",
-  });
+  name: user?.name ?? "",
+  phone: user?.mobile ?? "",
+  address: "",
+  city: "",
+  state: "",
+  postcode: "",
+});
 
   /*
-   * Validation errors.
+   * ==========================================================
+   * VALIDATION ERRORS
+   * ==========================================================
    */
+
   const [errors, setErrors] = useState({});
 
   /*
@@ -96,6 +112,16 @@ export default function Checkout({ cartItems, user, onOrderComplete }) {
     (sum, item) => sum + parsePrice(item.product.price) * item.quantity,
     0
   );
+
+  /*
+   * Calculate coupon discount.
+   */
+  const discount = (subtotal * couponDiscount) / 100;
+
+  /*
+   * Calculate final order total.
+   */
+  const total = subtotal - discount;
 
   /*
    * ==========================================================
@@ -126,12 +152,7 @@ export default function Checkout({ cartItems, user, onOrderComplete }) {
      * PHONE VALIDATION
      * --------------------------------------------------------
      *
-     * Remove spaces before checking the number.
-     *
-     * Example:
-     * 98765 43210
-     * becomes:
-     * 9876543210
+     * Exactly 9 digits.
      */
 
     if (!/^[6-9]\d{8}$/.test(values.phone.replace(/\s/g, ""))) {
@@ -143,32 +164,60 @@ export default function Checkout({ cartItems, user, onOrderComplete }) {
      * DELIVERY ADDRESS
      * --------------------------------------------------------
      *
-     * Address and city are only required for delivery.
+     * Address is only required for delivery.
      */
 
-    if (
-      fulfilment === "delivery" &&
-      !ADDRESS_PATTERN.test(values.address.trim())
-    ) {
-      nextErrors.address =
-        "Enter a valid delivery address with a house/building number.";
-    }
+    const address = values.address.trim();
+
+if (fulfilment === "delivery") {
+  if (!address) {
+    nextErrors.address = "Enter your delivery address.";
+  } else if (address.length < 10) {
+    nextErrors.address =
+      "Enter a complete Australian delivery address.";
+  } else if (address.length > 100) {
+    nextErrors.address =
+      "Address must be 100 characters or less.";
+  } else if (!/\d/.test(address)) {
+    nextErrors.address =
+      "Enter a valid Australian address including a street number.";
+  } else if (!/[A-Za-z]/.test(address)) {
+    nextErrors.address =
+      "Enter a valid Australian street address.";
+  } else if (!/^[A-Za-z0-9\s,.'/#-]+$/.test(address)) {
+    nextErrors.address =
+      "Address contains invalid characters.";
+  }
+}
+
     /*
      * --------------------------------------------------------
      * CITY
      * --------------------------------------------------------
      */
 
-    const enteredCity = values.city.trim();
+    const enteredSuburb = values.city.trim();
+
+    if (fulfilment === "delivery" && !SUBURB_PATTERN.test(enteredSuburb)) {
+      nextErrors.city =
+        "Enter a valid suburb using letters, spaces, hyphens or apostrophes.";
+    }
+
+    const enteredPostcode = values.postcode.trim();
+
+    if (fulfilment === "delivery" && !/^\d{4}$/.test(enteredPostcode)) {
+      nextErrors.postcode = "Enter a valid 4-digit Australian postcode.";
+    }
 
     if (
       fulfilment === "delivery" &&
-      (!CITY_PATTERN.test(enteredCity) ||
-        !VALID_CITIES.some(
-          (city) => city.toLowerCase() === enteredCity.toLowerCase()
-        ))
+      !VALID_STATES.some(
+        (state) =>
+          state.toLowerCase() === values.state.trim().toLowerCase()
+      )
     ) {
-      nextErrors.city = "Enter a valid city name.";
+      nextErrors.state =
+        "Select a valid Australian state or territory.";
     }
 
     /*
@@ -191,29 +240,38 @@ export default function Checkout({ cartItems, user, onOrderComplete }) {
     const order = {
       cartItems,
       couponCode: couponCode.trim(),
+      couponDiscount,
+      discount,
       fulfilment,
       giftCardCode: giftCardCode.trim(),
       subtotal,
+      total,
       placedAt: new Date().toISOString(),
     };
 
     /*
-     * Read previous orders.
+     * ========================================================
+     * READ PREVIOUS ORDERS
+     * ========================================================
      */
+
     const previousOrders = JSON.parse(
       window.localStorage.getItem("sipnow-orders") || "[]"
     );
 
     /*
-     * Add the new order to the beginning.
+     * ========================================================
+     * SAVE ORDER HISTORY
+     * ========================================================
      */
+
     window.localStorage.setItem(
       "sipnow-orders",
       JSON.stringify([order, ...previousOrders])
     );
 
     /*
-     * Save the most recent order.
+     * Save most recent order.
      */
     window.localStorage.setItem("sipnow-last-order", JSON.stringify(order));
 
@@ -256,8 +314,17 @@ export default function Checkout({ cartItems, user, onOrderComplete }) {
     }
 
     if (name === "city") {
-      cleanedValue = value.replace(/[^A-Za-z ]/g, "");
+      cleanedValue = value.replace(/[^A-Za-z' -]/g, "");
     }
+
+    if (name === "postcode") {
+      cleanedValue = value.replace(/\D/g, "").slice(0, 4);
+    }
+
+    /*
+     * Address:
+     * Keep normal address characters.
+     */
 
     setValues((current) => ({
       ...current,
@@ -275,19 +342,70 @@ export default function Checkout({ cartItems, user, onOrderComplete }) {
 
   /*
    * ==========================================================
-   * COUPON / GIFT CARD
+   * APPLY COUPON
    * ==========================================================
-   *
-   * Current implementation only checks whether
-   * the user entered something.
    */
 
-  const applyCode = (code, label) =>
-    setCodeNotice(
-      code.trim()
-        ? `${label} saved for this order.`
-        : `Enter a ${label.toLowerCase()} first.`
-    );
+  const applyCoupon = () => {
+    const code = couponCode.trim().toUpperCase();
+
+    /*
+     * Empty coupon.
+     */
+    if (!code) {
+      setCodeNotice("Please enter a coupon code.");
+      setCouponDiscount(0);
+      return;
+    }
+
+    /*
+     * Coupon format validation.
+     */
+    if (!/^[A-Z0-9-]{3,20}$/.test(code)) {
+      setCodeNotice("Enter a valid coupon code.");
+      setCouponDiscount(0);
+      return;
+    }
+
+    /*
+     * Check whether the coupon exists.
+     */
+    if (!COUPONS[code]) {
+      setCodeNotice("Invalid or expired coupon code.");
+      setCouponDiscount(0);
+      return;
+    }
+
+    /*
+     * Apply coupon.
+     */
+    setCouponCode(code);
+    setCouponDiscount(COUPONS[code]);
+    setCodeNotice(`Coupon ${code} applied successfully.`);
+  };
+
+  /*
+   * ==========================================================
+   * APPLY GIFT CARD
+   * ==========================================================
+   */
+
+  const applyGiftCard = () => {
+    const code = giftCardCode.trim();
+
+    /*
+     * Empty gift card.
+     */
+    if (!code) {
+      setCodeNotice("Enter a gift card code first.");
+      return;
+    }
+
+    /*
+     * For now, save the gift card code to the order.
+     */
+    setCodeNotice("Gift card saved for this order.");
+  };
 
   /*
    * ==========================================================
@@ -307,7 +425,10 @@ export default function Checkout({ cartItems, user, onOrderComplete }) {
             Order summary
           </h1>
 
-          {/* Cart items */}
+          {/* ====================================================
+              CART ITEMS
+              ==================================================== */}
+
           <div className="mt-3">
             {cartItems.map(({ product, quantity }) => (
               <div
@@ -329,13 +450,18 @@ export default function Checkout({ cartItems, user, onOrderComplete }) {
                 </div>
 
                 <p className="font-headline-md text-primary">
-                  {formatCurrency(parsePrice(product.price) * quantity)}
+                  {formatCurrency(
+                    parsePrice(product.price) * quantity
+                  )}
                 </p>
               </div>
             ))}
           </div>
 
-          {/* Coupon and gift card */}
+          {/* ====================================================
+              COUPON AND GIFT CARD
+              ==================================================== */}
+
           <div className="mt-5 space-y-3 border-t border-primary/10 pt-5">
             {/* Coupon */}
             <div className="flex gap-2">
@@ -349,7 +475,7 @@ export default function Checkout({ cartItems, user, onOrderComplete }) {
 
               <button
                 className="rounded-full px-5 text-sm text-white primary-gradient"
-                onClick={() => applyCode(couponCode, "Coupon code")}
+                onClick={applyCoupon}
                 type="button"
               >
                 Apply
@@ -368,17 +494,22 @@ export default function Checkout({ cartItems, user, onOrderComplete }) {
 
               <button
                 className="rounded-full px-5 text-sm text-white primary-gradient"
-                onClick={() => applyCode(giftCardCode, "Gift card code")}
+                onClick={applyGiftCard}
                 type="button"
               >
                 Apply
               </button>
             </div>
 
-            {codeNotice && <p className="text-xs text-primary">{codeNotice}</p>}
+            {codeNotice && (
+              <p className="text-xs text-primary">{codeNotice}</p>
+            )}
           </div>
 
-          {/* Contact details */}
+          {/* ====================================================
+              CONTACT DETAILS
+              ==================================================== */}
+
           <div className="mt-6 border-t border-primary/10 pt-6">
             <h2 className="font-headline-md text-lg uppercase tracking-[0.12em]">
               Contact details
@@ -401,66 +532,138 @@ export default function Checkout({ cartItems, user, onOrderComplete }) {
                 />
 
                 {errors.name && (
-                  <span className="text-xs text-error">{errors.name}</span>
+                  <span className="text-xs text-error">
+                    {errors.name}
+                  </span>
                 )}
               </label>
 
               {/* Mobile */}
               <label>
-                <span className="mb-2 block text-sm">Mobile number</span>
+                <span className="mb-2 block text-sm">
+                  Mobile number
+                </span>
 
                 <input
                   className={inputClass("phone")}
                   name="phone"
                   onChange={update}
                   value={values.phone}
+                  inputMode="numeric"
+                  maxLength={9}
                 />
 
                 {errors.phone && (
-                  <span className="text-xs text-error">{errors.phone}</span>
+                  <span className="text-xs text-error">
+                    {errors.phone}
+                  </span>
                 )}
               </label>
             </div>
 
-            {/* Delivery-only fields */}
+            {/* ====================================================
+                DELIVERY-ONLY FIELDS
+                ==================================================== */}
+
             {fulfilment === "delivery" && (
-              <div className="mt-4 grid gap-4 sm:grid-cols-2">
+              <div className="mt-4 space-y-4">
                 {/* Address */}
                 <label>
-                  <span className="mb-2 block text-sm">Delivery address</span>
+                  <span className="mb-2 block text-sm">
+                    Delivery address
+                  </span>
 
                   <input
                     className={inputClass("address")}
                     name="address"
                     onChange={update}
                     value={values.address}
+                    placeholder="123 George Street, Sydney"
                   />
 
                   {errors.address && (
-                    <span className="text-xs text-error">{errors.address}</span>
+                    <span className="text-xs text-error">
+                      {errors.address}
+                    </span>
                   )}
                 </label>
 
-                {/* City */}
-                <label>
-                  <span className="mb-2 block text-sm">City</span>
+                <div className="grid gap-4 sm:grid-cols-3">
+                  {/* Suburb */}
+                  <label>
+                    <span className="mb-2 block text-sm">Suburb</span>
 
-                  <input
-                    className={inputClass("city")}
-                    name="city"
-                    onChange={update}
-                    value={values.city}
-                  />
+                    <input
+                      className={inputClass("city")}
+                      name="city"
+                      onChange={update}
+                      value={values.city}
+                      placeholder="Sydney"
+                      autoComplete="address-level2"
+                    />
 
-                  {errors.city && (
-                    <span className="text-xs text-error">{errors.city}</span>
-                  )}
-                </label>
+                    {errors.city && (
+                      <span className="text-xs text-error">
+                        {errors.city}
+                      </span>
+                    )}
+                  </label>
+
+                  {/* State */}
+                  <label>
+                    <span className="mb-2 block text-sm">State / Territory</span>
+
+                    <select
+                      className={inputClass("state")}
+                      name="state"
+                      onChange={update}
+                      value={values.state}
+                    >
+                      <option value="">Select state</option>
+                      {VALID_STATES.map((state) => (
+                        <option key={state} value={state}>
+                          {state}
+                        </option>
+                      ))}
+                    </select>
+
+                    {errors.state && (
+                      <span className="text-xs text-error">
+                        {errors.state}
+                      </span>
+                    )}
+                  </label>
+
+                  {/* Postcode */}
+                  <label>
+                    <span className="mb-2 block text-sm">Postcode</span>
+
+                    <input
+                      className={inputClass("postcode")}
+                      name="postcode"
+                      onChange={update}
+                      value={values.postcode}
+                      placeholder="2000"
+                      inputMode="numeric"
+                      maxLength={4}
+                      autoComplete="postal-code"
+                    />
+
+                    {errors.postcode && (
+                      <span className="text-xs text-error">
+                        {errors.postcode}
+                      </span>
+                    )}
+                  </label>
+                </div>
               </div>
             )}
           </div>
 
-          {/* Place order */}
+          {/* ====================================================
+              PLACE ORDER
+              ==================================================== */}
+
           <button
             className="mt-7 w-full rounded-lg py-3 text-sm uppercase tracking-widest text-white primary-gradient"
             type="submit"
@@ -478,10 +681,16 @@ export default function Checkout({ cartItems, user, onOrderComplete }) {
             How would you like your order?
           </h2>
 
+          {/* Fulfilment */}
           <div className="mt-5 space-y-3">
             {[
               ["delivery", "local_shipping", "Delivery", "Paid by card"],
-              ["pickup", "storefront", "Pickup", "Pay cash or card in store"],
+              [
+                "pickup",
+                "storefront",
+                "Pickup",
+                "Pay cash or card in store",
+              ],
             ].map(([value, icon, title, text]) => (
               <button
                 aria-pressed={fulfilment === value}
@@ -509,25 +718,45 @@ export default function Checkout({ cartItems, user, onOrderComplete }) {
             ))}
           </div>
 
-          {/* Order totals */}
+          {/* ====================================================
+              ORDER TOTALS
+              ==================================================== */}
+
           <div className="mt-6 space-y-3 border-t border-primary/10 pt-5 text-sm">
+            {/* Subtotal */}
             <div className="flex justify-between text-on-surface-variant">
               <span>Subtotal</span>
+
               <span>{formatCurrency(subtotal)}</span>
             </div>
 
+            {/* Discount */}
+            {couponDiscount > 0 && (
+              <div className="flex justify-between text-on-surface-variant">
+                <span>Discount ({couponDiscount}%)</span>
+
+                <span>-{formatCurrency(discount)}</span>
+              </div>
+            )}
+
+            {/* Delivery */}
             <div className="flex justify-between text-on-surface-variant">
               <span>Delivery</span>
 
               <span>
-                {fulfilment === "delivery" ? "To be confirmed" : "Free"}
+                {fulfilment === "delivery"
+                  ? "To be confirmed"
+                  : "Free"}
               </span>
             </div>
 
+            {/* Total */}
             <div className="flex justify-between border-t border-primary/10 pt-3 font-headline-md text-lg">
               <span>Total</span>
 
-              <span className="text-primary">{formatCurrency(subtotal)}</span>
+              <span className="text-primary">
+                {formatCurrency(total)}
+              </span>
             </div>
           </div>
         </aside>
