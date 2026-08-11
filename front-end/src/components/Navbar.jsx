@@ -92,13 +92,7 @@ function getMenuItemRoute(menuLabel, columnHeading, item) {
   // ======================================
 
   if (menuLabel === "Spirits") {
-    const spiritType = item.toLowerCase().trim();
-
-    if (spiritType === "whisky" || spiritType === "whiskey") {
-      return "/whisky";
-    }
-
-    return `/spirits?type=${encodeURIComponent(spiritType)}`;
+    return `/spirits?type=${encodeURIComponent(item.toLowerCase().trim())}`;
   }
 
   // ======================================
@@ -202,7 +196,7 @@ function FeaturedPanel({ featured }) {
 function SearchResults({ results, searched, onSelect }) {
   if (!searched) return null;
   return (
-    <div className="absolute top-full left-0 right-0 mt-2 w-full sm:w-[420px] glass-panel border border-outline-variant/30 rounded-2xl shadow-2xl overflow-hidden z-50">
+    <div className="absolute top-full left-0 right-0 mt-2 w-[420px] glass-panel border border-outline-variant/30 rounded-2xl shadow-2xl overflow-hidden z-50">
       {results.length === 0 ? (
         <p className="px-6 py-5 text-sm text-on-surface-variant">
           No products match your search.

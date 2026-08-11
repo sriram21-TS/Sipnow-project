@@ -311,85 +311,88 @@ export default function Spirits({
 
   return (
     <div className="min-h-screen px-margin-mobile md:px-margin-desktop pt-28 pb-16">
-      {/* =========================================
+      <Reveal>
+        {/* =========================================
           BACK TO HOME
       ========================================= */}
 
-      <button
-        type="button"
-        onClick={onBack}
-        className="flex items-center gap-2 text-on-surface-variant hover:text-primary transition-colors mb-10 cursor-pointer"
-      >
-        <span className="material-symbols-outlined">arrow_back</span>
-        Back to home
-      </button>
+        <button
+          type="button"
+          onClick={onBack}
+          className="flex items-center gap-2 text-on-surface-variant hover:text-primary transition-colors mb-10 cursor-pointer"
+        >
+          <span className="material-symbols-outlined">arrow_back</span>
+          Back to home
+        </button>
 
-      {/* =========================================
+        {/* =========================================
           PAGE TITLE
       ========================================= */}
 
-      <div className="mb-14">
-        {/* FULL COLLECTION */}
+        <div className="mb-14">
+          {/* FULL COLLECTION */}
 
-        <div className="inline-flex px-5 py-2 rounded-full border border-primary/40 text-primary text-xs uppercase tracking-[0.2em] mb-8">
-          Full Collection
+          <div className="inline-flex px-5 py-2 rounded-full border border-primary/40 text-primary text-xs uppercase tracking-[0.2em] mb-8">
+            Full Collection
+          </div>
+
+          {/* TITLE */}
+
+          <h1 className="font-serif text-5xl md:text-6xl text-on-surface">
+            {pageTitle}
+          </h1>
+
+          {/* DESCRIPTION */}
+
+          <p className="mt-5 text-lg text-on-surface-variant">
+            {pageDescription}
+          </p>
         </div>
 
-        {/* TITLE */}
-
-        <h1 className="font-serif text-5xl md:text-6xl text-on-surface">
-          {pageTitle}
-        </h1>
-
-        {/* DESCRIPTION */}
-
-        <p className="mt-5 text-lg text-on-surface-variant">
-          {pageDescription}
-        </p>
-      </div>
-
-      {/* =========================================
+        {/* =========================================
           FILTER + PRODUCT AREA
       ========================================= */}
 
-      <div className="flex flex-col lg:flex-row gap-8 lg:gap-10">
-        {/* =====================================
+        <div className="flex flex-col lg:flex-row gap-8 lg:gap-10">
+          {/* =====================================
             LEFT FILTER SIDEBAR
         ===================================== */}
 
-        <aside className="lg:w-72 shrink-0">
-          <div className="lg:sticky lg:top-32">
-            <ProductFilters
-              onClearAll={clearAllFilters}
-              onPriceRangeChange={setPriceRange}
-              onRatingChange={setRating}
-              onToggleSubtype={toggleType}
-              priceRange={priceRange}
-              products={spiritProducts}
-              rating={rating}
-              resultCount={filteredProducts.length}
-              selectedSubtypes={selectedTypes}
-            />
-          </div>
-        </aside>
+          <aside className="lg:w-72 shrink-0">
+            <div className="lg:sticky lg:top-32">
+              <ProductFilters
+                onClearAll={clearAllFilters}
+                onPriceRangeChange={setPriceRange}
+                onRatingChange={setRating}
+                onToggleSubtype={toggleType}
+                priceRange={priceRange}
+                products={spiritProducts}
+                rating={rating}
+                resultCount={filteredProducts.length}
+                selectedSubtypes={selectedTypes}
+              />
+            </div>
+          </aside>
 
-        {/* =====================================
+          {/* =====================================
             RIGHT PRODUCT AREA
         ===================================== */}
 
-        <div className="flex-1 min-w-0">
-          {/* ===================================
+          <div className="flex-1 min-w-0">
+            {/* ===================================
               PRODUCT COUNT + SORT
           =================================== */}
 
-          <div className="flex-1 min-w-0">
-            {/* PRODUCT COUNT + SORT */}
-            <div className="flex items-center justify-between gap-4 mb-6">
+            <div className="flex items-center justify-between mb-6">
+              {/* PRODUCT COUNT */}
+
               <p className="text-sm text-on-surface-variant">
                 {productsLoading
                   ? "Loading products..."
                   : `Showing ${filteredProducts.length} of ${filteredProducts.length} products`}
               </p>
+
+              {/* SORT */}
 
               <label className="flex items-center gap-3 text-sm text-on-surface-variant">
                 <span>Sort by</span>
@@ -400,14 +403,20 @@ export default function Spirits({
                   onChange={(e) => setSort(e.target.value)}
                 >
                   <option value="featured">Featured</option>
+
                   <option value="price-asc">Price: Low to High</option>
+
                   <option value="price-desc">Price: High to Low</option>
+
                   <option value="rating">Top Rated</option>
                 </select>
               </label>
             </div>
 
-            {/* PRODUCT GRID */}
+            {/* ===================================
+              PRODUCT GRID
+          =================================== */}
+
             <ProductGrid
               addedProduct={addedProduct}
               onAddToCart={handleAddToCart}
@@ -420,7 +429,7 @@ export default function Spirits({
             />
           </div>
         </div>
-      </div>
+      </Reveal>
     </div>
   );
 }

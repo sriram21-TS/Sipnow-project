@@ -5,7 +5,6 @@ import {
   Routes,
   useLocation,
   useNavigate,
-  useParams,
 } from "react-router-dom";
 
 import AmbientBackground from "./components/AmbientBackground.jsx";
@@ -15,7 +14,7 @@ import QuizModal from "./components/QuizModal.jsx";
 import BeerCiderCategoryPage from "./pages/BeerCiderCategoryPage.jsx";
 import { useProducts } from "./hooks/useProducts.js";
 import Wine from "./pages/Wine.jsx";
-import Spirits from "./pages/Spirits.jsx";
+
 import Auth from "./pages/Auth.jsx";
 import Cart from "./pages/Cart.jsx";
 import CategoryPage from "./pages/CategoryPage.jsx";
@@ -27,11 +26,10 @@ import Profile from "./pages/Profile.jsx";
 import ShopAll from "./pages/ShopAll.jsx";
 import ZeroCategoryPage from "./pages/ZeroCategoryPage.jsx";
 import Members from "./pages/Members.jsx";
-import Whisky from "./pages/Whisky.jsx";
+import Spirits from "./pages/Spirits.jsx";
 import GiftCards from "./pages/GiftCards.jsx";
 import Clearance from "./pages/Clearance.jsx";
 import GeneralPromotions from "./pages/GeneralPromotions.jsx";
-
 // Safely read JSON data from localStorage. If the key is missing or
 // contains invalid JSON, return the provided fallback value.
 function readStored(key, fallback) {
@@ -40,20 +38,6 @@ function readStored(key, fallback) {
   } catch {
     return fallback;
   }
-}
-
-function OfferProductsRoute({ products, addToCart }) {
-  const { category } = useParams();
-  const navigate = useNavigate();
-
-  return (
-    <CategoryPage
-      categoryKey={category}
-      products={products}
-      onAddToCart={addToCart}
-      onBack={() => navigate(`/offers/${category}`)}
-    />
-  );
 }
 
 export default function App() {
@@ -381,13 +365,6 @@ export default function App() {
               />
             }
           />
-
-          <Route
-            path="/offers/:category/products"
-            element={
-              <OfferProductsRoute products={products} addToCart={addToCart} />
-            }
-          />
           <Route
             path="/offers/:categoryKey"
             element={
@@ -395,54 +372,6 @@ export default function App() {
                 onAddToCart={addToCart}
                 onBack={goHome}
                 products={products}
-              />
-            }
-          />
-
-          <Route
-            path="/offers/general-promotions/products"
-            element={
-              <CategoryPage
-                categoryKey="general-promotions"
-                products={products}
-                onAddToCart={addToCart}
-                onBack={() => navigate("/offers/general-promotions")}
-              />
-            }
-          />
-
-          <Route
-            path="/offers/gift-cards/products"
-            element={
-              <CategoryPage
-                categoryKey="gift-cards"
-                products={products}
-                onAddToCart={addToCart}
-                onBack={() => navigate("/offers/gift-cards")}
-              />
-            }
-          />
-
-          <Route
-            path="/offers/members/products"
-            element={
-              <CategoryPage
-                categoryKey="members"
-                products={products}
-                onAddToCart={addToCart}
-                onBack={() => navigate("/offers/members")}
-              />
-            }
-          />
-
-          <Route
-            path="/offers/clearance/products"
-            element={
-              <CategoryPage
-                categoryKey="clearance"
-                products={products}
-                onAddToCart={addToCart}
-                onBack={() => navigate("/offers/clearance")}
               />
             }
           />
@@ -500,18 +429,6 @@ export default function App() {
               />
             }
           />
-
-          <Route
-            path="/whisky"
-            element={
-              <Whisky
-                onAddToCart={addToCart}
-                onBack={goHome}
-                products={products}
-                productsLoading={productsLoading}
-              />
-            }
-          />
           <Route
             path="/spirits/whisky/:categoryKey"
             element={
@@ -542,6 +459,7 @@ export default function App() {
               />
             }
           />
+
           <Route
             path="/wine/:wineType"
             element={
