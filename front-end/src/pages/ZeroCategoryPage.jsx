@@ -48,65 +48,39 @@ const SUBCATEGORIES = {
     description:
       "Enjoy your favourite drinks with zero alcohol. Explore our complete selection of non-alcoholic wines, beers, spirits, premixes, and ciders.",
   },
-
   wine: {
     title: "Zero % Alcohol Wine",
     keyword: "wine",
-    subtitle:
-      "Explore our collection of zero alcohol wines.",
-    emptyMessage:
-      "No zero % alcohol wine products found.",
-    bannerTag: "Zero Alcohol Cellar",
-    description:
-      "Explore our premium range of non-alcoholic wines, crafted for rich taste without the alcohol.",
+    subtitle: "Explore our collection of zero alcohol wines.",
+    emptyMessage: "No zero % alcohol wine products found.",
   },
 
   beer: {
     title: "Zero % Alcohol Beer",
     keyword: "beer",
-    subtitle:
-      "Explore our collection of zero alcohol beers.",
-    emptyMessage:
-      "No zero % alcohol beer products found.",
-    bannerTag: "Zero Alcohol Brews",
-    description:
-      "Refresh yourself with crisp, non-alcoholic craft and classic beers.",
+    subtitle: "Explore our collection of zero alcohol beers.",
+    emptyMessage: "No zero % alcohol beer products found.",
   },
 
   spirits: {
     title: "Zero % Alcohol Spirits",
     keyword: "spirits",
-    subtitle:
-      "Explore our collection of zero alcohol spirits.",
-    emptyMessage:
-      "No zero % alcohol spirits products found.",
-    bannerTag: "Zero Alcohol Spirits",
-    description:
-      "Sophisticated non-alcoholic botanical spirits and alternatives for mixology.",
+    subtitle: "Explore our collection of zero alcohol spirits.",
+    emptyMessage: "No zero % alcohol spirits products found.",
   },
 
   premix: {
     title: "Zero % Alcohol Premix",
     keyword: "premix",
-    subtitle:
-      "Explore our collection of zero alcohol premix drinks.",
-    emptyMessage:
-      "No zero % alcohol premix products found.",
-    bannerTag: "Zero Alcohol Premix & RTD",
-    description:
-      "Convenient, ready-to-drink zero alcohol cocktails and mixed drinks.",
+    subtitle: "Explore our collection of zero alcohol premix drinks.",
+    emptyMessage: "No zero % alcohol premix products found.",
   },
 
   cider: {
     title: "Zero % Alcohol Cider",
     keyword: "cider",
-    subtitle:
-      "Explore our collection of zero alcohol ciders.",
-    emptyMessage:
-      "No zero % alcohol cider products found.",
-    bannerTag: "Zero Alcohol Ciders",
-    description:
-      "Fruity and crisp zero alcohol ciders packed with natural flavours.",
+    subtitle: "Explore our collection of zero alcohol ciders.",
+    emptyMessage: "No zero % alcohol cider products found.",
   },
 };
 
@@ -126,11 +100,10 @@ export default function ZeroCategoryPage({
     "";
 
   if (!rawSub && location.pathname) {
-    const parts = location.pathname
-      .split("/")
-      .filter(Boolean);
-
-    rawSub = parts[parts.length - 1] || "wine";
+    const parts = location.pathname.split("/").filter(Boolean);
+    const lastPart = parts[parts.length - 1] || "all";
+    rawSub =
+      lastPart === "zero-alcohol" || lastPart === "zero" ? "all" : lastPart;
   }
 
   const subKey =
@@ -212,7 +185,9 @@ export default function ZeroCategoryPage({
        * "all" should include every zero-alcohol product.
        */
       if (config.keyword !== "all") {
-        if (config.keyword === "spirits") {
+        if (config.keyword === "all") {
+        // no further category narrowing — any zero % product qualifies
+      } else if (config.keyword === "spirits") {
           if (
             !text.includes("spirit") &&
             !text.includes("spirits") &&

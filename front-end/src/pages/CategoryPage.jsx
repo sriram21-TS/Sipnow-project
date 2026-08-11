@@ -51,10 +51,10 @@ export default function CategoryPage({
 
   const { data: categories = [] } = useCategories();
 
-  // Normal category
+  // Check normal categories first.
   const normalCategory = categories.find((item) => item.key === categoryKey);
 
-  // Special Offers & Services category
+  // Check our special Offers & Services pages.
   const specialCategory = SPECIAL_CATEGORIES[categoryKey];
 
   const categoryName =
@@ -67,21 +67,10 @@ export default function CategoryPage({
     specialCategory?.description ||
     `Explore our curated selection of ${categoryName.toLowerCase()}, handpicked for every occasion.`;
 
-  // ============================================
-  // PRODUCT FILTERING
-  // ============================================
-
-  const categoryProducts = products.filter((product) => {
-    // Offers & Services
-    if (specialCategory) {
-      return (
-        product.categoryGroup === "offers" && product.section === categoryKey
-      );
-    }
-
-    // Normal categories
-    return product.categoryGroup === categoryKey;
-  });
+  // Normal product-category filtering.
+  const categoryProducts = products.filter(
+    (product) => product.categoryGroup === categoryKey
+  );
 
   return (
     <>

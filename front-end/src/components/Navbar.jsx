@@ -18,18 +18,6 @@ const TOP_LEVEL_ROUTES = {
   "In-Store promotions": "/in-store-promotions",
 };
 
-const BEER_CIDER_ITEM_PAGES = {
-  Pilsner: "pilsner",
-  "Dark Lager": "dark-lager",
-  Helles: "helles",
-  "Pale Ale": "pale-ale",
-  IPA: "ipa",
-  "Stout & Porter": "stout-porter",
-  Apple: "apple-cider",
-  Pear: "pear-cider",
-  "Fruit Cider": "fruit-cider",
-};
-
 const mobileNavLinks = [
   "Offers & Services",
   "Beer & Cider",
@@ -441,7 +429,7 @@ export default function Navbar({ cartCount = 0, products = [], user }) {
 
           {/* DESKTOP NAV */}
 
-          <div className="hidden lg:flex items-center gap-8">
+          <div className="hidden lg:flex gap-10">
             {navMenus.map((menu) => (
               <div
                 className="nav-item py-2"
@@ -463,7 +451,7 @@ export default function Navbar({ cartCount = 0, products = [], user }) {
                   {menu.label}
 
                   <span
-                    className={`material-symbols-outlined text-[18px] opacity-50 transition-transform cursor-pointer ${
+                    className={`material-symbols-outlined text-[18px] opacity-50 transition-transform ${
                       openMenu === menu.label ? "rotate-180" : ""
                     }`}
                   >
@@ -472,10 +460,7 @@ export default function Navbar({ cartCount = 0, products = [], user }) {
                 </Link>
 
                 {openMenu === menu.label && (
-                  <div
-                    className="mega-menu absolute top-full left-0 right-0 pt-0"
-                    onMouseEnter={() => setOpenMenu(menu.label)}
-                  >
+                  <div className="mega-menu absolute left-margin-desktop right-margin-desktop top-[100%] pt-4">
                     <div className="mega-menu-panel glass-panel border border-outline-variant/30 rounded-2xl p-10 grid grid-cols-4 gap-12 shadow-2xl">
                       {menu.columns.map((col) =>
                         col.items?.length > 0 ? (

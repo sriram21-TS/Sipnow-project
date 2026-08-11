@@ -11,7 +11,6 @@ import AmbientBackground from "./components/AmbientBackground.jsx";
 import Footer from "./components/Footer.jsx";
 import Navbar from "./components/Navbar.jsx";
 import QuizModal from "./components/QuizModal.jsx";
-import BeerCiderCategoryPage from "./pages/BeerCiderCategoryPage.jsx";
 import { useProducts } from "./hooks/useProducts.js";
 import Wine from "./pages/Wine.jsx";
 
@@ -19,17 +18,18 @@ import Auth from "./pages/Auth.jsx";
 import Cart from "./pages/Cart.jsx";
 import CategoryPage from "./pages/CategoryPage.jsx";
 import Checkout from "./pages/Checkout.jsx";
+import Clearance from "./pages/Clearance.jsx";
+import GeneralPromotions from "./pages/GeneralPromotions.jsx";
+import GiftCards from "./pages/GiftCards.jsx";
 import Home from "./pages/Home.jsx";
 import InStorePromotions from "./pages/InStorePromotions.jsx";
+import Members from "./pages/Members.jsx";
 import PremixPage from "./pages/PremixPage.jsx";
 import Profile from "./pages/Profile.jsx";
 import ShopAll from "./pages/ShopAll.jsx";
 import ZeroCategoryPage from "./pages/ZeroCategoryPage.jsx";
-import Members from "./pages/Members.jsx";
+
 import Spirits from "./pages/Spirits.jsx";
-import GiftCards from "./pages/GiftCards.jsx";
-import Clearance from "./pages/Clearance.jsx";
-import GeneralPromotions from "./pages/GeneralPromotions.jsx";
 // Safely read JSON data from localStorage. If the key is missing or
 // contains invalid JSON, return the provided fallback value.
 function readStored(key, fallback) {
@@ -378,22 +378,21 @@ export default function App() {
           <Route
             path="/beer-cider"
             element={
-              <BeerCiderCategoryPage
+              <CategoryPage
+                categoryKey="beer"
                 onAddToCart={addToCart}
                 onBack={goHome}
                 products={products}
-                productsLoading={productsLoading}
               />
             }
           />
           <Route
             path="/beer-cider/:categoryKey"
             element={
-              <BeerCiderCategoryPage
+              <CategoryPage
                 onAddToCart={addToCart}
                 onBack={goHome}
                 products={products}
-                productsLoading={productsLoading}
               />
             }
           />
@@ -426,6 +425,17 @@ export default function App() {
                 onBack={() => goToPage("/")}
                 products={products}
                 productsLoading={productsLoading}
+              />
+            }
+          />
+          <Route
+            path="/spirits"
+            element={
+              <CategoryPage
+                categoryKey="spirits"
+                onAddToCart={addToCart}
+                onBack={goHome}
+                products={products}
               />
             }
           />
