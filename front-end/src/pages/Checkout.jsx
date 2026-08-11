@@ -47,6 +47,12 @@ const VALID_CITIES = [
 
 const ADDRESS_PATTERN = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z0-9\s,./#-]{10,100}$/;
 
+const COUPONS = {
+  SIPSAVE10: 10,
+  SIPSAVE15: 15,
+  SIPNOW25: 25,
+};
+
 /*
  * ============================================================
  * CHECKOUT PAGE
