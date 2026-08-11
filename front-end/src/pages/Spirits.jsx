@@ -382,13 +382,8 @@ export default function Spirits({
               PRODUCT COUNT + SORT
           =================================== */}
 
-<<<<<<< HEAD
-          <div className="flex items-center justify-between mb-6">
+          <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
             {/* PRODUCT COUNT */}
-=======
-            <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
-              {/* PRODUCT COUNT */}
->>>>>>> 72d3b4008124fcf82beb309581f9b44ed1b939db
 
             <p className="text-sm text-on-surface-variant">
               {productsLoading
@@ -407,11 +402,8 @@ export default function Spirits({
                 onChange={(e) => setSort(e.target.value)}
               >
                 <option value="featured">Featured</option>
-
                 <option value="price-asc">Price: Low to High</option>
-
                 <option value="price-desc">Price: High to Low</option>
-
                 <option value="rating">Top Rated</option>
               </select>
             </label>
