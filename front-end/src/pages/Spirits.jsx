@@ -307,7 +307,6 @@ export default function Spirits({
                 resultCount={filteredProducts.length}
 
                 selectedSubtypes={selectedTypes}
-                hideAlcoholType
               />
             </div>
           </aside>

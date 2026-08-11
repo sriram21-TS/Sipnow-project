@@ -11,7 +11,7 @@ import AmbientBackground from "./components/AmbientBackground.jsx";
 import Footer from "./components/Footer.jsx";
 import Navbar from "./components/Navbar.jsx";
 import QuizModal from "./components/QuizModal.jsx";
-import BeerCiderCategoryPage from "./components/BeerCiderCategoryPage.jsx";
+import BeerCiderCategoryPage from "./pages/BeerCiderCategoryPage.jsx";
 import { useProducts } from "./hooks/useProducts.js";
 import Wine from "./pages/Wine.jsx";
 

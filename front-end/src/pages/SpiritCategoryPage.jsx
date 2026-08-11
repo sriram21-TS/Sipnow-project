@@ -179,7 +179,6 @@ export default function SpiritCategoryPage({
                 rating={rating}
                 resultCount={filteredProducts.length}
                 selectedSubtypes={selectedSubtypes}
-                hideAlcoholType
               />
             </div>
           </aside>
