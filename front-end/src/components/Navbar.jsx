@@ -123,10 +123,6 @@ function getMenuItemRoute(menuLabel, columnHeading, item) {
   // ZERO %
   // ======================================
 
-<<<<<<< HEAD
-  if (menuLabel === "Zero %" || menuLabel.toLowerCase().includes("zero")) {
-    const sub = itemSlug.replace("zero-alcohol-", "").replace("zero-", "");
-=======
   if (
     menuLabel === "Zero %" ||
     menuLabel === "Zero" ||
@@ -135,7 +131,6 @@ function getMenuItemRoute(menuLabel, columnHeading, item) {
   ) {
     const sub = itemSlug.replace("zero-alcohol-", "").replace("zero-", "");
 
->>>>>>> fd18616e0be65897c1a064f9612faa5b966076aa
     return `/zero-alcohol/${sub}`;
   }
 
@@ -256,13 +251,10 @@ function SearchResults({ results, searched, onSelect }) {
   );
 }
 
-<<<<<<< HEAD
-=======
 // ========================================
 // NAVBAR
 // ========================================
 
->>>>>>> fd18616e0be65897c1a064f9612faa5b966076aa
 export default function Navbar({ cartCount = 0, products = [], user }) {
   const [scrolled, setScrolled] = useState(false);
 
@@ -462,11 +454,7 @@ export default function Navbar({ cartCount = 0, products = [], user }) {
 
                 <Link
                   to={TOP_LEVEL_ROUTES[menu.label] || `/${slugify(menu.label)}`}
-<<<<<<< HEAD
-                  className={`flex items-center gap-1.5 font-label-md text-label-md transition-colors tracking-wide cursor-default ${
-=======
                   className={`flex items-center gap-1.5 whitespace-nowrap font-label-md text-label-md transition-colors tracking-wide cursor-default ${
->>>>>>> fd18616e0be65897c1a064f9612faa5b966076aa
                     openMenu === menu.label
                       ? "text-primary"
                       : "text-on-surface/80 hover:text-primary"
