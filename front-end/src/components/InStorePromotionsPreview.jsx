@@ -124,7 +124,7 @@ export default function InStorePromotionsPreview({ onAddToCart, onNavigate }) {
       <section className="relative w-full overflow-hidden">
         <div className="mx-auto w-[92%] max-w-[1500px]">
           {/* Section Header */}
-          <div className="flex items-start justify-between gap-6">
+          <div className="flex items-end justify-between gap-6">
             <div>
               <p className="font-label-md uppercase tracking-[0.28em]">
                 Offers & Services
@@ -136,6 +136,13 @@ export default function InStorePromotionsPreview({ onAddToCart, onNavigate }) {
                 Exclusive offers available at your local SipNow store.
               </p>
             </div>
+            <button
+              type="button"
+              onClick={() => onNavigate?.("in-store-promotions")}
+              className="inline-flex shrink-0 items-center font-label-md transition-opacity hover:opacity-80"
+            >
+              View All Promotions →
+            </button>
           </div>
 
           {/* Product Carousel */}
@@ -186,17 +193,6 @@ export default function InStorePromotionsPreview({ onAddToCart, onNavigate }) {
               <span className="material-symbols-outlined" aria-hidden="true">
                 chevron_right
               </span>
-            </button>
-          </div>
-
-          {/* View Promotions */}
-          <div className="mt-6 flex justify-end">
-            <button
-              type="button"
-              onClick={() => onNavigate?.("in-store-promotions")}
-              className="inline-flex items-center font-label-md transition-opacity hover:opacity-80"
-            >
-              View All Promotions →
             </button>
           </div>
 

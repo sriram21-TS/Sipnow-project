@@ -1,15 +1,49 @@
 import { useFooterColumns, useSiteAssets } from "../hooks/useContent.js";
 import { useNewsletterForm } from "../hooks/useNewsletterForm.js";
-import { preventNav } from "../utils/links.js";
+import { useNavigate } from "react-router-dom";
 
+const FOOTER_DESTINATIONS = {
+  Beer: "/beer-cider",
+  Wine: "/wine",
+  Whisky: "/spirits?type=whisky",
+  premix: "/premix",
+  Spirits: "/spirits",
+  zero: "/zero-alcohol",
+  "In-store": "/in-store-promotions",
+  General: "/offers/general-promotions",
+  members: "/offers/members",
+  Gift: "/offers/gift-cards",
+  Clearance: "/offers/clearance",
+  "My Orders": "/profile",
+  "Shipping Info": "/checkout",
+  "Returns & Refunds": "/profile",
+
+  "Sommelier Service": "/#sommelier-quiz",
+  "Privacy Policy": "/#why-sipnow",
+  "Terms of Service": "/#why-sipnow",
+};
 export default function Footer() {
+  const navigate = useNavigate();
   const { email, status, handleChange, handleSubmit } = useNewsletterForm();
   const { data: footerColumns } = useFooterColumns();
   const { data: siteAssets } = useSiteAssets();
 
+  const navigateTo = (destination) => (e) => {
+    e.preventDefault();
+    const [path, hash] = destination.split("#");
+    navigate(path || "/");
+    if (hash) {
+      requestAnimationFrame(() =>
+        document
+          .getElementById(hash)
+          ?.scrollIntoView({ behavior: "smooth", block: "start" })
+      );
+    }
+  };
+
   return (
     <footer className="bg-surface-container-lowest pt-24 pb-12 relative overflow-hidden">
-      <div className="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-16 mb-24 relative z-10">
+      <div className="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-16 mb-24 relative z-10">
         <div className="space-y-8">
           <img
             alt="SipNow Logo"
@@ -23,8 +57,8 @@ export default function Footer() {
           <div className="flex gap-4">
             <a
               className="w-12 h-12 rounded-full border border-outline-variant/30 flex items-center justify-center hover:bg-primary/20 transition-colors"
-              href="#"
-              onClick={preventNav}
+              href="/"
+              onClick={navigateTo("/")}
             >
               <span className="material-symbols-outlined text-[20px]">
                 public
@@ -32,8 +66,8 @@ export default function Footer() {
             </a>
             <a
               className="w-12 h-12 rounded-full border border-outline-variant/30 flex items-center justify-center hover:bg-primary/20 transition-colors"
-              href="#"
-              onClick={preventNav}
+              href="/"
+              onClick={navigateTo("/")}
             >
               <span className="material-symbols-outlined text-[20px]">
                 share
@@ -51,8 +85,8 @@ export default function Footer() {
                 <li key={link}>
                   <a
                     className="text-on-surface-variant hover:text-white transition-colors"
-                    href="#"
-                    onClick={preventNav}
+                    href={FOOTER_DESTINATIONS[link.trim()]}
+                    onClick={navigateTo(FOOTER_DESTINATIONS[link.trim()])}
                   >
                     {link}
                   </a>
@@ -114,15 +148,15 @@ export default function Footer() {
         <div className="flex gap-8 text-xs text-on-surface-variant/40">
           <a
             className="hover:text-primary transition-colors"
-            href="#"
-            onClick={preventNav}
+            href={FOOTER_DESTINATIONS["Privacy Policy"]}
+            onClick={navigateTo(FOOTER_DESTINATIONS["Privacy Policy"])}
           >
             Privacy Policy
           </a>
           <a
             className="hover:text-primary transition-colors"
-            href="#"
-            onClick={preventNav}
+            href={FOOTER_DESTINATIONS["Terms of Service"]}
+            onClick={navigateTo(FOOTER_DESTINATIONS["Terms of Service"])}
           >
             Terms of Service
           </a>

@@ -23,7 +23,8 @@
   position: static !important;
 }
 
-.in-store-promotion-card > :first-child {
+.in-store-promotion-card > :first-child,
+.best-seller-card > :first-child {
   height: 12.75rem;
   aspect-ratio: auto;
 }

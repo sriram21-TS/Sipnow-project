@@ -1,5 +1,4 @@
 import { categories } from "../data/categories.js";
-import { footerColumns } from "../data/footerLinks.js";
 import { heroSlides } from "../data/heroSlides.js";
 import { inStorePromotions } from "../data/inStorePromotions.js";
 import { navMenus } from "../data/navigation.js";
@@ -34,7 +33,32 @@ export function useCategories() {
 }
 
 export function useFooterColumns() {
-  return { data: footerColumns, loading: false, error: null };
+  const footerColumns = [
+    {
+      heading: "Explore",
+      links: ["Beer", "Wine", "Whisky", "premix", "Spirits", "zero"],
+    },
+    {
+      heading: "Offer services",
+      links: ["In-store ", "General", "members", "Gift", "Clearance"],
+    },
+    {
+      heading: "Other Services",
+      links: [
+        "Gift",
+        "Clearance",
+        "My Orders",
+        "Shipping Info",
+        "Returns & Refunds",
+      ],
+    },
+  ];
+
+  return {
+    data: footerColumns,
+    loading: false,
+    error: null,
+  };
 }
 
 export function useHeroSlides() {

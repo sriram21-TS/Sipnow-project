@@ -1,6 +1,14 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useQuiz } from "../hooks/useContent.js";
-import { scrollToSection } from "../utils/links.js";
+
+const QUIZ_RESULT_ROUTES = {
+  beer: "/beer-cider",
+  wine: "/wine",
+  spirits: "/spirits",
+  premix: "/premix",
+  zeroproof: "/zero-alcohol",
+};
 
 function computeResult(answers, quizResults) {
   const totals = {};
@@ -17,10 +25,11 @@ function computeResult(answers, quizResults) {
       winner = key;
     }
   });
-  return quizResults[winner];
+  return { ...quizResults[winner], key: winner };
 }
 
 export default function QuizModal({ isOpen, onClose }) {
+  const navigate = useNavigate();
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [answers, setAnswers] = useState([]);
   const [wasOpen, setWasOpen] = useState(isOpen);
@@ -72,6 +81,12 @@ export default function QuizModal({ isOpen, onClose }) {
   };
 
   const result = isResult ? computeResult(answers, quizResults) : null;
+
+  const shopResult = () => {
+    navigate(QUIZ_RESULT_ROUTES[result.key]);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    onClose();
+  };
 
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-8">
@@ -152,16 +167,13 @@ export default function QuizModal({ isOpen, onClose }) {
               </p>
             </div>
             <div className="flex flex-wrap justify-center gap-4 pt-2">
-              <a
+              <button
                 className="primary-gradient px-10 py-4 rounded-full font-label-md shadow-xl shadow-primary/30 hover:scale-105 transition-transform"
-                href="#best-sellers"
-                onClick={(e) => {
-                  scrollToSection("best-sellers")(e);
-                  onClose();
-                }}
+                onClick={shopResult}
+                type="button"
               >
                 Shop {result.title}
-              </a>
+              </button>
               <button
                 className="glass-panel border border-outline-variant/30 px-10 py-4 rounded-full font-label-md hover:bg-surface-container-low transition-colors"
                 onClick={retake}
