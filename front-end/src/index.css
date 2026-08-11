@@ -240,5 +240,6 @@
   transition: max-height 0.35s ease;
 }
 .mobile-nav-panel.open {
-  max-height: 480px;
+  max-height: 85vh;
+  overflow-y: auto;
 }

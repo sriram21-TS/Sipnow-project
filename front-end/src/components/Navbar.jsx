@@ -10,6 +10,9 @@ const TOP_LEVEL_ROUTES = {
   Premix: "/premix",
   Spirits: "/spirits",
   Wine: "/wine",
+  "Zero %": "/zero-alcohol",
+  Zero: "/zero-alcohol",
+  "Zero%": "/zero-alcohol",
   "Shop All": "/shop-all",
   "In-Store promotions": "/in-store-promotions",
 };
@@ -32,6 +35,7 @@ const mobileNavLinks = [
   "Premix",
   "Wine",
   "Spirits",
+  "Zero %",
 ];
 
 function slugify(text) {
@@ -300,7 +304,7 @@ export default function Navbar({ cartCount = 0, products = [], user }) {
 
           {/* DESKTOP NAV */}
 
-          <div className="hidden lg:flex items-center gap-8">
+          <div className="hidden lg:flex items-center gap-4 xl:gap-8">
             {navMenus.map((menu) => (
               <div
                 className="nav-item py-2"
