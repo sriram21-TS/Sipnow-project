@@ -66,7 +66,13 @@ function getMenuItemRoute(menuLabel, columnHeading, item) {
   }
 
   if (menuLabel === "Spirits") {
-    return `/spirits?type=${encodeURIComponent(item.toLowerCase().trim())}`;
+    const spiritType = item.toLowerCase().trim();
+
+    if (spiritType === "whisky" || spiritType === "whiskey") {
+      return "/whisky";
+    }
+
+    return `/spirits?type=${encodeURIComponent(spiritType)}`;
   }
 
   if (menuLabel === "Beer & Cider") {
@@ -188,12 +194,8 @@ export default function Navbar({ cartCount = 0, products = [], user }) {
   const desktopSearchRef = useRef(null);
   const mobileSearchRef = useRef(null);
   const blurTimeoutRef = useRef(null);
-<<<<<<< HEAD
-=======
 
   const menuTimeoutRef = useRef(null);
-
->>>>>>> 4bd8f7492ebf23d4adc0520ec7fcd4d9717905b4
   const navigate = useNavigate();
   const { data: navMenus = [] } = useNavMenus();
   const { data: siteAssets = {} } = useSiteAssets();
@@ -204,9 +206,6 @@ export default function Navbar({ cartCount = 0, products = [], user }) {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-<<<<<<< HEAD
-  useEffect(() => () => clearTimeout(blurTimeoutRef.current), []);
-=======
   // ========================================
   // CLEANUP
   // ========================================
@@ -239,7 +238,6 @@ export default function Navbar({ cartCount = 0, products = [], user }) {
   // ========================================
   // SEARCH
   // ========================================
->>>>>>> 4bd8f7492ebf23d4adc0520ec7fcd4d9717905b4
 
   const normalizedTerm = searchTerm.trim().toLowerCase();
   const searchResults = normalizedTerm
@@ -307,47 +305,30 @@ export default function Navbar({ cartCount = 0, products = [], user }) {
             />
           </Link>
 
-<<<<<<< HEAD
-          <div className="hidden lg:flex gap-10">
-=======
           {/* DESKTOP NAV */}
 
           <div className="hidden lg:flex items-center gap-8">
->>>>>>> 4bd8f7492ebf23d4adc0520ec7fcd4d9717905b4
             {navMenus.map((menu) => (
               <div
                 className="nav-item py-2"
                 key={menu.label}
-<<<<<<< HEAD
-                onMouseEnter={() => setOpenMenu(menu.label)}
-                onMouseLeave={() => setOpenMenu(null)}
-=======
                 onMouseEnter={() => handleMenuEnter(menu.label)}
                 onMouseLeave={handleMenuLeave}
->>>>>>> 4bd8f7492ebf23d4adc0520ec7fcd4d9717905b4
               >
                 <Link
                   to={TOP_LEVEL_ROUTES[menu.label] || `/${slugify(menu.label)}`}
-<<<<<<< HEAD
-                  className={`flex items-center gap-1.5 font-label-md text-label-md transition-colors tracking-wide ${openMenu === menu.label ? "text-primary" : "text-on-surface/80 hover:text-primary"}`}
-=======
                   className={`flex items-center gap-1.5 font-label-md text-label-md transition-colors tracking-wide cursor-default ${
                     openMenu === menu.label
                       ? "text-primary"
                       : "text-on-surface/80 hover:text-primary"
                   }`}
->>>>>>> 4bd8f7492ebf23d4adc0520ec7fcd4d9717905b4
                   onClick={closeMenus}
                 >
                   {menu.label}
                   <span
-<<<<<<< HEAD
-                    className={`material-symbols-outlined text-[18px] opacity-50 transition-transform ${openMenu === menu.label ? "rotate-180" : ""}`}
-=======
                     className={`material-symbols-outlined text-[18px] opacity-50 transition-transform cursor-pointer ${
                       openMenu === menu.label ? "rotate-180" : ""
                     }`}
->>>>>>> 4bd8f7492ebf23d4adc0520ec7fcd4d9717905b4
                   >
                     expand_more
                   </span>

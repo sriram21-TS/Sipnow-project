@@ -26,16 +26,13 @@ import PremixPage from "./pages/PremixPage.jsx";
 import Profile from "./pages/Profile.jsx";
 import ShopAll from "./pages/ShopAll.jsx";
 import ZeroCategoryPage from "./pages/ZeroCategoryPage.jsx";
-<<<<<<< HEAD
-import Spirits from "./pages/Spirits.jsx";
 
-=======
 import Members from "./pages/Members.jsx";
-import Spirits from "./pages/Spirits.jsx";
+import Whisky from "./pages/Whisky.jsx";
 import GiftCards from "./pages/GiftCards.jsx";
 import Clearance from "./pages/Clearance.jsx";
 import GeneralPromotions from "./pages/GeneralPromotions.jsx";
->>>>>>> 4bd8f7492ebf23d4adc0520ec7fcd4d9717905b4
+
 // Safely read JSON data from localStorage. If the key is missing or
 // contains invalid JSON, return the provided fallback value.
 function readStored(key, fallback) {
@@ -452,6 +449,18 @@ export default function App() {
               />
             }
           />
+
+          <Route
+            path="/whisky"
+            element={
+              <Whisky
+                onAddToCart={addToCart}
+                onBack={goHome}
+                products={products}
+                productsLoading={productsLoading}
+              />
+            }
+          />
           <Route
             path="/spirits/whisky/:categoryKey"
             element={
@@ -472,8 +481,6 @@ export default function App() {
               />
             }
           />
-<<<<<<< HEAD
-=======
           <Route
             path="/wine"
             element={
@@ -495,7 +502,6 @@ export default function App() {
               />
             }
           />
->>>>>>> 4bd8f7492ebf23d4adc0520ec7fcd4d9717905b4
 
           <Route path="*" element={<Navigate replace to="/" />} />
         </Routes>
