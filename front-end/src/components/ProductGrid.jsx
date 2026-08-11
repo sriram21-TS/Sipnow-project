@@ -9,6 +9,7 @@ export default function ProductGrid({
   emptyMessage,
   addedProduct,
   onAddToCart,
+  isInStorePromotion = false,
 }) {
   if (products.length === 0) {
     return (
@@ -23,6 +24,7 @@ export default function ProductGrid({
       {products.map((product) => (
         <ProductCard
           isAdded={addedProduct === product.name}
+          isInStorePromotion={isInStorePromotion || product.isInStorePromotion}
           key={product.name}
           onAdd={onAddToCart}
           product={product}

@@ -120,9 +120,9 @@ export default function InStorePromotionsPreview({ onAddToCart, onNavigate }) {
   const products = inStorePromotions.slice(0, 15);
 
   return (
-    <Reveal>
+    <Reveal className="py-24 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
       <section className="relative w-full overflow-hidden">
-        <div className="mx-auto w-[92%] max-w-[1500px]">
+        <div>
           {/* Section Header */}
           <div className="flex items-end justify-between gap-6">
             <div>
@@ -180,6 +180,7 @@ export default function InStorePromotionsPreview({ onAddToCart, onNavigate }) {
                     isAdded={addedProduct === product.name}
                     onAdd={handleAddToCart}
                     product={product}
+                    isInStorePromotion={true}
                   />
                 </div>
               ))}
@@ -198,6 +199,7 @@ export default function InStorePromotionsPreview({ onAddToCart, onNavigate }) {
             </button>
           </div>
 
+<<<<<<< HEAD
           {/* View Promotions */}
           {/* <div className="mt-6 flex justify-end">
             <button
@@ -209,6 +211,8 @@ export default function InStorePromotionsPreview({ onAddToCart, onNavigate }) {
             </button>
           </div> */}
 
+=======
+>>>>>>> 8dd56d27d66fa2f01c88489e709eec2212a29fd5
           {/* Empty State */}
           {products.length === 0 && (
             <div className="mt-8">

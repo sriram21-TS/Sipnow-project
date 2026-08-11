@@ -25,6 +25,7 @@ export default function InStorePromotions({ onAddToCart, onBack }) {
         <ProductGrid
           addedProduct={addedProduct}
           emptyMessage="New promotions are on the way. Check back soon."
+          isInStorePromotion={true}
           onAddToCart={handleAddToCart}
           products={inStorePromotions}
         />
