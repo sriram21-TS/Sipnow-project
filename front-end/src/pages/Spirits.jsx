@@ -1,6 +1,5 @@
 import { useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
-import { useSearchParams } from "react-router-dom";
 
 import PageHero from "../components/PageHero.jsx";
 import ProductFilters from "../components/ProductFilters.jsx";
