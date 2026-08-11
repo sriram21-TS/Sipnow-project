@@ -74,8 +74,8 @@ export default function Sidebar({ collapsed, onToggle }: Props) {
           </span>
         )}
         {collapsed && (
-          <span className="font-['Oswald'] font-bold text-primary text-lg">
-            R
+          <span className="hello sipnow iam here
+          "
           </span>
         )}
       </div>

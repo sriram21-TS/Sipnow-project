@@ -32,6 +32,59 @@ const RATING_THRESHOLDS = {
 };
 
 // =====================================================
+// SPIRIT TYPES
+// =====================================================
+
+const SPIRIT_TYPES = [
+  "Gin",
+  "Rum",
+  "Vodka",
+  "Bourbon",
+  "Tequila",
+  "Liqueurs",
+  "Brandy & Cognac",
+  "Other Spirits",
+  "Whisky",
+];
+
+// =====================================================
+// DUMMY PRODUCTS
+// 10 PRODUCTS FOR EVERY SPIRIT TYPE
+// =====================================================
+
+const DUMMY_SPIRIT_PRODUCTS = SPIRIT_TYPES.flatMap((type) =>
+  Array.from({ length: 10 }, (_, index) => ({
+    id: `dummy-${type.toLowerCase().replace(/\s+/g, "-")}-${index + 1}`,
+
+    // Empty image = dummy product card
+    image: "",
+
+    badgeStyle: index === 0 ? "glow" : "plain",
+
+    icon: "liquor",
+
+    badgeText: `Best in ${type}`,
+
+    category:
+      type === "Brandy & Cognac"
+        ? "Brandy & Cognac · 700mL"
+        : `${type} · 700mL`,
+
+    categoryGroup: "spirits",
+
+    type: type,
+
+    name: `${type} Dummy Product ${index + 1}`,
+
+    rating: Number((4 + (index % 5) * 0.2).toFixed(1)),
+
+    reviewCount: 25 + index * 15,
+
+    price: `$${(12.99 + index * 3).toFixed(2)}`,
+  }))
+);
+
+// =====================================================
 // DISPLAY NAMES
 // =====================================================
 
@@ -40,14 +93,21 @@ const SPIRIT_NAMES = {
   rum: "Rum",
   vodka: "Vodka",
   bourbon: "Bourbon",
+
   tequila: "Tequila",
   tequilla: "Tequila",
+
   liquerus: "Liqueurs",
   liqueurs: "Liqueurs",
+
   "brandy & cognac": "Brandy & Cognac",
   "brandy-and-cognac": "Brandy & Cognac",
+
   "other spirits": "Other Spirits",
   "other-spirits": "Other Spirits",
+
+  whisky: "Whisky",
+  whiskey: "Whisky",
 };
 
 // =====================================================
@@ -68,8 +128,10 @@ export default function Spirits({
 
   const selectedType = searchParams.get("type");
 
+  const normalizedSelectedType = selectedType?.toLowerCase().trim() || "";
+
   // ===================================================
-  // CART FEEDBACK
+  // CART
   // ===================================================
 
   const { addedProduct, handleAddToCart } = useAddToCartFeedback(onAddToCart);
@@ -86,69 +148,23 @@ export default function Spirits({
 
   const [sort, setSort] = useState("featured");
 
-  const [filtersOpen, setFiltersOpen] = useState(false);
-
   // ===================================================
-  // CURRENT PAGE TITLE
+  // PAGE TITLE
   // ===================================================
-
-  const normalizedSelectedType = selectedType?.toLowerCase().trim();
 
   const pageTitle = SPIRIT_NAMES[normalizedSelectedType] || "Spirits";
 
   // ===================================================
-  // GET ALL SPIRIT PRODUCTS
+  // ALL SPIRIT PRODUCTS
   // ===================================================
 
   const spiritProducts = useMemo(() => {
-    // Get only products whose
-    // categoryGroup is "spirits"
-
-    const allSpirits = products.filter(
+    const existingSpirits = products.filter(
       (product) => product.categoryGroup === "spirits"
     );
 
-    // If user clicked only
-    // "Spirits", show everything.
-
-    if (!normalizedSelectedType) {
-      return allSpirits;
-    }
-
-    // Convert URL value to
-    // the same format as product.type
-
-    const typeMap = {
-      gin: "gin",
-      rum: "rum",
-      vodka: "vodka",
-      bourbon: "bourbon",
-
-      tequila: "tequilla",
-      tequilla: "tequilla",
-
-      liquerus: "liquerus",
-      liqueurs: "liquerus",
-
-      "brandy & cognac": "brandy & cognac",
-
-      "brandy-and-cognac": "brandy & cognac",
-
-      "other spirits": "other spirits",
-
-      "other-spirits": "other spirits",
-    };
-
-    const wantedType =
-      typeMap[normalizedSelectedType] || normalizedSelectedType;
-
-    // Return only products
-    // belonging to selected type
-
-    return allSpirits.filter(
-      (product) => product.type?.toLowerCase().trim() === wantedType
-    );
-  }, [products, normalizedSelectedType]);
+    return [...existingSpirits, ...DUMMY_SPIRIT_PRODUCTS];
+  }, [products]);
 
   // ===================================================
   // TYPE FILTER
@@ -170,24 +186,68 @@ export default function Spirits({
 
   const clearAllFilters = () => {
     setSelectedTypes([]);
-
     setPriceRange("all");
-
     setRating("all");
   };
 
   // ===================================================
-  // FILTER + SORT PRODUCTS
+  // FILTER + SORT
   // ===================================================
 
   const filteredProducts = useMemo(() => {
     let result = [...spiritProducts];
 
     // ---------------------------------------------
-    // TYPE FILTER
+    // URL TYPE FILTER
     // ---------------------------------------------
 
-    if (selectedTypes.length > 0) {
+    if (normalizedSelectedType) {
+      result = result.filter((product) => {
+        const productType = product.type?.toLowerCase().trim();
+
+        // Handle spelling variations
+        if (
+          normalizedSelectedType === "tequila" ||
+          normalizedSelectedType === "tequilla"
+        ) {
+          return productType === "tequila" || productType === "tequilla";
+        }
+
+        if (
+          normalizedSelectedType === "liquerus" ||
+          normalizedSelectedType === "liqueurs"
+        ) {
+          return productType === "liquerus" || productType === "liqueurs";
+        }
+
+        if (
+          normalizedSelectedType === "brandy & cognac" ||
+          normalizedSelectedType === "brandy-and-cognac"
+        ) {
+          return (
+            productType === "brandy & cognac" ||
+            productType === "brandy-and-cognac"
+          );
+        }
+
+        if (
+          normalizedSelectedType === "other spirits" ||
+          normalizedSelectedType === "other-spirits"
+        ) {
+          return (
+            productType === "other spirits" || productType === "other-spirits"
+          );
+        }
+
+        return productType === normalizedSelectedType;
+      });
+    }
+
+    // ---------------------------------------------
+    // SIDEBAR TYPE FILTER
+    // ---------------------------------------------
+
+    if (!normalizedSelectedType && selectedTypes.length > 0) {
       result = result.filter((product) => selectedTypes.includes(product.type));
     }
 
@@ -228,7 +288,14 @@ export default function Spirits({
     }
 
     return result;
-  }, [spiritProducts, selectedTypes, priceRange, rating, sort]);
+  }, [
+    spiritProducts,
+    normalizedSelectedType,
+    selectedTypes,
+    priceRange,
+    rating,
+    sort,
+  ]);
 
   // ===================================================
   // PAGE DESCRIPTION
@@ -243,130 +310,129 @@ export default function Spirits({
   // ===================================================
 
   return (
-    <>
-      {/* =================================================
-          PAGE HERO
-      ================================================= */}
+    <div className="min-h-screen px-margin-mobile md:px-margin-desktop pt-28 pb-16">
+      {/* =========================================
+          BACK TO HOME
+      ========================================= */}
 
-      <PageHero
-        description={pageDescription}
-        onBack={onBack}
-        tag="Spirits"
-        title={pageTitle}
-      />
+      <button
+        type="button"
+        onClick={onBack}
+        className="flex items-center gap-2 text-on-surface-variant hover:text-primary transition-colors mb-10 cursor-pointer"
+      >
+        <span className="material-symbols-outlined">arrow_back</span>
+        Back to home
+      </button>
 
-      {/* =================================================
-          PRODUCTS SECTION
-      ================================================= */}
+      {/* =========================================
+          PAGE TITLE
+      ========================================= */}
 
-      <Reveal className="px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
-        {/* ===============================================
-            MOBILE FILTER BUTTON
-        =============================================== */}
+      <div className="mb-14">
+        {/* FULL COLLECTION */}
 
-        <button
-          className="lg:hidden w-full flex items-center justify-center gap-2 glass-panel rounded-lg px-4 py-3 mb-6 text-sm font-label-md uppercase tracking-widest border border-primary/20"
-          onClick={() => setFiltersOpen((open) => !open)}
-          type="button"
-        >
-          <span className="material-symbols-outlined text-[18px]">tune</span>
+        <div className="inline-flex px-5 py-2 rounded-full border border-primary/40 text-primary text-xs uppercase tracking-[0.2em] mb-8">
+          Full Collection
+        </div>
 
-          {filtersOpen ? "Hide Filters" : "Show Filters"}
-        </button>
+        {/* TITLE */}
 
-        {/* ===============================================
-            MAIN CONTENT
-        =============================================== */}
+        <h1 className="font-serif text-5xl md:text-6xl text-on-surface">
+          {pageTitle}
+        </h1>
 
-        <div className="flex flex-col lg:flex-row gap-8 lg:gap-10">
-          {/* =============================================
-              FILTER SIDEBAR
-          ============================================= */}
+        {/* DESCRIPTION */}
 
-          <aside
-            className={`lg:w-72 shrink-0 ${
-              filtersOpen ? "block" : "hidden"
-            } lg:block mb-6 lg:mb-0`}
-          >
-            <div className="lg:sticky lg:top-32">
-              <ProductFilters
-                onClearAll={clearAllFilters}
+        <p className="mt-5 text-lg text-on-surface-variant">
+          {pageDescription}
+        </p>
+      </div>
 
-                onPriceRangeChange={setPriceRange}
+      {/* =========================================
+          FILTER + PRODUCT AREA
+      ========================================= */}
 
-                onRatingChange={setRating}
+      <div className="flex flex-col lg:flex-row gap-8 lg:gap-10">
+        {/* =====================================
+            LEFT FILTER SIDEBAR
+        ===================================== */}
 
-                onToggleSubtype={toggleType}
-
-                priceRange={priceRange}
-
-                products={spiritProducts}
-
-                rating={rating}
-
-                resultCount={filteredProducts.length}
-
-                selectedSubtypes={selectedTypes}
-              />
-            </div>
-          </aside>
-
-          {/* =============================================
-              PRODUCT AREA
-          ============================================= */}
-
-          <div className="flex-1 min-w-0">
-            {/* =========================================
-                RESULT COUNT + SORT
-            ========================================= */}
-
-            <div className="flex items-center justify-between mb-6">
-              <p className="text-sm text-on-surface-variant">
-                {productsLoading
-                  ? "Loading products…"
-                  : `Showing ${filteredProducts.length} of ${spiritProducts.length} products`}
-              </p>
-
-              <label className="flex items-center gap-2 text-sm text-on-surface-variant">
-                Sort by
-                <select
-                  className="glass-panel rounded-lg px-3 py-1.5 text-sm text-on-surface bg-surface-container-high border border-primary/20 focus:outline-none focus:border-primary"
-
-                  value={sort}
-
-                  onChange={(e) => setSort(e.target.value)}
-                >
-                  <option value="featured">Featured</option>
-
-                  <option value="price-asc">Price: Low to High</option>
-
-                  <option value="price-desc">Price: High to Low</option>
-
-                  <option value="rating">Top Rated</option>
-                </select>
-              </label>
-            </div>
-
-            {/* =========================================
-                PRODUCT GRID
-            ========================================= */}
-
-            <ProductGrid
-              addedProduct={addedProduct}
-
-              emptyMessage={
-                normalizedSelectedType
-                  ? `No ${pageTitle.toLowerCase()} products are available right now.`
-                  : "New spirits are on the way. Check back soon."
-              }
-
-              onAddToCart={handleAddToCart}
-
-              products={filteredProducts}
+        <aside className="lg:w-72 shrink-0">
+          <div className="lg:sticky lg:top-32">
+            <ProductFilters
+              onClearAll={clearAllFilters}
+              onPriceRangeChange={setPriceRange}
+              onRatingChange={setRating}
+              onToggleSubtype={toggleType}
+              priceRange={priceRange}
+              products={spiritProducts}
+              rating={rating}
+              resultCount={filteredProducts.length}
+              selectedSubtypes={selectedTypes}
             />
           </div>
+        </aside>
+
+        {/* =====================================
+            RIGHT PRODUCT AREA
+        ===================================== */}
+
+        <div className="flex-1 min-w-0">
+          {/* ===================================
+              PRODUCT COUNT + SORT
+          =================================== */}
+
+<<<<<<< HEAD
+          <div className="flex items-center justify-between mb-6">
+            {/* PRODUCT COUNT */}
+=======
+            <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
+              {/* PRODUCT COUNT */}
+>>>>>>> 72d3b4008124fcf82beb309581f9b44ed1b939db
+
+            <p className="text-sm text-on-surface-variant">
+              {productsLoading
+                ? "Loading products..."
+                : `Showing ${filteredProducts.length} of ${filteredProducts.length} products`}
+            </p>
+
+            {/* SORT */}
+
+            <label className="flex items-center gap-3 text-sm text-on-surface-variant">
+              <span>Sort by</span>
+
+              <select
+                className="glass-panel rounded-lg px-4 py-2 text-sm text-on-surface bg-surface-container-high border border-primary/40 focus:outline-none focus:border-primary cursor-pointer"
+                value={sort}
+                onChange={(e) => setSort(e.target.value)}
+              >
+                <option value="featured">Featured</option>
+
+                <option value="price-asc">Price: Low to High</option>
+
+                <option value="price-desc">Price: High to Low</option>
+
+                <option value="rating">Top Rated</option>
+              </select>
+            </label>
+          </div>
+
+          {/* ===================================
+              PRODUCT GRID
+          =================================== */}
+
+          <ProductGrid
+            addedProduct={addedProduct}
+            onAddToCart={handleAddToCart}
+            products={filteredProducts}
+            emptyMessage={
+              normalizedSelectedType
+                ? `No ${pageTitle} products found.`
+                : "New spirits are on the way. Check back soon."
+            }
+          />
         </div>
-      </Reveal>
-    </>
+      </div>
+    </div>
   );
 }

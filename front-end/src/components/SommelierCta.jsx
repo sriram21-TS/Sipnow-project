@@ -7,15 +7,15 @@ export default function SommelierCta({ onStart }) {
   return (
     <Reveal className="py-24 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
       <div
-        className="glass-panel border border-outline-variant/20 rounded-[3.5rem] overflow-hidden grid lg:grid-cols-12 min-h-[600px] shadow-2xl"
+        className="glass-panel border border-outline-variant/20 rounded-[3.5rem] overflow-hidden grid lg:grid-cols-12 lg:min-h-[600px] shadow-2xl"
         id="sommelier-quiz"
       >
-        <div className="lg:col-span-7 p-12 md:p-24 flex flex-col justify-center space-y-10 relative">
+        <div className="lg:col-span-7 p-8 sm:p-12 md:p-24 flex flex-col justify-center space-y-8 md:space-y-10 relative">
           <div className="space-y-4">
             <p className="text-primary font-label-md uppercase tracking-[0.3em]">
               Expert's Choice
             </p>
-            <h2 className="font-display-lg text-5xl md:text-6xl leading-[1.1]">
+            <h2 className="font-display-lg text-3xl sm:text-4xl md:text-6xl leading-[1.1]">
               Can't decide? <br />
               Let our <span className="italic">Sommelier</span> guide you.
             </h2>

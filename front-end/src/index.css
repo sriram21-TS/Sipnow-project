@@ -14,21 +14,64 @@
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
 }
+
+/* =========================================================
+   NAV ITEM
+   ========================================================= */
+
+.nav-item {
+  position: static !important;
+}
+
 .in-store-promotion-card > :first-child {
   height: 12.75rem;
   aspect-ratio: auto;
 }
-.mega-menu {
+/* .mega-menu {
   opacity: 0;
   visibility: hidden;
   transform: translateY(10px);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-.nav-item:hover .mega-menu {
+
+} */
+
+/* =========================================================
+   MEGA MENU
+   ========================================================= */
+
+.mega-menu {
+  position: absolute !important;
+
+  top: 100% !important;
+  left: 0 !important;
+  right: 0 !important;
+
+  width: 100%;
+
+  z-index: 100;
+
   opacity: 1;
   visibility: visible;
+
   transform: translateY(0);
+
+  pointer-events: auto;
 }
+
+.mega-menu-panel {
+  width: calc(100% - 40px);
+
+  max-width: 1600px;
+
+  margin-left: auto;
+  margin-right: auto;
+
+  background: rgba(18, 17, 18, 0.98);
+
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
 .mega-menu-panel {
   background: rgba(18, 17, 18, 0.98);
 }
@@ -65,6 +108,7 @@
   mask-composite: exclude;
   pointer-events: none;
 }
+
 .badge-glow {
   animation: badge-pulse-glow 2.4s ease-in-out infinite;
 }
@@ -160,19 +204,12 @@
 }
 @media (max-width: 767px) {
   .full-bleed-hero {
-    height: 100svh;
-    min-height: 560px;
-  }
-}
-@media (max-width: 767px), (max-height: 560px) {
-  .full-bleed-hero {
-    padding-top: 0;
-  }
-  .full-bleed-hero .hero-slide.flex.items-center {
-    align-items: flex-start;
+    height: 92svh;
+    min-height: 600px;
+    padding-top: 92px;
   }
   .hero-slide > .relative.z-10 {
-    padding-top: 128px;
+    padding-top: 0;
     padding-bottom: 24px;
   }
 }
@@ -180,12 +217,10 @@
   .full-bleed-hero {
     height: 100svh;
     min-height: 420px;
+    padding-top: 84px;
   }
-  .hero-slide > .relative.z-10 {
-    padding-top: 116px;
-    padding-bottom: 16px;
-  }
-  .hero-slide .space-y-6 > .flex.flex-wrap.gap-5 button {
+  .hero-slide .space-y-6 > .flex.flex-wrap.gap-5 button,
+  .hero-slide .space-y-7 button {
     padding-top: 0.75rem;
     padding-bottom: 0.75rem;
   }
