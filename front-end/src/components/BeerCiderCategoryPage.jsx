@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import PageHero from "./PageHero.jsx";
 import ProductFilters from "./ProductFilters.jsx";
 import ProductGrid from "./ProductGrid.jsx";

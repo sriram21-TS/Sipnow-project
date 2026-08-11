@@ -56,7 +56,6 @@ function slugify(text) {
 // ========================================
 
 function getMenuItemRoute(menuLabel, columnHeading, item) {
-  const columnSlug = slugify(columnHeading);
   const itemSlug = slugify(item);
 
   // ======================================
@@ -93,44 +92,7 @@ function getMenuItemRoute(menuLabel, columnHeading, item) {
   // ======================================
 
   if (menuLabel === "Spirits") {
-    if (columnSlug === "spirits") {
-      switch (item.toLowerCase().trim()) {
-        case "gin":
-          return "/spirits/gin";
-
-        case "rum":
-          return "/spirits/rum";
-
-        case "vodka":
-          return "/spirits/vodka";
-
-        case "bourbon":
-          return "/spirits/bourbon";
-
-        case "tequila":
-        case "tequilla":
-          return "/spirits/tequilla";
-
-        case "liqueurs":
-        case "liquerus":
-          return "/spirits/liquerus";
-
-        case "brandy & cognac":
-          return "/spirits/brandy-and-cognac";
-
-        case "other spirits":
-          return "/spirits/other-spirits";
-
-        default:
-          return `/spirits/${itemSlug}`;
-      }
-    }
-
-    if (columnSlug === "whisky") {
-      return `/spirits/whisky/${itemSlug}`;
-    }
-
-    return `/spirits/${itemSlug}`;
+    return `/spirits?type=${encodeURIComponent(item.toLowerCase().trim())}`;
   }
 
   // ======================================
@@ -300,6 +262,8 @@ export default function Navbar({ cartCount = 0, products = [], user }) {
 
   const blurTimeoutRef = useRef(null);
 
+  const menuTimeoutRef = useRef(null);
+
   const navigate = useNavigate();
 
   const { data: navMenus = [] } = useNavMenus();
@@ -329,8 +293,27 @@ export default function Navbar({ cartCount = 0, products = [], user }) {
   useEffect(() => {
     return () => {
       clearTimeout(blurTimeoutRef.current);
+      clearTimeout(menuTimeoutRef.current);
     };
   }, []);
+
+  // ========================================
+  // MEGA MENU HOVER
+  // ========================================
+
+  // A small delay before closing keeps the menu open while the cursor
+  // crosses the gap between the nav link and the dropdown panel below it.
+  const handleMenuEnter = (label) => {
+    clearTimeout(menuTimeoutRef.current);
+
+    setOpenMenu(label);
+  };
+
+  const handleMenuLeave = () => {
+    menuTimeoutRef.current = setTimeout(() => {
+      setOpenMenu(null);
+    }, 200);
+  };
 
   // ========================================
   // SEARCH
@@ -415,6 +398,8 @@ export default function Navbar({ cartCount = 0, products = [], user }) {
   // ========================================
 
   const closeMenus = () => {
+    clearTimeout(menuTimeoutRef.current);
+
     setOpenMenu(null);
     setMobileOpen(false);
   };
@@ -452,12 +437,8 @@ export default function Navbar({ cartCount = 0, products = [], user }) {
               <div
                 className="nav-item py-2"
                 key={menu.label}
-                onMouseEnter={() => {
-                  setOpenMenu(menu.label);
-                }}
-                onMouseLeave={() => {
-                  setOpenMenu(null);
-                }}
+                onMouseEnter={() => handleMenuEnter(menu.label)}
+                onMouseLeave={handleMenuLeave}
               >
                 {/* TOP LEVEL LINK */}
 

@@ -13,6 +13,7 @@ import Navbar from "./components/Navbar.jsx";
 import QuizModal from "./components/QuizModal.jsx";
 import BeerCiderCategoryPage from "./components/BeerCiderCategoryPage.jsx";
 import { useProducts } from "./hooks/useProducts.js";
+
 import Auth from "./pages/Auth.jsx";
 import Cart from "./pages/Cart.jsx";
 import CategoryPage from "./pages/CategoryPage.jsx";
@@ -24,6 +25,7 @@ import Profile from "./pages/Profile.jsx";
 import ShopAll from "./pages/ShopAll.jsx";
 import ZeroCategoryPage from "./pages/ZeroCategoryPage.jsx";
 
+import Spirits from "./pages/Spirits.jsx";
 // Safely read JSON data from localStorage. If the key is missing or
 // contains invalid JSON, return the provided fallback value.
 function readStored(key, fallback) {
@@ -405,6 +407,17 @@ export default function App() {
           <Route
             path="/spirits"
             element={
+              <Spirits
+                onAddToCart={addToCart}
+                onBack={() => goToPage("/")}
+                products={products}
+                productsLoading={productsLoading}
+              />
+            }
+          />
+          <Route
+            path="/spirits"
+            element={
               <CategoryPage
                 categoryKey="spirits"
                 onAddToCart={addToCart}
@@ -425,27 +438,6 @@ export default function App() {
           />
           <Route
             path="/spirits/:categoryKey"
-            element={
-              <CategoryPage
-                onAddToCart={addToCart}
-                onBack={goHome}
-                products={products}
-              />
-            }
-          />
-          <Route
-            path="/wine"
-            element={
-              <CategoryPage
-                categoryKey="wine"
-                onAddToCart={addToCart}
-                onBack={goHome}
-                products={products}
-              />
-            }
-          />
-          <Route
-            path="/wine/:categoryKey"
             element={
               <CategoryPage
                 onAddToCart={addToCart}
