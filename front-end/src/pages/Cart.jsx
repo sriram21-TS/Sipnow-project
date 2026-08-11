@@ -64,8 +64,7 @@ export default function Cart({
   onShopAll,
   onUpdateQuantity,
 }) {
-
-    useEffect(() => {
+  useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
   // Calculate the current cart total from product price × quantity.
