@@ -120,7 +120,7 @@ export default function InStorePromotionsPreview({ onAddToCart, onNavigate }) {
   const products = inStorePromotions.slice(0, 15);
 
   return (
-    <Reveal className="py-24 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
+    <Reveal className="py-24 mx-auto w-[92%] max-w-[1500px]">
       <section className="relative w-full overflow-hidden">
         <div>
           {/* Section Header */}
@@ -180,6 +180,7 @@ export default function InStorePromotionsPreview({ onAddToCart, onNavigate }) {
                     isAdded={addedProduct === product.name}
                     onAdd={handleAddToCart}
                     product={product}
+                    isInStorePromotion={true}
                   />
                 </div>
               ))}

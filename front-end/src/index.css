@@ -152,6 +152,24 @@
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
 }
+.promo-ribbon {
+  position: absolute;
+  top: 14px;
+  left: -46px;
+  width: 150px;
+  background: linear-gradient(135deg, #f6a31a 0%, #f08f2b 100%);
+  color: #111;
+  padding: 4px 44px;
+  transform: rotate(-45deg);
+  font-weight: 800;
+  font-size: 10px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  z-index: 40;
+  pointer-events: none;
+}
 .full-bleed-hero {
   height: 84vh;
   min-height: 660px;

@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useNavMenus, useSiteAssets } from "../hooks/useContent.js";
-
+import { useNavMenus } from "../hooks/useContent.js";
+import sipnowLogo from "../assets/sipnow-logo.png";
 // ========================================
 // TOP LEVEL ROUTES
 // ========================================
@@ -281,9 +281,7 @@ export default function Navbar({ cartCount = 0, products = [], user }) {
 
   const navigate = useNavigate();
 
-  const { data: navMenus = [] } = useNavMenus();
-  const { data: siteAssets = {} } = useSiteAssets();
-
+const { data: navMenus = [] } = useNavMenus();
   // ========================================
   // SCROLL
   // ========================================
@@ -440,20 +438,24 @@ export default function Navbar({ cartCount = 0, products = [], user }) {
       <div className="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop flex justify-between items-center relative">
         {/* LOGO + NAV */}
 
-        <div className="flex items-center gap-16">
+        <div className="flex items-center gap-4 lg:gap-6 xl:gap-10 min-w-0">
           {/* LOGO */}
 
-          <Link to="/" className="relative z-10" onClick={closeMenus}>
-            <img
-              alt="SipNow Logo"
-              className="h-10 md:h-12 object-contain brightness-110"
-              src={siteAssets.LOGO_URL}
-            />
-          </Link>
+   <Link
+  to="/"
+  className="relative z-10 flex items-center shrink-0"
+  onClick={closeMenus}
+>
+  <img
+    src={sipnowLogo}
+    alt="SipNow Logo"
+    className="h-10 md:h-12 w-auto object-contain brightness-110"
+  />
+</Link>
 
           {/* DESKTOP NAV */}
 
-          <div className="hidden lg:flex items-center gap-4 xl:gap-8">
+          <div className="hidden lg:flex items-center gap-3 lg:gap-5 xl:gap-7">
             {navMenus.map((menu) => (
               <div
                 className="nav-item py-2"
@@ -548,7 +550,7 @@ export default function Navbar({ cartCount = 0, products = [], user }) {
 
         {/* RIGHT SIDE */}
 
-        <div className="flex items-center gap-5 md:gap-8 relative z-10">
+        <div className="shrink-0 flex items-center gap-4 md:gap-6 relative z-10 ml-4">
           {/* DESKTOP SEARCH */}
 
           <div className="hidden md:flex flex-col relative">
@@ -558,7 +560,7 @@ export default function Navbar({ cartCount = 0, products = [], user }) {
               </span>
 
               <input
-                className="bg-transparent border-none focus:ring-0 text-sm w-44 placeholder:text-on-surface-variant/50"
+                className="bg-transparent border-none focus:ring-0 text-sm w-36 lg:w-44 placeholder:text-on-surface-variant/50"
                 onBlur={handleSearchBlur}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 onFocus={handleSearchFocus}
@@ -576,10 +578,10 @@ export default function Navbar({ cartCount = 0, products = [], user }) {
             />
           </div>
 
-          {/* SEARCH BUTTON */}
+          {/* MOBILE SEARCH BUTTON */}
 
           <button
-            className="material-symbols-outlined hover:text-primary transition-colors"
+            className="md:hidden material-symbols-outlined hover:text-primary transition-colors"
             onClick={focusSearch}
             type="button"
           >
