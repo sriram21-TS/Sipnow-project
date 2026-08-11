@@ -19,30 +19,26 @@ const NAME_PATTERN = /^[A-Za-z ]{2,50}$/;
 const CITY_PATTERN = /^[A-Za-z ]{2,50}$/;
 
 const VALID_CITIES = [
-  "Hyderabad",
-  "Chennai",
-  "Bangalore",
-  "Bengaluru",
-  "Mumbai",
-  "Delhi",
-  "New Delhi",
-  "Kolkata",
-  "Pune",
-  "Ahmedabad",
-  "Jaipur",
-  "Surat",
-  "Visakhapatnam",
-  "Vijayawada",
-  "Warangal",
-  "Guntur",
-  "Tirupati",
-  "Coimbatore",
-  "Kochi",
-  "Bhopal",
-  "Indore",
-  "Lucknow",
-  "Nagpur",
-  "Nashik",
+  "Sydney",
+  "Melbourne",
+  "Brisbane",
+  "Perth",
+  "Adelaide",
+  "Canberra",
+  "Hobart",
+  "Darwin",
+  "Gold Coast",
+  "Newcastle",
+  "Wollongong",
+  "Geelong",
+  "Cairns",
+  "Townsville",
+  "Toowoomba",
+  "Ballarat",
+  "Bendigo",
+  "Albury",
+  "Launceston",
+  "Mackay",
 ];
 
 const ADDRESS_PATTERN = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z0-9\s,./#-]{10,100}$/;
@@ -62,9 +58,9 @@ export default function Checkout({ cartItems, user, onOrderComplete }) {
   /*
    * Coupon and gift card values.
    */
-  const [couponCode, setCouponCode] = useState("");
-  const [giftCardCode, setGiftCardCode] = useState("");
-
+const [couponCode, setCouponCode] = useState("");
+const [giftCardCode, setGiftCardCode] = useState("");
+const [couponDiscount, setCouponDiscount] = useState(0);
   /*
    * Message displayed when coupon/gift card
    * is applied.
@@ -96,6 +92,8 @@ export default function Checkout({ cartItems, user, onOrderComplete }) {
     (sum, item) => sum + parsePrice(item.product.price) * item.quantity,
     0
   );
+  const discount = (subtotal * couponDiscount) / 100;
+const total = subtotal - discount;
 
   /*
    * ==========================================================
@@ -121,6 +119,11 @@ export default function Checkout({ cartItems, user, onOrderComplete }) {
       nextErrors.name = "Name can contain letters and spaces only.";
     }
 
+    const COUPONS = {
+  SAVE10: 10,
+  SAVE20: 20,
+  WELCOME15: 15,
+};
     /*
      * --------------------------------------------------------
      * PHONE VALIDATION
@@ -282,12 +285,31 @@ export default function Checkout({ cartItems, user, onOrderComplete }) {
    * the user entered something.
    */
 
-  const applyCode = (code, label) =>
-    setCodeNotice(
-      code.trim()
-        ? `${label} saved for this order.`
-        : `Enter a ${label.toLowerCase()} first.`
-    );
+  const applyCoupon = () => {
+  const code = couponCode.trim().toUpperCase();
+
+  if (!code) {
+    setCodeNotice("Please enter a coupon code.");
+    setCouponDiscount(0);
+    return;
+  }
+
+  if (!/^[A-Z0-9-]{3,20}$/.test(code)) {
+    setCodeNotice("Enter a valid coupon code.");
+    setCouponDiscount(0);
+    return;
+  }
+
+  if (!COUPONS[code]) {
+    setCodeNotice("Invalid or expired coupon code.");
+    setCouponDiscount(0);
+    return;
+  }
+
+  setCouponCode(code);
+  setCouponDiscount(COUPONS[code]);
+  setCodeNotice(`Coupon ${code} applied successfully.`);
+};
 
   /*
    * ==========================================================
@@ -348,12 +370,12 @@ export default function Checkout({ cartItems, user, onOrderComplete }) {
               />
 
               <button
-                className="rounded-full px-5 text-sm text-white primary-gradient"
-                onClick={() => applyCode(couponCode, "Coupon code")}
-                type="button"
-              >
-                Apply
-              </button>
+  className="rounded-full px-5 text-sm text-white primary-gradient"
+  onClick={applyCoupon}
+  type="button"
+>
+  Apply
+</button>
             </div>
 
             {/* Gift card */}
