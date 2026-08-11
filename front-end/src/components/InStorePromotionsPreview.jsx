@@ -120,22 +120,22 @@ export default function InStorePromotionsPreview({ onAddToCart, onNavigate }) {
   const products = inStorePromotions.slice(0, 15);
 
   return (
-    <Reveal>
+    <Reveal className="py-24 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
       <section className="relative w-full overflow-hidden">
-        <div className="mx-auto w-[92%] max-w-[1500px]">
+        <div>
           {/* Section Header */}
-          <div className="flex items-start justify-between gap-6">
-            <div>
-              <p className="font-label-md uppercase tracking-[0.28em]">
-                Offers & Services
-              </p>
+          <div className="mb-12 space-y-2">
+            <p className="text-on-surface-variant font-label-md uppercase tracking-[0.28em] text-xs">
+              Offers & Services
+            </p>
 
-              <h2 className="font-display-lg text-4xl">In-Store Promotions</h2>
+            <h2 className="font-display-lg text-4xl text-on-surface">
+              In-Store Promotions
+            </h2>
 
-              <p className="text-on-surface-variant font-body-lg">
-                Exclusive offers available at your local SipNow store.
-              </p>
-            </div>
+            <p className="text-on-surface-variant font-body-lg">
+              Exclusive offers available at your local SipNow store.
+            </p>
           </div>
 
           {/* Product Carousel */}
