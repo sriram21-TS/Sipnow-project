@@ -177,9 +177,16 @@ export default function HeroCarousel() {
                           <p className="mt-3 line-clamp-2 text-sm font-medium leading-snug text-on-surface lg:text-base">
                             {product.name}
                           </p>
-                          <p className="mt-1 text-sm font-semibold text-primary lg:text-base">
-                            {product.price}
-                          </p>
+                          <div className="mt-1 flex items-baseline gap-2">
+                            <p className="text-sm font-semibold text-primary lg:text-base">
+                              {product.price}
+                            </p>
+                            {product.originalPrice && (
+                              <p className="text-xs text-on-surface-variant line-through lg:text-sm">
+                                {product.originalPrice}
+                              </p>
+                            )}
+                          </div>
                         </article>
                       ))}
                     </div>
@@ -272,16 +279,24 @@ export default function HeroCarousel() {
         ))}
       </div>
       <button
-        className="hidden md:flex absolute left-3 lg:left-6 top-1/2 -translate-y-1/2 z-20 w-11 h-11 lg:w-12 lg:h-12 rounded-full glass-panel border border-white/10 items-center justify-center hover:bg-primary transition-colors"
+        aria-label="Previous hero slide"
+        className="hidden md:flex absolute left-3 lg:left-6 top-1/2 z-20 h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full glass-panel border border-white/10 transition-colors hover:bg-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary lg:h-12 lg:w-12"
         onClick={() => goToSlide(indexRef.current - 1)}
+        type="button"
       >
-        <span className="material-symbols-outlined">west</span>
+        <span className="material-symbols-outlined" aria-hidden="true">
+          chevron_left
+        </span>
       </button>
       <button
-        className="hidden md:flex absolute right-3 lg:right-6 top-1/2 -translate-y-1/2 z-20 w-11 h-11 lg:w-12 lg:h-12 rounded-full glass-panel border border-white/10 items-center justify-center hover:bg-primary transition-colors"
+        aria-label="Next hero slide"
+        className="hidden md:flex absolute right-3 lg:right-6 top-1/2 z-20 h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full glass-panel border border-white/10 transition-colors hover:bg-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary lg:h-12 lg:w-12"
         onClick={() => goToSlide(indexRef.current + 1)}
+        type="button"
       >
-        <span className="material-symbols-outlined">east</span>
+        <span className="material-symbols-outlined" aria-hidden="true">
+          chevron_right
+        </span>
       </button>
       <div className="absolute bottom-8 md:bottom-12 right-margin-mobile md:right-margin-desktop z-20 flex items-center gap-3">
         {heroSlides.map((slide, i) => (

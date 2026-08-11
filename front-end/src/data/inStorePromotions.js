@@ -41,7 +41,7 @@ export const inStorePromotions = [
   },
   {
     image:
-      "https://media.sipnow.com.au/sipnow/products/GUEST_e307542d-1e91-4688-859b-9bbb0a78b3ce__1_.jpg",
+      "https://vinosamerica.com/cdn/shop/products/Absolut-Vodka-750ml-Front-Standard-Transparent-Background-LR_1024x1024.png?v=1685321172",
     icon: "liquor",
     badgeText: "Bundle Deal",
     category: "Vodka · 6 x 200mL",
