@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 
 import PageHero from "../components/PageHero.jsx";
 import ProductFilters from "../components/ProductFilters.jsx";
@@ -124,9 +124,9 @@ export default function Spirits({
   // GET ?type= FROM URL
   // ===================================================
 
-  const { categoryKey } = useParams();
+  const [searchParams] = useSearchParams();
 
-  const selectedType = categoryKey || "";
+  const selectedType = searchParams.get("type");
 
   const normalizedSelectedType = selectedType?.toLowerCase().trim() || "";
 
@@ -163,7 +163,7 @@ export default function Spirits({
       (product) => product.categoryGroup === "spirits"
     );
 
-    return existingSpirits;
+    return [...existingSpirits, ...DUMMY_SPIRIT_PRODUCTS];
   }, [products]);
 
   // ===================================================

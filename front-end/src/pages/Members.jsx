@@ -19,7 +19,7 @@ const Members = () => {
       {/* Full Collection */}
       <button
         type="button"
-        onClick={() => navigate("/shop")}
+        onClick={() => navigate("/offers/members/products")}
         className="
           inline-block
           px-6

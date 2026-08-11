@@ -39,7 +39,7 @@ const KEY_ALIASES = {
   fruitcider: "fruit-cider",
 };
 
-const BEER_CIDER_SUBCATEGORIES = {
+export const BEER_CIDER_SUBCATEGORIES = {
   all: {
     key: "all",
     title: "All Beer & Cider",

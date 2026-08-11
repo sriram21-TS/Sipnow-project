@@ -17,7 +17,7 @@ const Clearance = () => {
 
       <button
         type="button"
-        onClick={() => navigate("/shop")}
+        onClick={() => navigate("/offers/clearance/products")}
         className="inline-block px-6 py-3 rounded-full bg-primary/10 text-primary border border-primary/40 hover:bg-primary/20 transition-colors font-label-md uppercase tracking-[0.2em] text-[11px] mb-8"
       >
         Full Collection

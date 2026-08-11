@@ -5,9 +5,9 @@ import {
   Routes,
   useLocation,
   useNavigate,
+  useParams,
 } from "react-router-dom";
 
-import AgeVerification from "./components/AgeVerification.jsx";
 import AmbientBackground from "./components/AmbientBackground.jsx";
 import Footer from "./components/Footer.jsx";
 import Navbar from "./components/Navbar.jsx";
@@ -16,11 +16,11 @@ import BeerCiderCategoryPage from "./pages/BeerCiderCategoryPage.jsx";
 import { useProducts } from "./hooks/useProducts.js";
 import Wine from "./pages/Wine.jsx";
 
-import Home from "./pages/Home.jsx";
 import Auth from "./pages/Auth.jsx";
 import Cart from "./pages/Cart.jsx";
 import CategoryPage from "./pages/CategoryPage.jsx";
 import Checkout from "./pages/Checkout.jsx";
+import Home from "./pages/Home.jsx";
 import InStorePromotions from "./pages/InStorePromotions.jsx";
 import PremixPage from "./pages/PremixPage.jsx";
 import Profile from "./pages/Profile.jsx";
@@ -31,6 +31,7 @@ import Spirits from "./pages/Spirits.jsx";
 import GiftCards from "./pages/GiftCards.jsx";
 import Clearance from "./pages/Clearance.jsx";
 import GeneralPromotions from "./pages/GeneralPromotions.jsx";
+
 // Safely read JSON data from localStorage. If the key is missing or
 // contains invalid JSON, return the provided fallback value.
 function readStored(key, fallback) {
@@ -41,10 +42,21 @@ function readStored(key, fallback) {
   }
 }
 
-export default function App() {
-  const [ageVerified, setAgeVerified] = useState(
-    () => window.localStorage.getItem("sipnow-age-verified") === "true"
+function OfferProductsRoute({ products, addToCart }) {
+  const { category } = useParams();
+  const navigate = useNavigate();
+
+  return (
+    <CategoryPage
+      categoryKey={category}
+      products={products}
+      onAddToCart={addToCart}
+      onBack={() => navigate(`/offers/${category}`)}
+    />
   );
+}
+
+export default function App() {
   const [quizOpen, setQuizOpen] = useState(false);
   const [cartItems, setCartItems] = useState(() =>
     readStored("sipnow-cart", [])
@@ -68,7 +80,8 @@ export default function App() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  // Central navigation function used by Navbar and the individual pages.
+  // Home's child components (category cards, in-store-promotions banner)
+  // still speak the old "page key" navigation vocabulary; translate it to routes.
   const goToPage = (target) => {
     const path = target.startsWith("category:")
       ? `/${target.slice("category:".length)}`
@@ -88,14 +101,13 @@ export default function App() {
       const existing = current.find(
         (item) => item.product.name === product.name
       );
-      if (existing) {
-        return current.map((item) =>
-          item.product.name === product.name
-            ? { ...item, quantity: item.quantity + quantity }
-            : item
-        );
-      }
-      return [...current, { product, quantity }];
+      return existing
+        ? current.map((item) =>
+            item.product.name === product.name
+              ? { ...item, quantity: item.quantity + quantity }
+              : item
+          )
+        : [...current, { product, quantity }];
     });
 
   const updateCartQuantity = (productName, quantity) =>
@@ -148,15 +160,6 @@ export default function App() {
     goHome();
   };
 
-  const confirmAge = () => {
-    window.localStorage.setItem("sipnow-age-verified", "true");
-    setAgeVerified(true);
-  };
-
-  if (!ageVerified) {
-    return <AgeVerification onConfirm={confirmAge} />;
-  }
-
   return (
     <>
       <AmbientBackground />
@@ -174,7 +177,6 @@ export default function App() {
               />
             }
           />
-
           <Route
             path="/cart"
             element={
@@ -189,7 +191,6 @@ export default function App() {
               />
             }
           />
-
           <Route
             path="/checkout"
             element={
@@ -203,7 +204,6 @@ export default function App() {
               />
             }
           />
-
           <Route
             path="/offers/general-promotions"
             element={<GeneralPromotions />}
@@ -233,7 +233,6 @@ export default function App() {
               )
             }
           />
-
           <Route
             path="/login"
             element={
@@ -254,9 +253,8 @@ export default function App() {
               />
             }
           />
-
           <Route
-            path="/shop"
+            path="/shop-all"
             element={
               <ShopAll
                 onAddToCart={addToCart}
@@ -266,7 +264,6 @@ export default function App() {
               />
             }
           />
-
           <Route
             path="/in-store-promotions"
             element={
@@ -274,6 +271,7 @@ export default function App() {
             }
           />
 
+          {/* Zero % Alcohol Subcategories - Single Unified Component */}
           <Route
             path="/zero-alcohol/:subcategory"
             element={
@@ -369,6 +367,9 @@ export default function App() {
             }
           />
 
+          {/* Category browsing: one generic page keyed off the URL, covering
+              every mega-menu destination (offers, beer & cider, premix,
+              spirits, wine and their sub-categories). */}
           <Route
             path="/offers"
             element={
@@ -378,6 +379,13 @@ export default function App() {
                 onBack={goHome}
                 products={products}
               />
+            }
+          />
+
+          <Route
+            path="/offers/:category/products"
+            element={
+              <OfferProductsRoute products={products} addToCart={addToCart} />
             }
           />
           <Route
@@ -391,6 +399,53 @@ export default function App() {
             }
           />
 
+          <Route
+            path="/offers/general-promotions/products"
+            element={
+              <CategoryPage
+                categoryKey="general-promotions"
+                products={products}
+                onAddToCart={addToCart}
+                onBack={() => navigate("/offers/general-promotions")}
+              />
+            }
+          />
+
+          <Route
+            path="/offers/gift-cards/products"
+            element={
+              <CategoryPage
+                categoryKey="gift-cards"
+                products={products}
+                onAddToCart={addToCart}
+                onBack={() => navigate("/offers/gift-cards")}
+              />
+            }
+          />
+
+          <Route
+            path="/offers/members/products"
+            element={
+              <CategoryPage
+                categoryKey="members"
+                products={products}
+                onAddToCart={addToCart}
+                onBack={() => navigate("/offers/members")}
+              />
+            }
+          />
+
+          <Route
+            path="/offers/clearance/products"
+            element={
+              <CategoryPage
+                categoryKey="clearance"
+                products={products}
+                onAddToCart={addToCart}
+                onBack={() => navigate("/offers/clearance")}
+              />
+            }
+          />
           <Route
             path="/beer-cider"
             element={
@@ -413,7 +468,6 @@ export default function App() {
               />
             }
           />
-
           <Route
             path="/premix"
             element={
@@ -435,7 +489,6 @@ export default function App() {
               />
             }
           />
-
           <Route
             path="/spirits"
             element={
@@ -450,23 +503,20 @@ export default function App() {
           <Route
             path="/spirits/whisky/:categoryKey"
             element={
-              <Spirits
+              <CategoryPage
                 onAddToCart={addToCart}
                 onBack={goHome}
                 products={products}
-                productsLoading={productsLoading}
               />
             }
           />
-
           <Route
             path="/spirits/:categoryKey"
             element={
-              <Spirits
+              <CategoryPage
                 onAddToCart={addToCart}
                 onBack={goHome}
                 products={products}
-                productsLoading={productsLoading}
               />
             }
           />
@@ -480,7 +530,6 @@ export default function App() {
               />
             }
           />
-
           <Route
             path="/wine/:wineType"
             element={
