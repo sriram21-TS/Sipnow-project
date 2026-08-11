@@ -4,10 +4,6 @@ import { Link, useNavigate } from "react-router-dom";
 
 import { useNavMenus, useSiteAssets } from "../hooks/useContent.js";
 
-// ========================================
-// TOP LEVEL ROUTES
-// ========================================
-
 const TOP_LEVEL_ROUTES = {
   "Offers & Services": "/offers",
   "Beer & Cider": "/beer-cider",
@@ -18,6 +14,18 @@ const TOP_LEVEL_ROUTES = {
   "In-Store promotions": "/in-store-promotions",
 };
 
+const BEER_CIDER_ITEM_PAGES = {
+  Pilsner: "pilsner",
+  "Dark Lager": "dark-lager",
+  Helles: "helles",
+  "Pale Ale": "pale-ale",
+  IPA: "ipa",
+  "Stout & Porter": "stout-porter",
+  Apple: "apple-cider",
+  Pear: "pear-cider",
+  "Fruit Cider": "fruit-cider",
+};
+
 const mobileNavLinks = [
   "Offers & Services",
   "Beer & Cider",
@@ -25,10 +33,6 @@ const mobileNavLinks = [
   "Wine",
   "Spirits",
 ];
-
-// ========================================
-// SLUGIFY
-// ========================================
 
 function slugify(text) {
   return text
@@ -39,101 +43,55 @@ function slugify(text) {
     .replace(/^-+|-+$/g, "");
 }
 
-// ========================================
-// GET MENU ITEM ROUTE
-// ========================================
-
 function getMenuItemRoute(menuLabel, columnHeading, item) {
   const itemSlug = slugify(item);
-
-  // ======================================
-  // OFFERS & SERVICES
-  // ======================================
 
   if (menuLabel === "Offers & Services") {
     switch (item.toLowerCase().trim()) {
       case "shop all":
         return "/shop-all";
-
       case "in-store promotions":
         return "/in-store-promotions";
-
       case "general promotions":
         return "/offers/general-promotions";
-
       case "gift cards":
         return "/offers/gift-cards";
-
       case "members":
         return "/offers/members";
-
       case "clearance":
         return "/offers/clearance";
-
       default:
         return `/offers/${itemSlug}`;
     }
   }
 
-  // ======================================
-  // SPIRITS
-  // ======================================
-
   if (menuLabel === "Spirits") {
     return `/spirits?type=${encodeURIComponent(item.toLowerCase().trim())}`;
   }
-
-  // ======================================
-  // BEER & CIDER
-  // ======================================
 
   if (menuLabel === "Beer & Cider") {
     return `/beer-cider/${itemSlug}`;
   }
 
-  // ======================================
-  // PREMIX
-  // ======================================
-
   if (menuLabel === "Premix") {
     return `/premix/${itemSlug}`;
   }
 
-  // ======================================
-  // WINE
-  // ======================================
-
   if (menuLabel === "Wine") {
     return `/wine/${itemSlug}`;
   }
-
-  // ======================================
-  // ZERO %
-  // ======================================
 
   if (menuLabel === "Zero %" || menuLabel.toLowerCase().includes("zero")) {
     const sub = itemSlug.replace("zero-alcohol-", "").replace("zero-", "");
     return `/zero-alcohol/${sub}`;
   }
 
-  // ======================================
-  // DEFAULT
-  // ======================================
-
   return `/${slugify(menuLabel)}/${itemSlug}`;
 }
 
-// ========================================
-// FEATURED PANEL
-// ========================================
-
-// Renders the promotional/featured card displayed inside a mega menu.
 function FeaturedPanel({ featured }) {
-  if (!featured) {
-    return null;
-  }
+  if (!featured) return null;
 
-  // Image only
   if (featured.type === "image-only") {
     return (
       <div className="bg-surface-container-high rounded-xl border overflow-hidden border-primary/20">
@@ -146,24 +104,20 @@ function FeaturedPanel({ featured }) {
     );
   }
 
-  // Icon panel
   if (featured.type === "icon") {
     return (
       <div className="bg-surface-container-high rounded-xl p-6 border border-primary/20 flex flex-col justify-center items-center text-center">
         <span className="material-symbols-outlined text-primary text-5xl mb-3">
           {featured.icon}
         </span>
-
         <p className="text-[10px] text-primary uppercase font-bold tracking-widest mb-1">
           {featured.tag}
         </p>
-
         <p className="text-sm font-semibold">{featured.title}</p>
       </div>
     );
   }
 
-  // Image + text panel
   return (
     <div className="bg-surface-container-high rounded-xl p-6 border border-primary/20 relative overflow-hidden group/card">
       <img
@@ -171,11 +125,9 @@ function FeaturedPanel({ featured }) {
         src={featured.image}
         alt=""
       />
-
       <p className="text-[10px] text-primary uppercase font-bold tracking-tighter mb-1">
         {featured.tag}
       </p>
-
       <p className="text-sm font-semibold">{featured.title}</p>
     </div>
   );
@@ -198,7 +150,6 @@ function SearchResults({ results, searched, onSelect }) {
                 onClick={() => onSelect(product)}
                 className="w-full flex items-center gap-4 px-5 py-4 text-left hover:bg-primary/10 transition-colors"
               >
-                {/* PRODUCT IMAGE */}
                 <div className="w-14 h-14 rounded-lg overflow-hidden bg-surface-container-high shrink-0 flex items-center justify-center">
                   <img
                     src={product.image}
@@ -206,19 +157,14 @@ function SearchResults({ results, searched, onSelect }) {
                     className="w-full h-full object-contain"
                   />
                 </div>
-
-                {/* PRODUCT INFORMATION */}
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-medium text-on-surface truncate">
                     {product.name}
                   </p>
-
                   <p className="text-xs text-on-surface-variant uppercase tracking-widest mt-1 truncate">
                     {product.category}
                   </p>
                 </div>
-
-                {/* PRICE */}
                 <div className="shrink-0 text-right">
                   <p className="text-primary text-sm font-semibold whitespace-nowrap">
                     {product.price}
@@ -235,43 +181,22 @@ function SearchResults({ results, searched, onSelect }) {
 
 export default function Navbar({ cartCount = 0, products = [], user }) {
   const [scrolled, setScrolled] = useState(false);
-
   const [mobileOpen, setMobileOpen] = useState(false);
-
   const [openMenu, setOpenMenu] = useState(null);
-
   const [searchTerm, setSearchTerm] = useState("");
-
   const [searchFocused, setSearchFocused] = useState(false);
-
   const desktopSearchRef = useRef(null);
-
   const mobileSearchRef = useRef(null);
-
   const blurTimeoutRef = useRef(null);
-
   const menuTimeoutRef = useRef(null);
-
   const navigate = useNavigate();
-
   const { data: navMenus = [] } = useNavMenus();
-
   const { data: siteAssets = {} } = useSiteAssets();
 
-  // ========================================
-  // SCROLL
-  // ========================================
-
   useEffect(() => {
-    const onScroll = () => {
-      setScrolled(window.scrollY > 50);
-    };
-
+    const onScroll = () => setScrolled(window.scrollY > 50);
     window.addEventListener("scroll", onScroll);
-
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-    };
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
   // ========================================
@@ -312,9 +237,7 @@ export default function Navbar({ cartCount = 0, products = [], user }) {
     ? products
         .filter((product) => {
           const name = product.name?.toLowerCase() || "";
-
           const category = product.category?.toLowerCase() || "";
-
           return (
             name.includes(normalizedTerm) || category.includes(normalizedTerm)
           );
@@ -322,68 +245,37 @@ export default function Navbar({ cartCount = 0, products = [], user }) {
         .slice(0, 6)
     : [];
 
-  // ========================================
-  // SEARCH FOCUS
-  // ========================================
-
   const handleSearchFocus = () => {
     clearTimeout(blurTimeoutRef.current);
-
     setSearchFocused(true);
   };
 
-  // ========================================
-  // SEARCH BLUR
-  // ========================================
-
   const handleSearchBlur = () => {
-    blurTimeoutRef.current = setTimeout(() => {
-      setSearchFocused(false);
-    }, 150);
+    blurTimeoutRef.current = setTimeout(() => setSearchFocused(false), 150);
   };
 
-  // ========================================
-  // SEARCH RESULT
-  // ========================================
-
-  // Selecting a result returns to the home page and scrolls to Best Sellers.
   const handleSelectResult = () => {
     clearTimeout(blurTimeoutRef.current);
-
     setSearchFocused(false);
     setSearchTerm("");
     setMobileOpen(false);
     setOpenMenu(null);
-
     navigate("/");
-
-    requestAnimationFrame(() => {
-      document.getElementById("best-sellers")?.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-      });
-    });
+    requestAnimationFrame(() =>
+      document
+        .getElementById("best-sellers")
+        ?.scrollIntoView({ behavior: "smooth", block: "start" })
+    );
   };
-
-  // ========================================
-  // SEARCH ICON
-  // ========================================
 
   const focusSearch = () => {
-    if (window.matchMedia("(min-width: 768px)").matches) {
+    if (window.matchMedia("(min-width: 768px)").matches)
       desktopSearchRef.current?.focus();
-    } else {
+    else {
       setMobileOpen(true);
-
-      setTimeout(() => {
-        mobileSearchRef.current?.focus();
-      }, 300);
+      setTimeout(() => mobileSearchRef.current?.focus(), 300);
     }
   };
-
-  // ========================================
-  // CLOSE MENUS
-  // ========================================
 
   const closeMenus = () => {
     clearTimeout(menuTimeoutRef.current);
@@ -392,24 +284,12 @@ export default function Navbar({ cartCount = 0, products = [], user }) {
     setMobileOpen(false);
   };
 
-  // ========================================
-  // RENDER
-  // ========================================
-
   return (
     <nav
-      className={`fixed top-0 w-full z-[60] transition-all duration-500 bg-surface border-b border-primary/40 ${
-        scrolled ? "py-3 shadow-lg shadow-black/30" : "py-5"
-      }`}
+      className={`fixed top-0 w-full z-[60] transition-all duration-500 bg-surface border-b border-primary/40 ${scrolled ? "py-3 shadow-lg shadow-black/30" : "py-5"}`}
     >
-      {/* NAVBAR CONTAINER */}
-
       <div className="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop flex justify-between items-center relative">
-        {/* LOGO + NAV */}
-
         <div className="flex items-center gap-16">
-          {/* LOGO */}
-
           <Link to="/" className="relative z-10" onClick={closeMenus}>
             <img
               alt="SipNow Logo"
@@ -420,7 +300,7 @@ export default function Navbar({ cartCount = 0, products = [], user }) {
 
           {/* DESKTOP NAV */}
 
-          <div className="hidden lg:flex gap-10">
+          <div className="hidden lg:flex items-center gap-8">
             {navMenus.map((menu) => (
               <div
                 className="nav-item py-2"
@@ -428,11 +308,9 @@ export default function Navbar({ cartCount = 0, products = [], user }) {
                 onMouseEnter={() => handleMenuEnter(menu.label)}
                 onMouseLeave={handleMenuLeave}
               >
-                {/* TOP LEVEL LINK */}
-
                 <Link
                   to={TOP_LEVEL_ROUTES[menu.label] || `/${slugify(menu.label)}`}
-                  className={`flex items-center gap-1.5 font-label-md text-label-md transition-colors tracking-wide ${
+                  className={`flex items-center gap-1.5 font-label-md text-label-md transition-colors tracking-wide cursor-default ${
                     openMenu === menu.label
                       ? "text-primary"
                       : "text-on-surface/80 hover:text-primary"
@@ -440,9 +318,8 @@ export default function Navbar({ cartCount = 0, products = [], user }) {
                   onClick={closeMenus}
                 >
                   {menu.label}
-
                   <span
-                    className={`material-symbols-outlined text-[18px] opacity-50 transition-transform ${
+                    className={`material-symbols-outlined text-[18px] opacity-50 transition-transform cursor-pointer ${
                       openMenu === menu.label ? "rotate-180" : ""
                     }`}
                   >
@@ -451,7 +328,10 @@ export default function Navbar({ cartCount = 0, products = [], user }) {
                 </Link>
 
                 {openMenu === menu.label && (
-                  <div className="mega-menu absolute left-margin-desktop right-margin-desktop top-[100%] pt-4">
+                  <div
+                    className="mega-menu absolute top-full left-0 right-0 pt-0"
+                    onMouseEnter={() => setOpenMenu(menu.label)}
+                  >
                     <div className="mega-menu-panel glass-panel border border-outline-variant/30 rounded-2xl p-10 grid grid-cols-4 gap-12 shadow-2xl">
                       {menu.columns.map((col) =>
                         col.items?.length > 0 ? (
@@ -504,17 +384,12 @@ export default function Navbar({ cartCount = 0, products = [], user }) {
           </div>
         </div>
 
-        {/* RIGHT SIDE */}
-
         <div className="flex items-center gap-5 md:gap-8 relative z-10">
-          {/* DESKTOP SEARCH */}
-
           <div className="hidden md:flex flex-col relative">
             <div className="flex items-center border-b border-outline-variant/30 py-1">
               <span className="material-symbols-outlined text-[20px] text-on-surface-variant">
                 search
               </span>
-
               <input
                 className="bg-transparent border-none focus:ring-0 text-sm w-44 placeholder:text-on-surface-variant/50"
                 onBlur={handleSearchBlur}
@@ -534,8 +409,6 @@ export default function Navbar({ cartCount = 0, products = [], user }) {
             />
           </div>
 
-          {/* SEARCH BUTTON */}
-
           <button
             className="material-symbols-outlined hover:text-primary transition-colors"
             onClick={focusSearch}
@@ -543,8 +416,6 @@ export default function Navbar({ cartCount = 0, products = [], user }) {
           >
             search
           </button>
-
-          {/* CART */}
 
           <button
             aria-label={cartCount > 0 ? `Cart, ${cartCount} items` : "Cart"}
@@ -563,8 +434,6 @@ export default function Navbar({ cartCount = 0, products = [], user }) {
             )}
           </button>
 
-          {/* ACCOUNT */}
-
           <button
             aria-label={user ? "My account" : "Sign in"}
             className="hidden sm:inline material-symbols-outlined hover:text-primary transition-colors"
@@ -576,8 +445,6 @@ export default function Navbar({ cartCount = 0, products = [], user }) {
           >
             person
           </button>
-
-          {/* MOBILE MENU */}
 
           <button
             aria-controls="mobile-nav-panel"
@@ -591,8 +458,6 @@ export default function Navbar({ cartCount = 0, products = [], user }) {
           </button>
         </div>
       </div>
-
-      {/* MOBILE NAVIGATION */}
 
       <div
         className={`mobile-nav-panel lg:hidden ${mobileOpen ? "open" : ""}`}

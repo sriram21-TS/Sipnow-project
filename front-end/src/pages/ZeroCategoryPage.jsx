@@ -40,30 +40,45 @@ const SUBCATEGORIES = {
     keyword: "wine",
     subtitle: "Explore our collection of zero alcohol wines.",
     emptyMessage: "No zero % alcohol wine products found.",
+    bannerTag: "Zero Alcohol Cellar",
+    description:
+      "Explore our premium range of non-alcoholic wines, crafted for rich taste without the alcohol.",
   },
   beer: {
     title: "Zero % Alcohol Beer",
     keyword: "beer",
     subtitle: "Explore our collection of zero alcohol beers.",
     emptyMessage: "No zero % alcohol beer products found.",
+    bannerTag: "Zero Alcohol Brews",
+    description:
+      "Refresh yourself with crisp, non-alcoholic craft and classic beers.",
   },
   spirits: {
     title: "Zero % Alcohol Spirits",
     keyword: "spirits",
     subtitle: "Explore our collection of zero alcohol spirits.",
     emptyMessage: "No zero % alcohol spirits products found.",
+    bannerTag: "Zero Alcohol Spirits",
+    description:
+      "Sophisticated non-alcoholic botanical spirits and alternatives for mixology.",
   },
   premix: {
     title: "Zero % Alcohol Premix",
     keyword: "premix",
     subtitle: "Explore our collection of zero alcohol premix drinks.",
     emptyMessage: "No zero % alcohol premix products found.",
+    bannerTag: "Zero Alcohol Premix & RTD",
+    description:
+      "Convenient, ready-to-drink zero alcohol cocktails and mixed drinks.",
   },
   cider: {
     title: "Zero % Alcohol Cider",
     keyword: "cider",
     subtitle: "Explore our collection of zero alcohol ciders.",
     emptyMessage: "No zero % alcohol cider products found.",
+    bannerTag: "Zero Alcohol Ciders",
+    description:
+      "Fruity and crisp zero alcohol ciders packed with natural flavours.",
   },
 };
 
