@@ -578,7 +578,6 @@ export default function Auth({ mode, onAuthenticated, onSwitch }) {
      */
     <div className="min-h-screen bg-[#09080a] px-5 py-10 text-white sm:py-16">
       <main className="mx-auto mt-10 mb-10 max-w-xl rounded-[2rem] border border-primary/30 bg-[#100e11] p-7 text-white shadow-2xl shadow-black/50 sm:p-12">
-
         {/* ==================================================
             PAGE TITLE
             ================================================== */}
