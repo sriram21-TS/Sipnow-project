@@ -184,6 +184,19 @@ export default function App() {
               />
             }
           />
+<<<<<<< HEAD
+=======
+          <Route
+            path="/offers/general-promotions"
+            element={<GeneralPromotions />}
+          />
+
+          <Route path="/offers/gift-cards" element={<GiftCards />} />
+
+          <Route path="/offers/members" element={<Members />} />
+
+          <Route path="/offers/clearance" element={<Clearance />} />
+>>>>>>> 11ab939174429f8c1b9a049a0394e239f2fd8b85
           <Route
             path="/profile"
             element={

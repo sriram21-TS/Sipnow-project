@@ -124,18 +124,27 @@ export default function InStorePromotionsPreview({ onAddToCart, onNavigate }) {
       <section className="relative w-full overflow-hidden">
         <div className="mx-auto w-[92%] max-w-[1500px]">
           {/* Section Header */}
-          <div className="flex items-start justify-between gap-6">
+          <div className="flex items-end justify-between gap-6">
             <div>
               <p className="font-label-md uppercase tracking-[0.28em]">
                 Offers & Services
               </p>
 
-              <h2 className="font-display-lg text-4xl">In-Store Promotions</h2>
+              <h2 className="font-display-lg text-4xl text-on-surface">
+                In-Store Promotions
+              </h2>
 
               <p className="text-on-surface-variant font-body-lg">
                 Exclusive offers available at your local SipNow store.
               </p>
             </div>
+            <button
+              type="button"
+              onClick={() => onNavigate?.("in-store-promotions")}
+              className="inline-flex shrink-0 items-center font-label-md transition-opacity hover:opacity-80"
+            >
+              View All Promotions →
+            </button>
           </div>
 
           {/* Product Carousel */}

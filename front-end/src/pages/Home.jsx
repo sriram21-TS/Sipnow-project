@@ -14,7 +14,7 @@ export default function Home({
   products,
 }) {
   return (
-    <>
+    <div className="[&>section:not(:first-child)]:!py-12">
       <HeroCarousel />
       <CategoryGrid onNavigate={onNavigate} />
       <InStorePromotionsPreview
@@ -26,6 +26,6 @@ export default function Home({
       <Newsletter />
       <WhySipNow />
       <ResponsibleDrinking />
-    </>
+    </div>
   );
 }

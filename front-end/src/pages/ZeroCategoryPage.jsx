@@ -35,6 +35,18 @@ const SORT_OPTIONS = [
 ];
 
 const SUBCATEGORIES = {
+  all: {
+    key: "all",
+    title: "Zero % Alcohol",
+    keyword: "all",
+    subtitle:
+      "Explore our complete collection of non-alcoholic wines, beers, spirits, premixes, and ciders.",
+    emptyMessage:
+      "No zero % alcohol products found matching your filter criteria.",
+    bannerTag: "Zero Alcohol Collection",
+    description:
+      "Enjoy your favourite drinks with zero alcohol. Explore our complete selection of non-alcoholic wines, beers, spirits, premixes, and ciders.",
+  },
   wine: {
     title: "Zero % Alcohol Wine",
     keyword: "wine",
@@ -80,7 +92,9 @@ export default function ZeroCategoryPage({
     subcategoryProp || params.subcategory || params.categoryKey || "";
   if (!rawSub && location.pathname) {
     const parts = location.pathname.split("/").filter(Boolean);
-    rawSub = parts[parts.length - 1] || "wine";
+    const lastPart = parts[parts.length - 1] || "all";
+    rawSub =
+      lastPart === "zero-alcohol" || lastPart === "zero" ? "all" : lastPart;
   }
 
   const subKey =
@@ -138,7 +152,9 @@ export default function ZeroCategoryPage({
         text.includes("zeroproof");
       if (!isZero) return false;
 
-      if (config.keyword === "spirits") {
+      if (config.keyword === "all") {
+        // no further category narrowing — any zero % product qualifies
+      } else if (config.keyword === "spirits") {
         if (
           !text.includes("spirit") &&
           !text.includes("spirits") &&
@@ -220,7 +236,9 @@ export default function ZeroCategoryPage({
             <div className="lg:sticky lg:top-32 glass-panel rounded-2xl border border-primary/20 p-6">
               {/* FILTER HEADER */}
               <div className="flex items-center justify-between mb-8">
-                <h2 className="font-headline-sm text-xl">Filters</h2>
+                <h2 className="font-headline-sm text-xl text-on-surface">
+                  Filters
+                </h2>
 
                 <button
                   type="button"
