@@ -19,7 +19,7 @@ const GeneralPromotions = () => {
       {/* Full Collection */}
       <button
         type="button"
-        onClick={() => navigate("/shop")}
+        onClick={() => navigate("/offers/general-promotions/products")}
         className="
           inline-block
           px-6

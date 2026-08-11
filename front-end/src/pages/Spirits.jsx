@@ -165,10 +165,13 @@ export default function Spirits({
 
     return [...existingSpirits, ...DUMMY_SPIRIT_PRODUCTS];
   }, [products]);
+<<<<<<< HEAD
 
   // ===================================================
   // GET AVAILABLE TYPES
   // ===================================================
+=======
+>>>>>>> 1a799397b61f218dfda2894109cdc4836d448048
 
   // ===================================================
   // TYPE FILTER
