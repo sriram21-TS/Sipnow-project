@@ -111,7 +111,7 @@ export default function Profile({ onLogout, onSave, onShopAll, user }) {
   /*
    * Controls whether profile fields are editable.
    */
-   const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const [editing, setEditing] = useState(false);
 
@@ -155,15 +155,15 @@ export default function Profile({ onLogout, onSave, onShopAll, user }) {
      *
      * Only letters and spaces remain.
      */
-   let cleanedValue = value;
+    let cleanedValue = value;
 
-if (name === "name") {
-  cleanedValue = value.replace(/[^A-Za-z ]/g, "");
-}
+    if (name === "name") {
+      cleanedValue = value.replace(/[^A-Za-z ]/g, "");
+    }
 
-if (name === "mobile") {
-  cleanedValue = value.replace(/\D/g, "").slice(0, 9);
-}
+    if (name === "mobile") {
+      cleanedValue = value.replace(/\D/g, "").slice(0, 9);
+    }
 
     setValues((current) => ({
       ...current,
@@ -272,23 +272,21 @@ if (name === "mobile") {
 
   return (
     <div className="pt-32 pb-24">
+      {/* Back to Home */}
+      <div className="mx-auto max-w-container-max px-margin-mobile md:px-margin-desktop">
+        <button
+          className="flex items-center gap-2 text-sm text-on-surface-variant transition-colors hover:text-primary"
+          onClick={() => navigate("/")}
+          type="button"
+        >
+          <span className="material-symbols-outlined text-[20px]">
+            arrow_back
+          </span>
+          Back to home
+        </button>
+      </div>
 
-  {/* Back to Home */}
-  <div className="mx-auto max-w-container-max px-margin-mobile md:px-margin-desktop">
-    <button
-      className="flex items-center gap-2 text-sm text-on-surface-variant transition-colors hover:text-primary"
-      onClick={() => navigate("/")}
-      type="button"
-    >
-      <span className="material-symbols-outlined text-[20px]">
-        arrow_back
-      </span>
-      Back to home
-    </button>
-  </div>
-
-  <main className="mx-auto mt-6 max-w-3xl px-margin-mobile md:px-margin-desktop">
-
+      <main className="mx-auto mt-6 max-w-3xl px-margin-mobile md:px-margin-desktop">
         {/* ====================================================
             PROFILE INFORMATION
             ==================================================== */}

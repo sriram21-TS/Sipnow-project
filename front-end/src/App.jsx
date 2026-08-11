@@ -299,7 +299,43 @@ export default function App() {
             path="/zero-alcohol"
             element={
               <ZeroCategoryPage
-                subcategory="wine"
+                subcategory="all"
+                onAddToCart={addToCart}
+                onBack={goHome}
+                products={products}
+                productsLoading={productsLoading}
+              />
+            }
+          />
+          <Route
+            path="/zero-alcohol/all"
+            element={
+              <ZeroCategoryPage
+                subcategory="all"
+                onAddToCart={addToCart}
+                onBack={goHome}
+                products={products}
+                productsLoading={productsLoading}
+              />
+            }
+          />
+          <Route
+            path="/zero"
+            element={
+              <ZeroCategoryPage
+                subcategory="all"
+                onAddToCart={addToCart}
+                onBack={goHome}
+                products={products}
+                productsLoading={productsLoading}
+              />
+            }
+          />
+          <Route
+            path="/zero/all"
+            element={
+              <ZeroCategoryPage
+                subcategory="all"
                 onAddToCart={addToCart}
                 onBack={goHome}
                 products={products}

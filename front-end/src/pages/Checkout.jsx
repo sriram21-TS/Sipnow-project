@@ -147,12 +147,12 @@ export default function Checkout({ cartItems, user, onOrderComplete }) {
      */
 
     if (
-  fulfilment === "delivery" &&
-  !ADDRESS_PATTERN.test(values.address.trim())
-) {
-  nextErrors.address =
-    "Enter a valid delivery address with a house/building number.";
-}
+      fulfilment === "delivery" &&
+      !ADDRESS_PATTERN.test(values.address.trim())
+    ) {
+      nextErrors.address =
+        "Enter a valid delivery address with a house/building number.";
+    }
     /*
      * --------------------------------------------------------
      * CITY
@@ -161,17 +161,15 @@ export default function Checkout({ cartItems, user, onOrderComplete }) {
 
     const enteredCity = values.city.trim();
 
-if (
-  fulfilment === "delivery" &&
-  (
-    !CITY_PATTERN.test(enteredCity) ||
-    !VALID_CITIES.some(
-      (city) => city.toLowerCase() === enteredCity.toLowerCase()
-    )
-  )
-) {
-  nextErrors.city = "Enter a valid city name.";
-}
+    if (
+      fulfilment === "delivery" &&
+      (!CITY_PATTERN.test(enteredCity) ||
+        !VALID_CITIES.some(
+          (city) => city.toLowerCase() === enteredCity.toLowerCase()
+        ))
+    ) {
+      nextErrors.city = "Enter a valid city name.";
+    }
 
     /*
      * Store validation errors.
@@ -245,35 +243,35 @@ if (
    */
 
   const update = (event) => {
-  const { name, value } = event.target;
+    const { name, value } = event.target;
 
-  let cleanedValue = value;
+    let cleanedValue = value;
 
-  if (name === "name") {
-    cleanedValue = value.replace(/[^A-Za-z ]/g, "");
-  }
+    if (name === "name") {
+      cleanedValue = value.replace(/[^A-Za-z ]/g, "");
+    }
 
-  if (name === "phone") {
-    cleanedValue = value.replace(/\D/g, "").slice(0, 9);
-  }
+    if (name === "phone") {
+      cleanedValue = value.replace(/\D/g, "").slice(0, 9);
+    }
 
-  if (name === "city") {
-    cleanedValue = value.replace(/[^A-Za-z ]/g, "");
-  }
+    if (name === "city") {
+      cleanedValue = value.replace(/[^A-Za-z ]/g, "");
+    }
 
-  setValues((current) => ({
-    ...current,
-    [name]: cleanedValue,
-  }));
+    setValues((current) => ({
+      ...current,
+      [name]: cleanedValue,
+    }));
 
-  if (errors[name]) {
-    setErrors((current) => {
-      const next = { ...current };
-      delete next[name];
-      return next;
-    });
-  }
-};
+    if (errors[name]) {
+      setErrors((current) => {
+        const next = { ...current };
+        delete next[name];
+        return next;
+      });
+    }
+  };
 
   /*
    * ==========================================================
