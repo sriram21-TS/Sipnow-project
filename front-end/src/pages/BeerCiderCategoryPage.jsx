@@ -1,9 +1,9 @@
 import { useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
-import PageHero from "./PageHero.jsx";
-import ProductFilters from "./ProductFilters.jsx";
-import ProductGrid from "./ProductGrid.jsx";
-import Reveal from "./Reveal.jsx";
+import PageHero from "../components/PageHero.jsx";
+import ProductFilters from "../components/ProductFilters.jsx";
+import ProductGrid from "../components/ProductGrid.jsx";
+import Reveal from "../components/Reveal.jsx";
 import { useAddToCartFeedback } from "../hooks/useAddToCartFeedback.js";
 import { getSubtype, parsePrice } from "../utils/productHelpers.js";
 
@@ -39,7 +39,7 @@ const KEY_ALIASES = {
   fruitcider: "fruit-cider",
 };
 
-const BEER_CIDER_SUBCATEGORIES = {
+export const BEER_CIDER_SUBCATEGORIES = {
   all: {
     key: "all",
     title: "All Beer & Cider",
@@ -582,7 +582,7 @@ export default function BeerCiderCategoryPage({
                 rating={rating}
                 resultCount={filteredProducts.length}
                 selectedSubtypes={selectedSubtypes}
-                hideAlcoholType={false}
+                hideAlcoholType={true}
               />
             </div>
           </aside>

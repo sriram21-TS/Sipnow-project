@@ -18,6 +18,18 @@ const TOP_LEVEL_ROUTES = {
   "In-Store promotions": "/in-store-promotions",
 };
 
+const BEER_CIDER_ITEM_PAGES = {
+  Pilsner: "pilsner",
+  "Dark Lager": "dark-lager",
+  Helles: "helles",
+  "Pale Ale": "pale-ale",
+  IPA: "ipa",
+  "Stout & Porter": "stout-porter",
+  Apple: "apple-cider",
+  Pear: "pear-cider",
+  "Fruit Cider": "fruit-cider",
+};
+
 const mobileNavLinks = [
   "Offers & Services",
   "Beer & Cider",
