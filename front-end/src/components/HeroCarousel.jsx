@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useHeroSlides } from "../hooks/useContent.js";
+import InStorePromotionBadge from "./InStorePromotionBadge.jsx";
+import { parsePrice } from "../utils/productHelpers.js";
 
 export default function HeroCarousel() {
   const { data: heroSlides } = useHeroSlides();
@@ -160,35 +162,55 @@ export default function HeroCarousel() {
                       </p>
                     </div>
                     <div className="grid grid-cols-2 gap-4 lg:order-2 lg:gap-5">
-                      {slide.promotions.map((product) => (
-                        <article
-                          className="relative min-h-[210px] overflow-hidden rounded-2xl glass-panel border border-outline-variant/30 p-4 transition-transform duration-300 hover:-translate-y-1 lg:min-h-[250px] lg:p-5"
-                          key={product.name}
-                        >
-                          <span className="absolute left-3 top-3 z-10 rounded-full bg-primary px-2.5 py-1 text-[9px] font-bold uppercase tracking-wider text-on-primary">
-                            {product.badgeText}
-                          </span>
-                          <img
-                            alt={product.name}
-                            className="h-28 w-full object-contain sm:h-36 lg:h-40 xl:h-44"
-                            draggable="false"
-                            src={product.image}
-                          />
-                          <p className="mt-3 line-clamp-2 text-sm font-medium leading-snug text-on-surface lg:text-base">
-                            {product.name}
-                          </p>
-                          <div className="mt-1 flex items-baseline gap-2">
-                            <p className="text-sm font-semibold text-primary lg:text-base">
-                              {product.price}
+                      {slide.promotions.map((product) => {
+                        const hasPromotion =
+                          product.originalPrice &&
+                          product.price &&
+                          parsePrice(product.originalPrice) > parsePrice(product.price);
+
+                        const discountPercent = hasPromotion
+                          ? Math.round(
+                              ((parsePrice(product.originalPrice) -
+                                parsePrice(product.price)) /
+                                parsePrice(product.originalPrice)) *
+                                100
+                            )
+                          : null;
+
+                        const badgeLabel = discountPercent
+                          ? `${discountPercent}% OFF`
+                          : product.badgeText
+                            ? product.badgeText.toUpperCase()
+                            : "PROMO";
+
+                        return (
+                          <article
+                            className="relative min-h-[210px] overflow-hidden rounded-2xl glass-panel border border-outline-variant/30 p-4 transition-transform duration-300 hover:-translate-y-1 lg:min-h-[250px] lg:p-5"
+                            key={product.name}
+                          >
+                            <InStorePromotionBadge label={badgeLabel} />
+                            <img
+                              alt={product.name}
+                              className="h-28 w-full object-contain sm:h-36 lg:h-40 xl:h-44"
+                              draggable="false"
+                              src={product.image}
+                            />
+                            <p className="mt-3 line-clamp-2 text-sm font-medium leading-snug text-on-surface lg:text-base">
+                              {product.name}
                             </p>
-                            {product.originalPrice && (
-                              <p className="text-xs text-on-surface-variant line-through lg:text-sm">
-                                {product.originalPrice}
+                            <div className="mt-1 flex items-baseline gap-2">
+                              <p className="text-sm font-semibold text-primary lg:text-base">
+                                {product.price}
                               </p>
-                            )}
-                          </div>
-                        </article>
-                      ))}
+                              {product.originalPrice && (
+                                <p className="text-xs text-on-surface-variant line-through lg:text-sm">
+                                  {product.originalPrice}
+                                </p>
+                              )}
+                            </div>
+                          </article>
+                        );
+                      })}
                     </div>
                   </div>
                 ) : slide.quiz ? (
