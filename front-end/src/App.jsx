@@ -238,7 +238,7 @@ export default function App() {
             }
           />
           <Route
-            path="/shop-all"
+            path="/shop"
             element={
               <ShopAll
                 onAddToCart={addToCart}
