@@ -18,8 +18,12 @@ import Auth from "./pages/Auth.jsx";
 import Cart from "./pages/Cart.jsx";
 import CategoryPage from "./pages/CategoryPage.jsx";
 import Checkout from "./pages/Checkout.jsx";
+import Clearance from "./pages/Clearance.jsx";
+import GeneralPromotions from "./pages/GeneralPromotions.jsx";
+import GiftCards from "./pages/GiftCards.jsx";
 import Home from "./pages/Home.jsx";
 import InStorePromotions from "./pages/InStorePromotions.jsx";
+import Members from "./pages/Members.jsx";
 import PremixPage from "./pages/PremixPage.jsx";
 import Profile from "./pages/Profile.jsx";
 import ShopAll from "./pages/ShopAll.jsx";
@@ -184,8 +188,6 @@ export default function App() {
               />
             }
           />
-<<<<<<< HEAD
-=======
           <Route
             path="/offers/general-promotions"
             element={<GeneralPromotions />}
@@ -196,7 +198,6 @@ export default function App() {
           <Route path="/offers/members" element={<Members />} />
 
           <Route path="/offers/clearance" element={<Clearance />} />
->>>>>>> 11ab939174429f8c1b9a049a0394e239f2fd8b85
           <Route
             path="/profile"
             element={
@@ -479,7 +480,6 @@ export default function App() {
               />
             }
           />
-
 
           <Route path="*" element={<Navigate replace to="/" />} />
         </Routes>
