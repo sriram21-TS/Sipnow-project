@@ -18,8 +18,12 @@ import Auth from "./pages/Auth.jsx";
 import Cart from "./pages/Cart.jsx";
 import CategoryPage from "./pages/CategoryPage.jsx";
 import Checkout from "./pages/Checkout.jsx";
+import Clearance from "./pages/Clearance.jsx";
+import GeneralPromotions from "./pages/GeneralPromotions.jsx";
+import GiftCards from "./pages/GiftCards.jsx";
 import Home from "./pages/Home.jsx";
 import InStorePromotions from "./pages/InStorePromotions.jsx";
+import Members from "./pages/Members.jsx";
 import PremixPage from "./pages/PremixPage.jsx";
 import Profile from "./pages/Profile.jsx";
 import ShopAll from "./pages/ShopAll.jsx";
@@ -188,7 +192,16 @@ export default function App() {
               />
             }
           />
+          <Route
+            path="/offers/general-promotions"
+            element={<GeneralPromotions />}
+          />
 
+          <Route path="/offers/gift-cards" element={<GiftCards />} />
+
+          <Route path="/offers/members" element={<Members />} />
+
+          <Route path="/offers/clearance" element={<Clearance />} />
           <Route
             path="/profile"
             element={
@@ -384,14 +397,7 @@ export default function App() {
 
           <Route
             path="/beer-cider"
-            element={
-              <CategoryPage
-                categoryKey="beer"
-                onAddToCart={addToCart}
-                onBack={goHome}
-                products={products}
-              />
-            }
+            element={<Navigate to="/beer-cider/pilsner" replace />}
           />
 
           <Route

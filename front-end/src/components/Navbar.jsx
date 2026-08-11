@@ -10,7 +10,7 @@ import sipnowLogo from "../assets/sipnow-logo.png";
 
 const TOP_LEVEL_ROUTES = {
   "Offers & Services": "/offers",
-  "Beer & Cider": "/beer-cider",
+  "Beer & Cider": "/beer-cider/pilsner",
   Premix: "/premix",
   Spirits: "/spirits",
   Wine: "/wine",
@@ -118,7 +118,6 @@ function getMenuItemRoute(menuLabel, columnHeading, item) {
     menuLabel.toLowerCase().includes("zero")
   ) {
     const sub = itemSlug.replace("zero-alcohol-", "").replace("zero-", "");
-
     return `/zero-alcohol/${sub}`;
   }
 
@@ -449,7 +448,13 @@ export default function Navbar({ cartCount = 0, products = [], user }) {
                       ? "text-primary"
                       : "text-on-surface/80 hover:text-primary"
                   }`}
-                  onClick={closeMenus}
+                  onClick={(e) => {
+                    if (menu.label === "Beer & Cider") {
+                      e.preventDefault();
+                    } else {
+                      closeMenus();
+                    }
+                  }}
                 >
                   {menu.label}
 
@@ -615,7 +620,13 @@ export default function Navbar({ cartCount = 0, products = [], user }) {
             <Link
               className="block font-label-md text-label-md text-on-surface/80 hover:text-primary transition-colors tracking-wide"
               key={link}
-              onClick={closeMenus}
+              onClick={(e) => {
+                if (link === "Beer & Cider") {
+                  e.preventDefault();
+                } else {
+                  closeMenus();
+                }
+              }}
               to={TOP_LEVEL_ROUTES[link] || `/${slugify(link)}`}
             >
               {link}

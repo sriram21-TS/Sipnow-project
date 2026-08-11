@@ -577,7 +577,7 @@ export default function Auth({ mode, onAuthenticated, onSwitch }) {
      * Dark authentication page.
      */
     <div className="min-h-screen bg-[#09080a] px-5 py-10 text-white sm:py-16">
-      <main className="mx-auto max-w-xl rounded-[2rem] border border-primary/30 bg-[#100e11] p-7 text-white shadow-2xl shadow-black/50 sm:p-12">
+      <main className="mx-auto mt-10 mb-10 max-w-xl rounded-[2rem] border border-primary/30 bg-[#100e11] p-7 text-white shadow-2xl shadow-black/50 sm:p-12">
         {/* ==================================================
             BRAND
             ================================================== */}
@@ -593,7 +593,6 @@ export default function Auth({ mode, onAuthenticated, onSwitch }) {
         <p className="mt-12 text-sm font-bold uppercase tracking-[0.16em] text-primary">
           {isSignup ? "Join the club" : "Welcome back"}
         </p>
-
         {/* ==================================================
             PAGE TITLE
             ================================================== */}
