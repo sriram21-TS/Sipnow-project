@@ -582,7 +582,7 @@ export default function BeerCiderCategoryPage({
                 rating={rating}
                 resultCount={filteredProducts.length}
                 selectedSubtypes={selectedSubtypes}
-                hideAlcoholType={false}
+                hideAlcoholType={true}
               />
             </div>
           </aside>
