@@ -120,6 +120,7 @@ export default function BestSellers({ onAddToCart, products = [] }) {
             >
               <ProductCard
                 className="h-full w-full [&>div:first-child]:aspect-auto [&>div:first-child]:h-[12.75rem]"
+                hideBadge={true}
                 isAdded={addedProduct === product.name}
                 onAdd={handleAddToCart}
                 product={product}

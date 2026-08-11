@@ -3,6 +3,7 @@ import ProductGrid from "../components/ProductGrid.jsx";
 import Reveal from "../components/Reveal.jsx";
 
 import { useAddToCartFeedback } from "../hooks/useAddToCartFeedback.js";
+import { useInStorePromotions } from "../hooks/useContent.js";
 
 export default function GeneralPromotions({
   onAddToCart,
@@ -10,6 +11,13 @@ export default function GeneralPromotions({
   products = [],
 }) {
   const { addedProduct, handleAddToCart } = useAddToCartFeedback(onAddToCart);
+  const { data: inStorePromotions = [] } = useInStorePromotions();
+
+  const sectionProducts = products.filter(
+    (p) => p.section === "general-promotions" || p.categoryGroup === "offers"
+  );
+  const displayProducts =
+    sectionProducts.length > 0 ? sectionProducts : inStorePromotions;
 
   return (
     <>
@@ -24,8 +32,10 @@ export default function GeneralPromotions({
         <ProductGrid
           addedProduct={addedProduct}
           emptyMessage="New promotions are on the way. Check back soon."
+          isInStorePromotion={false}
+          isSpecialOffer={true}
           onAddToCart={handleAddToCart}
-          products={products}
+          products={displayProducts}
         />
       </Reveal>
     </>

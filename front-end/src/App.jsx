@@ -30,6 +30,7 @@ import ShopAll from "./pages/ShopAll.jsx";
 import ZeroCategoryPage from "./pages/ZeroCategoryPage.jsx";
 
 import Spirits from "./pages/Spirits.jsx";
+
 // Safely read JSON data from localStorage. If the key is missing or
 // contains invalid JSON, return the provided fallback value.
 function readStored(key, fallback) {
@@ -148,6 +149,7 @@ export default function App() {
     <>
       <AmbientBackground />
       <Navbar cartCount={cartCount} products={products} user={user} />
+
       <main className="relative z-10">
         <Routes>
           <Route
@@ -161,6 +163,7 @@ export default function App() {
               />
             }
           />
+
           <Route
             path="/cart"
             element={
@@ -175,6 +178,7 @@ export default function App() {
               />
             }
           />
+
           <Route
             path="/checkout"
             element={
@@ -190,14 +194,47 @@ export default function App() {
           />
           <Route
             path="/offers/general-promotions"
-            element={<GeneralPromotions />}
+            element={
+              <GeneralPromotions
+                onAddToCart={addToCart}
+                onBack={goHome}
+                products={products}
+              />
+            }
           />
 
-          <Route path="/offers/gift-cards" element={<GiftCards />} />
+          <Route
+            path="/offers/gift-cards"
+            element={
+              <GiftCards
+                onAddToCart={addToCart}
+                onBack={goHome}
+                products={products}
+              />
+            }
+          />
 
-          <Route path="/offers/members" element={<Members />} />
+          <Route
+            path="/offers/members"
+            element={
+              <Members
+                onAddToCart={addToCart}
+                onBack={goHome}
+                products={products}
+              />
+            }
+          />
 
-          <Route path="/offers/clearance" element={<Clearance />} />
+          <Route
+            path="/offers/clearance"
+            element={
+              <Clearance
+                onAddToCart={addToCart}
+                onBack={goHome}
+                products={products}
+              />
+            }
+          />
           <Route
             path="/profile"
             element={
@@ -217,6 +254,7 @@ export default function App() {
               )
             }
           />
+
           <Route
             path="/login"
             element={
@@ -227,6 +265,7 @@ export default function App() {
               />
             }
           />
+
           <Route
             path="/signup"
             element={
@@ -237,6 +276,7 @@ export default function App() {
               />
             }
           />
+
           <Route
             path="/shop-all"
             element={
@@ -248,10 +288,14 @@ export default function App() {
               />
             }
           />
+
           <Route
             path="/in-store-promotions"
             element={
-              <InStorePromotions onAddToCart={addToCart} onBack={goHome} />
+              <InStorePromotions
+                onAddToCart={addToCart}
+                onBack={goHome}
+              />
             }
           />
 
@@ -267,6 +311,7 @@ export default function App() {
               />
             }
           />
+
           <Route
             path="/zero/:subcategory"
             element={
@@ -278,6 +323,7 @@ export default function App() {
               />
             }
           />
+
           <Route
             path="/zero-alcohol"
             element={
@@ -290,6 +336,7 @@ export default function App() {
               />
             }
           />
+
           <Route
             path="/zero-wine"
             element={
@@ -302,6 +349,7 @@ export default function App() {
               />
             }
           />
+
           <Route
             path="/zero-beer"
             element={
@@ -314,6 +362,7 @@ export default function App() {
               />
             }
           />
+
           <Route
             path="/zero-spirits"
             element={
@@ -326,6 +375,7 @@ export default function App() {
               />
             }
           />
+
           <Route
             path="/zero-premix"
             element={
@@ -338,6 +388,7 @@ export default function App() {
               />
             }
           />
+
           <Route
             path="/zero-cider"
             element={
@@ -365,6 +416,7 @@ export default function App() {
               />
             }
           />
+
           <Route
             path="/offers/:categoryKey"
             element={
@@ -375,10 +427,12 @@ export default function App() {
               />
             }
           />
+
           <Route
             path="/beer-cider"
             element={<Navigate to="/beer-cider/pilsner" replace />}
           />
+
           <Route
             path="/beer-cider/:categoryKey"
             element={
@@ -389,6 +443,7 @@ export default function App() {
               />
             }
           />
+
           <Route
             path="/premix"
             element={
@@ -400,6 +455,7 @@ export default function App() {
               />
             }
           />
+
           <Route
             path="/premix/:categoryKey"
             element={
@@ -410,6 +466,7 @@ export default function App() {
               />
             }
           />
+
           <Route
             path="/spirits"
             element={
@@ -421,17 +478,7 @@ export default function App() {
               />
             }
           />
-          <Route
-            path="/spirits"
-            element={
-              <CategoryPage
-                categoryKey="spirits"
-                onAddToCart={addToCart}
-                onBack={goHome}
-                products={products}
-              />
-            }
-          />
+
           <Route
             path="/spirits/whisky/:categoryKey"
             element={
@@ -442,6 +489,7 @@ export default function App() {
               />
             }
           />
+
           <Route
             path="/spirits/:categoryKey"
             element={
@@ -452,6 +500,7 @@ export default function App() {
               />
             }
           />
+
           <Route
             path="/wine"
             element={
@@ -477,8 +526,13 @@ export default function App() {
           <Route path="*" element={<Navigate replace to="/" />} />
         </Routes>
       </main>
+
       {!["/login", "/signup"].includes(location.pathname) && <Footer />}
-      <QuizModal isOpen={quizOpen} onClose={() => setQuizOpen(false)} />
+
+      <QuizModal
+        isOpen={quizOpen}
+        onClose={() => setQuizOpen(false)}
+      />
     </>
   );
 }

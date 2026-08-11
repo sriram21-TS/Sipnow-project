@@ -299,7 +299,8 @@ export const products = [
 
     badgeStyle: "glow",
     icon: "local_offer",
-    badgeText: "Special Offer",
+    isSpecialOffer: true,
+    badgeText: "",
 
     category: "Promotion",
     categoryGroup: "offers",

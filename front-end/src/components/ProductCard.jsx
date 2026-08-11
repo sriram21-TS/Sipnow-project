@@ -33,9 +33,11 @@ export default function ProductCard({
   isAdded,
   onAdd,
   className = "",
+  isInStorePromotion = false,
+  isSpecialOffer = false,
+  hideBadge = false,
 }) {
   const s = SIZE;
-  const isGlowBadge = product.badgeStyle === "glow";
   const packSizes = product.packSizes ?? DEFAULT_PACK_SIZES;
   const unitPrice = parsePrice(product.price);
 
@@ -73,7 +75,7 @@ export default function ProductCard({
       className={`group glass-panel glow-border shadow-lg hover:shadow-2xl hover:-translate-y-1 transition-all duration-500 ${s.card} ${className}`}
     >
       <div
-        className={`relative ${expanded ? "" : "aspect-square"} ${s.imageWrap}`}
+        className={`relative ${expanded ? "" : "aspect-square"} ${s.imageWrap} overflow-hidden`}
       >
         {expanded ? (
           <div className="flex flex-col gap-3 rounded-lg border border-primary/20 bg-surface-container-high p-3.5 animate-[fadeIn_0.2s_ease-out]">
@@ -169,25 +171,59 @@ export default function ProductCard({
                 src={product.image}
               />
             </div>
-            {isGlowBadge ? (
-              <div
-                className={`badge-glow absolute z-10 flex items-center gap-1 rounded-full bg-gradient-to-r from-primary to-tertiary text-on-primary font-label-sm font-bold uppercase tracking-wide shadow-lg ${s.badgePos} ${s.badgePad} ${s.badgeText}`}
-              >
-                <span
-                  className={`material-symbols-outlined ${s.badgeIcon}`}
-                  style={{ fontVariationSettings: '"FILL" 1' }}
-                >
-                  {product.icon}
-                </span>
-                {product.badgeText}
-              </div>
-            ) : (
-              <div
-                className={`absolute rounded-full bg-primary text-on-primary font-label-sm uppercase tracking-widest ${s.badgePos} ${s.plainBadgePad} ${s.plainBadgeText}`}
-              >
-                {product.badgeText}
-              </div>
-            )}
+            {(() => {
+              if (hideBadge) return null;
+
+              const isSpecial =
+                isSpecialOffer ||
+                product.isSpecialOffer ||
+                product.badgeText === "Special Offer" ||
+                product.badgeText === "SPECIAL DEAL" ||
+                product.badgeText === "Special Deal";
+
+              if (isSpecial) return null;
+
+              const isExclusive =
+                isInStorePromotion ||
+                product.isInStorePromotion ||
+                product.isExclusive ||
+                product.categoryGroup === "exclusive" ||
+                product.section === "exclusive";
+
+              let badgeLabel = product.badgeText;
+
+              if (
+                badgeLabel === "Special Offer" ||
+                badgeLabel === "SPECIAL DEAL" ||
+                badgeLabel === "Special Deal"
+              ) {
+                badgeLabel = null;
+              }
+
+              if (!badgeLabel) {
+                if (product.originalPrice && product.price) {
+                  badgeLabel = `${Math.max(
+                    1,
+                    Math.round(
+                      ((parsePrice(product.originalPrice) -
+                        parsePrice(product.price)) /
+                        parsePrice(product.originalPrice)) *
+                        100
+                    )
+                  )}% OFF`;
+                } else if (
+                  product.promoLabel &&
+                  product.promoLabel !== "In-store only"
+                ) {
+                  badgeLabel = product.promoLabel;
+                } else if (isExclusive || isInStorePromotion) {
+                  badgeLabel = "EXCLUSIVE";
+                }
+              }
+
+              if (!badgeLabel) return null;
+              return <div className="promo-ribbon z-30">{badgeLabel}</div>;
+            })()}
             <button
               aria-label={`Add ${product.name} to cart`}
               className={`group/cart absolute z-20 flex items-center rounded-full primary-gradient text-white shadow-2xl overflow-hidden opacity-100 translate-y-0 md:opacity-0 md:group-hover:opacity-100 md:translate-y-4 md:group-hover:translate-y-0 transition-all duration-300 ease-out pl-[10px] gap-1.5 ${s.addBtnPos} ${s.addBtnSize}`}

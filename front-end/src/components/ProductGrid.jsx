@@ -9,6 +9,9 @@ export default function ProductGrid({
   emptyMessage,
   addedProduct,
   onAddToCart,
+  isInStorePromotion = false,
+  isSpecialOffer = false,
+  hideBadge = false,
 }) {
   if (products.length === 0) {
     return (
@@ -22,7 +25,10 @@ export default function ProductGrid({
     <div className={GRID_CLASSES}>
       {products.map((product) => (
         <ProductCard
+          hideBadge={hideBadge || product.hideBadge}
           isAdded={addedProduct === product.name}
+          isInStorePromotion={isInStorePromotion || product.isInStorePromotion}
+          isSpecialOffer={isSpecialOffer || product.isSpecialOffer}
           key={product.name}
           onAdd={onAddToCart}
           product={product}

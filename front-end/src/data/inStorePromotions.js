@@ -6,6 +6,7 @@ export const inStorePromotions = [
   {
     image: cooper,
     icon: "sports_bar",
+    isExclusive: true,
     badgeText: "20% Off",
     category: "Beer · 750mL",
     name: "Coopers Original Pale Ale Longneck",
@@ -18,6 +19,7 @@ export const inStorePromotions = [
   {
     image: jacobGreek,
     icon: "wine_bar",
+    isExclusive: true,
     badgeText: "15% Off",
     category: "White Wine · 750mL",
     name: "Jacob's Creek Cool Harvest Sauvignon Blanc",
@@ -30,6 +32,7 @@ export const inStorePromotions = [
   {
     image: campo,
     icon: "wine_bar",
+    isExclusive: true,
     badgeText: "10% Off",
     category: "Red Wine · 750mL",
     name: "Campo Viejo Tempranillo",
@@ -43,6 +46,7 @@ export const inStorePromotions = [
     image:
       "https://vinosamerica.com/cdn/shop/products/Absolut-Vodka-750ml-Front-Standard-Transparent-Background-LR_1024x1024.png?v=1685321172",
     icon: "liquor",
+    isExclusive: true,
     badgeText: "Bundle Deal",
     category: "Vodka · 6 x 200mL",
     name: "Absolut Vodka 6 Pack",
@@ -55,6 +59,7 @@ export const inStorePromotions = [
   {
     image: "https://media.sipnow.com.au/sipnow/products/001.webp",
     icon: "liquor",
+    isExclusive: true,
     badgeText: "25% Off",
     category: "Whiskey · 10 x 375mL",
     name: "Jim Beam Double Serve 6.7%",
@@ -67,6 +72,7 @@ export const inStorePromotions = [
   {
     image: "https://media.sipnow.com.au/sipnow/products/901870-1.png",
     icon: "wine_bar",
+    isExclusive: true,
     badgeText: "Buy 2 Save 10%",
     category: "Red Wine · 750mL",
     name: "Grant Burge Miamba Shiraz",

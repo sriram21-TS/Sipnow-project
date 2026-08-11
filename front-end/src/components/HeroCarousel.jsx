@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useHeroSlides } from "../hooks/useContent.js";
+import { parsePrice } from "../utils/productHelpers.js";
 
 export default function HeroCarousel() {
   const { data: heroSlides } = useHeroSlides();
@@ -165,9 +166,27 @@ export default function HeroCarousel() {
                           className="relative min-h-[210px] overflow-hidden rounded-2xl glass-panel border border-outline-variant/30 p-4 transition-transform duration-300 hover:-translate-y-1 lg:min-h-[250px] lg:p-5"
                           key={product.name}
                         >
-                          <span className="absolute left-3 top-3 z-10 rounded-full bg-primary px-2.5 py-1 text-[9px] font-bold uppercase tracking-wider text-on-primary">
-                            {product.badgeText}
-                          </span>
+                          {(() => {
+                            const badge =
+                              product.badgeText ||
+                              (product.originalPrice && product.price
+                                ? `${Math.max(
+                                    1,
+                                    Math.round(
+                                      ((parsePrice(product.originalPrice) -
+                                        parsePrice(product.price)) /
+                                        parsePrice(product.originalPrice)) *
+                                        100
+                                    )
+                                  )}% OFF`
+                                : "EXCLUSIVE");
+
+                            return (
+                              <span className="absolute left-3 top-3 z-10 rounded-full bg-primary px-2.5 py-1 text-[9px] font-bold uppercase tracking-wider text-on-primary shadow-md">
+                                {badge}
+                              </span>
+                            );
+                          })()}
                           <img
                             alt={product.name}
                             className="h-28 w-full object-contain sm:h-36 lg:h-40 xl:h-44"
