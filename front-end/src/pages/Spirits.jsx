@@ -163,56 +163,8 @@ export default function Spirits({
       (product) => product.categoryGroup === "spirits"
     );
 
-<<<<<<< HEAD
-    // If user clicked only
-    // "Spirits", show everything.
-
-    if (!normalizedSelectedType) {
-      return allSpirits;
-    }
-
-    // Convert URL value to
-    // the same format as product.type
-
-    const typeMap = {
-      gin: "gin",
-      rum: "rum",
-      vodka: "vodka",
-      bourbon: "bourbon",
-
-      tequila: "tequilla",
-      tequilla: "tequilla",
-
-      liquerus: "liquerus",
-      liqueurs: "liquerus",
-
-      "brandy & cognac": "brandy & cognac",
-
-      "brandy-and-cognac": "brandy & cognac",
-
-      "other spirits": "other spirits",
-
-      "other-spirits": "other spirits",
-    };
-
-    const wantedType =
-      typeMap[normalizedSelectedType] || normalizedSelectedType;
-
-    // Return only products
-    // belonging to selected type
-
-    return allSpirits.filter(
-      (product) => product.type?.toLowerCase().trim() === wantedType
-    );
-  }, [products, normalizedSelectedType]);
-
-  // ===================================================
-  // GET AVAILABLE TYPES
-  // ===================================================
-=======
     return [...existingSpirits, ...DUMMY_SPIRIT_PRODUCTS];
   }, [products]);
->>>>>>> 4bd8f7492ebf23d4adc0520ec7fcd4d9717905b4
 
   // ===================================================
   // TYPE FILTER
