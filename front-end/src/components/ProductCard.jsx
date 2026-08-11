@@ -216,15 +216,15 @@ export default function ProductCard({
           </>
         )}
       </div>
-      <div className="flex justify-between items-start px-2 gap-2">
-        <div className="min-w-0 flex-1 space-y-0.5 pr-1">
+      <div className="flex justify-between items-start px-1">
+        <div className="space-y-0.5">
           <p
-            className={`text-on-surface-variant uppercase tracking-[0.2em] truncate ${s.category}`}
+            className={`text-on-surface-variant uppercase tracking-[0.2em] ${s.category}`}
           >
             {product.category}
           </p>
           <h4
-            className={`font-headline-md group-hover:text-primary transition-colors line-clamp-2 ${s.name}`}
+            className={`font-headline-md group-hover:text-primary transition-colors ${s.name}`}
           >
             {product.name}
           </h4>
@@ -233,12 +233,12 @@ export default function ProductCard({
             reviewCount={product.reviewCount}
           />
           {product.promoLabel && (
-            <p className="text-on-surface-variant text-[10px] uppercase tracking-widest pt-1 truncate">
+            <p className="text-on-surface-variant text-[10px] uppercase tracking-widest pt-1">
               {product.promoLabel}
             </p>
           )}
         </div>
-        <div className="text-right shrink-0 pl-1">
+        <div className="text-right shrink-0">
           <p className={`font-headline-md text-primary ${s.price}`}>
             {product.price}
           </p>

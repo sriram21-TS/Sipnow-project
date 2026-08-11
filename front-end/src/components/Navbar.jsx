@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 
 import { Link, useNavigate } from "react-router-dom";
-import { useNavMenus, useSiteAssets } from "../hooks/useContent.js";
+import { useNavMenus } from "../hooks/useContent.js";
+import sipnowLogo from "../assets/sipnow-logo.png";
 
 // ========================================
 // TOP LEVEL ROUTES
@@ -110,16 +111,12 @@ function getMenuItemRoute(menuLabel, columnHeading, item) {
   // ZERO %
   // ======================================
 
-<<<<<<< HEAD
-  if (menuLabel === "Zero %" || menuLabel.toLowerCase().includes("zero")) {
-=======
   if (
     menuLabel === "Zero %" ||
     menuLabel === "Zero" ||
     menuLabel === "Zero%" ||
     menuLabel.toLowerCase().includes("zero")
   ) {
->>>>>>> 11ab939174429f8c1b9a049a0394e239f2fd8b85
     const sub = itemSlug.replace("zero-alcohol-", "").replace("zero-", "");
 
     return `/zero-alcohol/${sub}`;
@@ -268,7 +265,6 @@ export default function Navbar({ cartCount = 0, products = [], user }) {
   const navigate = useNavigate();
 
   const { data: navMenus = [] } = useNavMenus();
-  const { data: siteAssets = {} } = useSiteAssets();
 
   // ========================================
   // SCROLL
@@ -448,11 +444,7 @@ export default function Navbar({ cartCount = 0, products = [], user }) {
 
                 <Link
                   to={TOP_LEVEL_ROUTES[menu.label] || `/${slugify(menu.label)}`}
-<<<<<<< HEAD
-                  className={`flex items-center gap-1.5 font-label-md text-label-md transition-colors tracking-wide ${
-=======
                   className={`flex items-center gap-1.5 whitespace-nowrap font-label-md text-label-md transition-colors tracking-wide cursor-default ${
->>>>>>> 11ab939174429f8c1b9a049a0394e239f2fd8b85
                     openMenu === menu.label
                       ? "text-primary"
                       : "text-on-surface/80 hover:text-primary"

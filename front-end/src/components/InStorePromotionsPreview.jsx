@@ -122,7 +122,7 @@ export default function InStorePromotionsPreview({ onAddToCart, onNavigate }) {
   return (
     <Reveal className="py-24 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
       <section className="relative w-full overflow-hidden">
-        <div className="mx-auto w-[92%] max-w-[1500px]">
+        <div>
           {/* Section Header */}
           <div className="flex items-end justify-between gap-6">
             <div>
@@ -196,17 +196,6 @@ export default function InStorePromotionsPreview({ onAddToCart, onNavigate }) {
               <span className="material-symbols-outlined" aria-hidden="true">
                 chevron_right
               </span>
-            </button>
-          </div>
-
-          {/* View Promotions */}
-          <div className="mt-6 flex justify-end">
-            <button
-              type="button"
-              onClick={() => onNavigate?.("in-store-promotions")}
-              className="inline-flex items-center font-label-md transition-opacity hover:opacity-80"
-            >
-              View All Promotions →
             </button>
           </div>
 
