@@ -382,8 +382,13 @@ export default function Spirits({
               PRODUCT COUNT + SORT
           =================================== */}
 
+<<<<<<< HEAD
           <div className="flex items-center justify-between mb-6">
             {/* PRODUCT COUNT */}
+=======
+            <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
+              {/* PRODUCT COUNT */}
+>>>>>>> 72d3b4008124fcf82beb309581f9b44ed1b939db
 
             <p className="text-sm text-on-surface-variant">
               {productsLoading

@@ -27,7 +27,7 @@ import Profile from "./pages/Profile.jsx";
 import ShopAll from "./pages/ShopAll.jsx";
 import ZeroCategoryPage from "./pages/ZeroCategoryPage.jsx";
 import Members from "./pages/Members.jsx";
-import Spirits from "./pages/Spirits.jsx";
+import Whisky from "./pages/Whisky.jsx";
 import GiftCards from "./pages/GiftCards.jsx";
 import Clearance from "./pages/Clearance.jsx";
 import GeneralPromotions from "./pages/GeneralPromotions.jsx";
@@ -495,6 +495,18 @@ export default function App() {
               <Spirits
                 onAddToCart={addToCart}
                 onBack={() => goToPage("/")}
+                products={products}
+                productsLoading={productsLoading}
+              />
+            }
+          />
+
+          <Route
+            path="/whisky"
+            element={
+              <Whisky
+                onAddToCart={addToCart}
+                onBack={goHome}
                 products={products}
                 productsLoading={productsLoading}
               />
