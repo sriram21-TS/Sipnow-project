@@ -167,19 +167,6 @@ export default function Spirits({
   }, [products]);
 
   // ===================================================
-  // AVAILABLE TYPES
-  // ===================================================
-
-  const spiritTypes = useMemo(() => {
-    return [
-      ...new Set(spiritProducts.map((product) => product.type).filter(Boolean)),
-    ];
-  }, [spiritProducts]);
-
-  // Prevent unused variable warning
-  void spiritTypes;
-
-  // ===================================================
   // TYPE FILTER
   // ===================================================
 

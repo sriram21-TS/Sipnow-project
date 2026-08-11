@@ -12,7 +12,7 @@ import Footer from "./components/Footer.jsx";
 import Navbar from "./components/Navbar.jsx";
 import QuizModal from "./components/QuizModal.jsx";
 import { useProducts } from "./hooks/useProducts.js";
-import WineSubcategoryPage from "./pages/wine/WineSubcategoryPage.jsx";
+import Wine from "./pages/Wine.jsx";
 
 import Auth from "./pages/Auth.jsx";
 import Cart from "./pages/Cart.jsx";
@@ -450,21 +450,21 @@ export default function App() {
           <Route
             path="/wine"
             element={
-              <CategoryPage
-                categoryKey="wine"
+              <Wine
                 onAddToCart={addToCart}
-                onBack={goHome}
                 products={products}
+                productsLoading={productsLoading}
               />
             }
           />
+
           <Route
-            path="/wine/:categoryKey"
+            path="/wine/:wineType"
             element={
-              <CategoryPage
+              <Wine
                 onAddToCart={addToCart}
-                onBack={goHome}
                 products={products}
+                productsLoading={productsLoading}
               />
             }
           />

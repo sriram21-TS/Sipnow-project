@@ -14,6 +14,7 @@
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
 }
+
 /* =========================================================
    NAV ITEM
    ========================================================= */
@@ -21,6 +22,18 @@
 .nav-item {
   position: static !important;
 }
+
+.in-store-promotion-card > :first-child {
+  height: 12.75rem;
+  aspect-ratio: auto;
+}
+/* .mega-menu {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+} */
 
 /* =========================================================
    MEGA MENU
@@ -44,10 +57,6 @@
 
   pointer-events: auto;
 }
-
-/* =========================================================
-   MEGA MENU PANEL
-   ========================================================= */
 
 .mega-menu-panel {
   width: calc(100% - 40px);
