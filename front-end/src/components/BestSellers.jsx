@@ -90,7 +90,7 @@ export default function BestSellers({ onAddToCart, products = [] }) {
 
   return (
     <Reveal
-      className="py-24 mx-auto w-[92%] max-w-[1500px] scroll-mt-28"
+      className="py-24 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto scroll-mt-28"
       id="best-sellers"
     >
       <div className="mb-16">

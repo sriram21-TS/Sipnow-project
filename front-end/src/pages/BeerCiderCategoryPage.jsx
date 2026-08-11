@@ -40,33 +40,6 @@ const KEY_ALIASES = {
 };
 
 const BEER_CIDER_SUBCATEGORIES = {
-  all: {
-    key: "all",
-    title: "All Beer & Cider",
-    group: "All",
-    tag: "Beer & Cider Collection",
-    description:
-      "Explore our complete collection of craft lagers, rich ales, and refreshing ciders.",
-    subtypes: [
-      "Pilsner",
-      "Dark Lager",
-      "Helles",
-      "Pale Ale",
-      "IPA",
-      "Stout & Porter",
-      "Stout",
-      "Porter",
-      "Apple Cider",
-      "Apple",
-      "Pear Cider",
-      "Pear",
-      "Fruit Cider",
-      "Lager",
-      "Ale",
-      "Beer",
-      "Cider",
-    ],
-  },
   lager: {
     key: "lager",
     title: "Lager",
@@ -444,7 +417,7 @@ export default function BeerCiderCategoryPage({
   const { categoryKey: categoryKeyParam } = useParams();
 
   // Normalize key from param or prop
-  const rawKey = (categoryKeyProp || categoryKeyParam || "all")
+  const rawKey = (categoryKeyProp || categoryKeyParam || "pilsner")
     .toLowerCase()
     .trim();
 
@@ -453,7 +426,7 @@ export default function BeerCiderCategoryPage({
   const activeConfig =
     BEER_CIDER_SUBCATEGORIES[activeSubcategoryKey] ||
     BEER_CIDER_SUBCATEGORIES[rawKey] ||
-    BEER_CIDER_SUBCATEGORIES.all;
+    BEER_CIDER_SUBCATEGORIES.pilsner;
 
   const { addedProduct, handleAddToCart } = useAddToCartFeedback(onAddToCart);
 
@@ -479,7 +452,6 @@ export default function BeerCiderCategoryPage({
 
   // Base products for Beer & Cider
   const categoryProducts = useMemo(() => {
-    const isAll = activeSubcategoryKey === "all";
     const allowedSubtypes = activeConfig.subtypes || [];
 
     // Filter real products from store/db
@@ -488,7 +460,6 @@ export default function BeerCiderCategoryPage({
         product.categoryGroup === "beer" || product.categoryGroup === "cider";
 
       if (!isBeerOrCider) return false;
-      if (isAll) return true;
 
       const subtype = getSubtype(product);
 
