@@ -14,6 +14,10 @@
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
 }
+.in-store-promotion-card > :first-child {
+  height: 12.75rem;
+  aspect-ratio: auto;
+}
 .mega-menu {
   opacity: 0;
   visibility: hidden;

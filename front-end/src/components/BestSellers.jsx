@@ -71,48 +71,73 @@ export default function BestSellers({ onAddToCart, products = [] }) {
   const scrollByCard = (direction) => {
     const track = trackRef.current;
     if (!track) return;
+
     const card = track.querySelector(":scope > div");
+    if (!card) return;
+
     const gap = parseFloat(getComputedStyle(track).columnGap) || 24;
-    const amount = card ? card.offsetWidth + gap : track.offsetWidth * 0.8;
-    track.scrollBy({ left: direction * amount, behavior: "smooth" });
+    const amount = card.offsetWidth + gap;
+    const maxScroll = track.scrollWidth - track.clientWidth;
+    const targetScroll = Math.min(
+      Math.max(track.scrollLeft + direction * amount, 0),
+      maxScroll
+    );
+
+    track.scrollTo({ left: targetScroll, behavior: "smooth" });
   };
+
+  const bestSellers = products.slice(0, 15);
 
   return (
     <Reveal
       className="py-24 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto scroll-mt-28"
       id="best-sellers"
     >
-      <div className="flex justify-between items-end mb-16">
+      <div className="mb-16">
         <h2 className="font-display-lg text-4xl">Best Sellers</h2>
-        <div className="flex gap-4">
-          <button
-            className="w-12 h-12 rounded-full border border-outline-variant/30 flex items-center justify-center hover:bg-primary transition-all duration-300"
-            onClick={() => scrollByCard(-1)}
-          >
-            <span className="material-symbols-outlined">west</span>
-          </button>
-          <button
-            className="w-12 h-12 rounded-full border border-outline-variant/30 flex items-center justify-center hover:bg-primary transition-all duration-300"
-            onClick={() => scrollByCard(1)}
-          >
-            <span className="material-symbols-outlined">east</span>
-          </button>
-        </div>
       </div>
-      <div
-        className="flex gap-6 overflow-x-auto scroll-smooth snap-x snap-proximity scrollbar-hide pb-2 -mx-margin-mobile px-margin-mobile md:-mx-margin-desktop md:px-margin-desktop"
-        id="bestsellers-track"
-        ref={trackRef}
-      >
-        {products.map((product) => (
-          <ProductCard
-            className="shrink-0 snap-start w-[var(--card-min-width)]"
-            isAdded={addedProduct === product.name}
-            key={product.name}
-            onAdd={handleAddToCart}
-            product={product}
-          />
-        ))}
+      <div className="grid grid-cols-[3rem_minmax(0,1fr)_3rem] items-center gap-3">
+        <button
+          aria-label="Previous best seller"
+          className="z-10 flex h-12 w-12 items-center justify-center rounded-full border border-outline-variant/40 bg-background text-on-surface shadow-lg transition-all duration-300 hover:border-primary hover:bg-primary hover:text-on-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+          onClick={() => scrollByCard(-1)}
+          type="button"
+        >
+          <span className="material-symbols-outlined" aria-hidden="true">
+            chevron_left
+          </span>
+        </button>
+
+        <div
+          className="flex gap-6 overflow-x-auto scroll-smooth snap-x snap-mandatory scrollbar-hide select-none"
+          id="bestsellers-track"
+          ref={trackRef}
+        >
+          {bestSellers.map((product) => (
+            <div
+              className="h-[400px] w-[85%] shrink-0 snap-start sm:w-[calc((100%-1.5rem)/2)] lg:w-[calc((100%-3rem)/3)] xl:w-[calc((100%-6rem)/5)]"
+              key={product.name}
+            >
+              <ProductCard
+                className="h-full w-full [&>div:first-child]:aspect-auto [&>div:first-child]:h-[12.75rem]"
+                isAdded={addedProduct === product.name}
+                onAdd={handleAddToCart}
+                product={product}
+              />
+            </div>
+          ))}
+        </div>
+
+        <button
+          aria-label="Next best seller"
+          className="z-10 flex h-12 w-12 items-center justify-center rounded-full border border-outline-variant/40 bg-background text-on-surface shadow-lg transition-all duration-300 hover:border-primary hover:bg-primary hover:text-on-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+          onClick={() => scrollByCard(1)}
+          type="button"
+        >
+          <span className="material-symbols-outlined" aria-hidden="true">
+            chevron_right
+          </span>
+        </button>
       </div>
     </Reveal>
   );
