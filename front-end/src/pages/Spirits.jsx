@@ -126,7 +126,7 @@ export default function Spirits({
 
   const { categoryKey } = useParams();
 
-const selectedType = categoryKey || "";
+  const selectedType = categoryKey || "";
 
   const normalizedSelectedType = selectedType?.toLowerCase().trim() || "";
 

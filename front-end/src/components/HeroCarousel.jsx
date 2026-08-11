@@ -166,7 +166,8 @@ export default function HeroCarousel() {
                         const hasPromotion =
                           product.originalPrice &&
                           product.price &&
-                          parsePrice(product.originalPrice) > parsePrice(product.price);
+                          parsePrice(product.originalPrice) >
+                            parsePrice(product.price);
 
                         const discountPercent = hasPromotion
                           ? Math.round(

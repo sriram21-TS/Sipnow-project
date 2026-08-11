@@ -69,10 +69,7 @@ export default function ProductCard({
   const [expanded, setExpanded] = useState(false);
   const [counts, setCounts] = useState(() => zeroCounts(packSizes));
 
-  const totalUnits = packSizes.reduce(
-    (sum, qty) => sum + counts[qty] * qty,
-    0
-  );
+  const totalUnits = packSizes.reduce((sum, qty) => sum + counts[qty] * qty, 0);
 
   const subtotal = packSizes.reduce(
     (sum, qty) => sum + counts[qty] * qty * unitPrice,
@@ -182,9 +179,7 @@ export default function ProductCard({
 
             <div className="space-y-2 border-t border-primary/10 pt-2.5">
               <div className="flex items-center justify-between text-xs">
-                <span className="text-on-surface-variant">
-                  Subtotal
-                </span>
+                <span className="text-on-surface-variant">Subtotal</span>
 
                 <span className="font-semibold text-primary">
                   {formatCurrency(subtotal)}
