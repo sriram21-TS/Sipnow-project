@@ -26,10 +26,6 @@ import PremixPage from "./pages/PremixPage.jsx";
 import Profile from "./pages/Profile.jsx";
 import ShopAll from "./pages/ShopAll.jsx";
 import ZeroCategoryPage from "./pages/ZeroCategoryPage.jsx";
-<<<<<<< HEAD
-
-=======
->>>>>>> 1a799397b61f218dfda2894109cdc4836d448048
 import Members from "./pages/Members.jsx";
 import Whisky from "./pages/Whisky.jsx";
 import GiftCards from "./pages/GiftCards.jsx";

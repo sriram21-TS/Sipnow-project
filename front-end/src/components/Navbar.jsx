@@ -202,7 +202,7 @@ function FeaturedPanel({ featured }) {
 function SearchResults({ results, searched, onSelect }) {
   if (!searched) return null;
   return (
-    <div className="absolute top-full left-0 right-0 mt-2 w-[420px] glass-panel border border-outline-variant/30 rounded-2xl shadow-2xl overflow-hidden z-50">
+    <div className="absolute top-full left-0 right-0 mt-2 w-full sm:w-[420px] glass-panel border border-outline-variant/30 rounded-2xl shadow-2xl overflow-hidden z-50">
       {results.length === 0 ? (
         <p className="px-6 py-5 text-sm text-on-surface-variant">
           No products match your search.
@@ -269,10 +269,7 @@ export default function Navbar({ cartCount = 0, products = [], user }) {
   const blurTimeoutRef = useRef(null);
 
   const menuTimeoutRef = useRef(null);
-<<<<<<< HEAD
-=======
 
->>>>>>> 1a799397b61f218dfda2894109cdc4836d448048
   const navigate = useNavigate();
 
   const { data: navMenus = [] } = useNavMenus();

@@ -39,7 +39,7 @@ const KEY_ALIASES = {
   fruitcider: "fruit-cider",
 };
 
-export const BEER_CIDER_SUBCATEGORIES = {
+const BEER_CIDER_SUBCATEGORIES = {
   all: {
     key: "all",
     title: "All Beer & Cider",
@@ -589,7 +589,7 @@ export default function BeerCiderCategoryPage({
 
           {/* MAIN PRODUCT LIST & CONTROLS */}
           <div className="flex-1 min-w-0">
-            <div className="flex items-center justify-between mb-6">
+            <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
               <p className="text-sm text-on-surface-variant">
                 {productsLoading
                   ? "Loading products…"

@@ -165,13 +165,6 @@ export default function Spirits({
 
     return [...existingSpirits, ...DUMMY_SPIRIT_PRODUCTS];
   }, [products]);
-<<<<<<< HEAD
-
-  // ===================================================
-  // GET AVAILABLE TYPES
-  // ===================================================
-=======
->>>>>>> 1a799397b61f218dfda2894109cdc4836d448048
 
   // ===================================================
   // TYPE FILTER
@@ -390,7 +383,7 @@ export default function Spirits({
               PRODUCT COUNT + SORT
           =================================== */}
 
-            <div className="flex items-center justify-between mb-6">
+            <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
               {/* PRODUCT COUNT */}
 
               <p className="text-sm text-on-surface-variant">
