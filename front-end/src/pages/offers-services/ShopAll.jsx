@@ -1,10 +1,10 @@
 import { useMemo, useState } from "react";
-import PageHero from "../components/PageHero.jsx";
-import ProductFilters from "../components/ProductFilters.jsx";
-import ProductGrid from "../components/ProductGrid.jsx";
-import Reveal from "../components/Reveal.jsx";
-import { useAddToCartFeedback } from "../hooks/useAddToCartFeedback.js";
-import { getSubtype, parsePrice } from "../utils/productHelpers.js";
+import PageHero from "../../components/PageHero.jsx";
+import ProductFilters from "../../components/ProductFilters.jsx";
+import ProductGrid from "../../components/ProductGrid.jsx";
+import Reveal from "../../components/Reveal.jsx";
+import { useAddToCartFeedback } from "../../hooks/useAddToCartFeedback.js";
+import { getSubtype, parsePrice } from "../../utils/productHelpers.js";
 
 const SORT_OPTIONS = [
   { key: "featured", label: "Featured" },

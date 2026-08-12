@@ -1,11 +1,43 @@
 import { useFooterColumns, useSiteAssets } from "../hooks/useContent.js";
-import { useNewsletterForm } from "../hooks/useNewsletterForm.js";
-import { preventNav } from "../utils/links.js";
+import { useNavigate } from "react-router-dom";
 
+const FOOTER_DESTINATIONS = {
+  Beer: "/beer-cider",
+  Wine: "/wine",
+  Whisky: "/spirits?type=whisky",
+  premix: "/premix",
+  Spirits: "/spirits",
+  zero: "/zero-alcohol",
+  "In-store": "/in-store-promotions",
+  General: "/offers/general-promotions",
+  members: "/offers/members",
+  Gift: "/offers/gift-cards",
+  Clearance: "/offers/clearance",
+  "My Orders": "/profile",
+  "Shipping Info": "/checkout",
+  "Returns & Refunds": "/profile",
+
+  "Sommelier Service": "/#sommelier-quiz",
+  "Privacy Policy": "/#why-sipnow",
+  "Terms of Service": "/#why-sipnow",
+};
 export default function Footer() {
-  const { email, status, handleChange, handleSubmit } = useNewsletterForm();
+  const navigate = useNavigate();
   const { data: footerColumns } = useFooterColumns();
   const { data: siteAssets } = useSiteAssets();
+
+  const navigateTo = (destination) => (e) => {
+    e.preventDefault();
+    const [path, hash] = destination.split("#");
+    navigate(path || "/");
+    if (hash) {
+      requestAnimationFrame(() =>
+        document
+          .getElementById(hash)
+          ?.scrollIntoView({ behavior: "smooth", block: "start" })
+      );
+    }
+  };
 
   return (
     <footer className="bg-surface-container-lowest pt-24 pb-12 relative overflow-hidden">
@@ -18,13 +50,13 @@ export default function Footer() {
           />
           <p className="text-on-surface-variant leading-relaxed">
             Elevating the drinking experience with curated excellence and
-            unparalleled delivery service since our cellar doors first opene.
+            unparalleled delivery service since our cellar doors first opened.
           </p>
           <div className="flex gap-4">
             <a
               className="w-12 h-12 rounded-full border border-outline-variant/30 flex items-center justify-center hover:bg-primary/20 transition-colors"
-              href="#"
-              onClick={preventNav}
+              href="/"
+              onClick={navigateTo("/")}
             >
               <span className="material-symbols-outlined text-[20px]">
                 public
@@ -32,8 +64,8 @@ export default function Footer() {
             </a>
             <a
               className="w-12 h-12 rounded-full border border-outline-variant/30 flex items-center justify-center hover:bg-primary/20 transition-colors"
-              href="#"
-              onClick={preventNav}
+              href="/"
+              onClick={navigateTo("/")}
             >
               <span className="material-symbols-outlined text-[20px]">
                 share
@@ -51,8 +83,8 @@ export default function Footer() {
                 <li key={link}>
                   <a
                     className="text-on-surface-variant hover:text-white transition-colors"
-                    href="#"
-                    onClick={preventNav}
+                    href={FOOTER_DESTINATIONS[link.trim()]}
+                    onClick={navigateTo(FOOTER_DESTINATIONS[link.trim()])}
                   >
                     {link}
                   </a>
@@ -61,51 +93,6 @@ export default function Footer() {
             </ul>
           </div>
         ))}
-        <div className="space-y-8">
-          <h4 className="font-label-md text-primary uppercase tracking-[0.2em]">
-            The Cellar Club
-          </h4>
-          <p className="text-on-surface-variant leading-relaxed">
-            Join our inner circle for exclusive rare release alerts and
-            sommelier insights.
-          </p>
-          {status === "success" ? (
-            <p className="text-primary text-sm font-label-md">
-              You&apos;re on the list — welcome to the club.
-            </p>
-          ) : (
-            <form
-              className="flex flex-col gap-4"
-              noValidate
-              onSubmit={handleSubmit}
-            >
-              <input
-                aria-invalid={status === "error"}
-                className={`bg-surface-container border rounded-full px-6 py-4 focus:ring-1 focus:ring-primary focus:border-primary text-sm transition-all ${
-                  status === "error"
-                    ? "border-red-400"
-                    : "border-outline-variant/30"
-                }`}
-                onChange={handleChange}
-                placeholder="Email Address"
-                type="email"
-                value={email}
-              />
-              {status === "error" && (
-                <p className="text-red-400 text-xs px-2 -mt-2">
-                  Please enter a valid email address.
-                </p>
-              )}
-              <button
-                className="primary-gradient py-4 rounded-full font-label-md shadow-xl disabled:opacity-60 disabled:pointer-events-none"
-                disabled={status === "submitting"}
-                type="submit"
-              >
-                {status === "submitting" ? "Subscribing…" : "Subscribe Now"}
-              </button>
-            </form>
-          )}
-        </div>
       </div>
       <div className="border-t border-outline-variant/10 pt-12 max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop flex flex-col md:flex-row justify-between items-center gap-6 relative z-10">
         <p className="text-on-surface-variant/40 text-xs">
@@ -114,15 +101,15 @@ export default function Footer() {
         <div className="flex gap-8 text-xs text-on-surface-variant/40">
           <a
             className="hover:text-primary transition-colors"
-            href="#"
-            onClick={preventNav}
+            href={FOOTER_DESTINATIONS["Privacy Policy"]}
+            onClick={navigateTo(FOOTER_DESTINATIONS["Privacy Policy"])}
           >
             Privacy Policy
           </a>
           <a
             className="hover:text-primary transition-colors"
-            href="#"
-            onClick={preventNav}
+            href={FOOTER_DESTINATIONS["Terms of Service"]}
+            onClick={navigateTo(FOOTER_DESTINATIONS["Terms of Service"])}
           >
             Terms of Service
           </a>
