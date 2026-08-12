@@ -104,15 +104,16 @@ export default function ZeroAlcoholLayout({
     const parts = location.pathname.split("/").filter(Boolean);
     const lastPart = parts[parts.length - 1] || "all";
     rawSub =
-      lastPart === "zero-alcohol" || lastPart === "zero" ? "all" : lastPart;
+      lastPart === "zero-alcohol" || lastPart === "zero" || lastPart === "zero-proof" ? "all" : lastPart;
   }
 
   const subKey =
-    (rawSub || "wine")
+    (rawSub || "all")
       .toLowerCase()
       .replace(/^zero-alcohol-?/, "")
+      .replace(/^zero-proof-?/, "")
       .replace(/^zero-?/, "")
-      .trim() || "wine";
+      .trim() || "all";
 
   const config = SUBCATEGORIES[subKey] || {
     title: `Zero % Alcohol ${subKey.charAt(0).toUpperCase() + subKey.slice(1)}`,

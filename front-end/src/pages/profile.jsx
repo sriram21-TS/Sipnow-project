@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { formatCurrency, parsePrice } from "../utils/productHelpers.js";
 
 /*
@@ -94,7 +95,9 @@ function OrderCard({ order }) {
       <div className="mt-4 flex justify-between border-t border-primary/10 pt-4 font-headline-md">
         <span>Total</span>
 
-        <span className="text-primary">{formatCurrency(order.subtotal)}</span>
+        <span className="text-primary">
+          {formatCurrency(order.total ?? order.subtotal)}
+        </span>
       </div>
     </article>
   );
@@ -110,6 +113,7 @@ export default function Profile({ onLogout, onSave, onShopAll, user }) {
   /*
    * Controls whether profile fields are editable.
    */
+  const navigate = useNavigate();
   const [editing, setEditing] = useState(false);
 
   /*
@@ -152,9 +156,15 @@ export default function Profile({ onLogout, onSave, onShopAll, user }) {
      *
      * Only letters and spaces remain.
      */
-    const cleanedValue =
-      name === "name" ? value.replace(/[^A-Za-z ]/g, "") : value;
+    let cleanedValue = value;
 
+if (name === "name") {
+  cleanedValue = value.replace(/[^A-Za-z ]/g, "");
+}
+
+if (name === "mobile") {
+  cleanedValue = value.replace(/\D/g, "").slice(0, 9);
+}
     setValues((current) => ({
       ...current,
       [name]: cleanedValue,
@@ -204,8 +214,8 @@ export default function Profile({ onLogout, onSave, onShopAll, user }) {
      * --------------------------------------------------------
      */
 
-    if (!/^[6-9]\d{9}$/.test(values.mobile.replace(/\s/g, ""))) {
-      nextErrors.push("Enter a valid 10-digit mobile number.");
+    if (!/^[6-9]\d{8}$/.test(values.mobile.replace(/\s/g, ""))) {
+      nextErrors.push("Enter a valid 9-digit mobile number.");
     }
 
     /*
@@ -266,7 +276,17 @@ export default function Profile({ onLogout, onSave, onShopAll, user }) {
         {/* ====================================================
             PROFILE INFORMATION
             ==================================================== */}
+            <button
+  type="button"
+  onClick={() => navigate("/")}
+  className="mb-6 flex items-center gap-2 text-on-surface-variant hover:text-primary transition-colors"
+>
+  <span className="material-symbols-outlined">
+    arrow_back
+  </span>
 
+  Back to home
+</button>
         <section className="glass-panel rounded-2xl p-6 sm:p-8">
           <div className="flex flex-wrap items-start justify-between gap-4">
             <div>
@@ -320,14 +340,16 @@ export default function Profile({ onLogout, onSave, onShopAll, user }) {
                   </span>
 
                   <input
-                    className={`w-full rounded-lg border bg-surface-container-high px-3 py-2 text-sm focus:border-primary focus:ring-0 ${
-                      error ? "border-error" : "border-outline-variant/30"
-                    }`}
-                    name={name}
-                    onChange={update}
-                    type={type || "text"}
-                    value={values[name]}
-                  />
+  className={`w-full rounded-lg border bg-surface-container-high px-3 py-2 text-sm focus:border-primary focus:ring-0 ${
+    error ? "border-error" : "border-outline-variant/30"
+  }`}
+  name={name}
+  onChange={update}
+  type={type || "text"}
+  value={values[name]}
+  maxLength={name === "mobile" ? 9 : undefined}
+  inputMode={name === "mobile" ? "numeric" : undefined}
+/>
                 </label>
               ))}
 

@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import Reveal from "../components/Reveal.jsx";
 import { formatCurrency, parsePrice } from "../utils/productHelpers.js";
 
@@ -68,6 +69,13 @@ export default function Cart({
     (sum, item) => sum + parsePrice(item.product.price) * item.quantity,
     0
   );
+
+   useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }, []);
 
   // Checkout requires an authenticated user; App.jsx decides whether
   // to continue to checkout or send the user to signup.
