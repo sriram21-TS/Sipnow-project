@@ -1,11 +1,9 @@
-import { useEffect, useMemo, useRef, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
-
 import ProductGrid from "../../components/ProductGrid.jsx";
 import Reveal from "../../components/Reveal.jsx";
 import { useAddToCartFeedback } from "../../hooks/useAddToCartFeedback.js";
 import { parsePrice } from "../../utils/productHelpers.js";
-
+import { useMemo, useState } from "react";
 const PRICE_RANGES = [
   { key: "all", label: "All Prices" },
   { key: "under10", label: "Under $10" },
@@ -104,16 +102,15 @@ export default function ZeroAlcoholLayout({
     const parts = location.pathname.split("/").filter(Boolean);
     const lastPart = parts[parts.length - 1] || "all";
     rawSub =
-      lastPart === "zero-alcohol" || lastPart === "zero" || lastPart === "zero-proof" ? "all" : lastPart;
+      lastPart === "zero-alcohol" || lastPart === "zero" ? "all" : lastPart;
   }
 
   const subKey =
-    (rawSub || "all")
+    (rawSub || "wine")
       .toLowerCase()
       .replace(/^zero-alcohol-?/, "")
-      .replace(/^zero-proof-?/, "")
       .replace(/^zero-?/, "")
-      .trim() || "all";
+      .trim() || "wine";
 
   const config = SUBCATEGORIES[subKey] || {
     title: `Zero % Alcohol ${subKey.charAt(0).toUpperCase() + subKey.slice(1)}`,
@@ -127,27 +124,6 @@ export default function ZeroAlcoholLayout({
   const [priceRange, setPriceRange] = useState("all");
   const [rating, setRating] = useState("all");
   const [sortBy, setSortBy] = useState("featured");
-  const [sortOpen, setSortOpen] = useState(false);
-
-  const sortRef = useRef(null);
-
-  /* CLOSE SORT DROPDOWN WHEN CLICKING OUTSIDE */
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (sortRef.current && !sortRef.current.contains(event.target)) {
-        setSortOpen(false);
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
-
-  const selectedSort =
-    SORT_OPTIONS.find((option) => option.key === sortBy) || SORT_OPTIONS[0];
 
   /* STRICT ZERO % FILTERING */
   const filteredProducts = useMemo(() => {
@@ -222,10 +198,7 @@ export default function ZeroAlcoholLayout({
     setSortBy("featured");
   };
 
-  const handleSortChange = (value) => {
-    setSortBy(value);
-    setSortOpen(false);
-  };
+  
 
   return (
     <div className="min-h-screen px-margin-mobile md:px-margin-desktop pt-28 pb-16">
@@ -243,7 +216,7 @@ export default function ZeroAlcoholLayout({
         {/* PAGE TITLE */}
         <div className="mb-14">
           <div className="inline-flex px-5 py-2 rounded-full border border-primary/40 text-primary text-xs uppercase tracking-[0.2em] mb-8">
-            Full Collection
+            Zero %
           </div>
 
           <h1 className="font-display-lg text-5xl md:text-6xl text-on-surface">
@@ -341,54 +314,23 @@ export default function ZeroAlcoholLayout({
               <p className="text-sm text-on-surface-variant">
                 Showing {filteredProducts.length} products
               </p>
-
-              {/* SORT */}
-              <div ref={sortRef} className="relative flex items-center gap-3">
-                <span className="text-sm text-on-surface-variant whitespace-nowrap">
+                {/* SORT */}
+                <label className="flex items-center gap-2 text-sm text-on-surface-variant">
                   Sort by
-                </span>
 
-                <button
-                  type="button"
-                  onClick={() => setSortOpen((open) => !open)}
-                  className="w-[216px] h-[50px] flex items-center justify-between gap-4 bg-[#1b181d] border border-primary/60 rounded-md px-4 text-sm text-on-surface hover:border-primary transition-colors cursor-pointer"
-                >
-                  <span>{selectedSort.label}</span>
-
-                  <span
-                    className={`material-symbols-outlined text-[20px] transition-transform ${
-                      sortOpen ? "rotate-180" : ""
-                    }`}
+                  <select
+                    className="glass-panel rounded-lg px-3 py-1.5 text-sm text-on-surface bg-surface-container-high border border-primary/20 focus:outline-none focus:border-primary"
+                    onChange={(e) => setSortBy(e.target.value)}
+                    value={sortBy}
                   >
-                    expand_more
-                  </span>
-                </button>
-
-                {sortOpen && (
-                  <div className="absolute right-0 top-full mt-1 w-[216px] z-50 bg-[#1b181d] border border-primary/40 rounded-md overflow-hidden shadow-2xl">
-                    {SORT_OPTIONS.map((option) => {
-                      const isSelected = sortBy === option.key;
-
-                      return (
-                        <button
-                          key={option.key}
-                          type="button"
-                          onClick={() => handleSortChange(option.key)}
-                          className={`w-full text-left px-4 py-2.5 text-sm transition-colors cursor-pointer ${
-                            isSelected
-                              ? "bg-primary text-white"
-                              : "bg-[#1b181d] text-white hover:bg-primary/20"
-                          }`}
-                        >
-                          {option.label}
-                        </button>
-                      );
-                    })}
-                  </div>
-                )}
-              </div>
-            </div>
-
+                    {SORT_OPTIONS.map((option) => (
+                      <option key={option.key} value={option.key}>
+                        {option.label}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                </div>
             {/* PRODUCT GRID */}
             {filteredProducts.length === 0 ? (
               <div className="space-y-6">
