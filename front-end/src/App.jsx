@@ -446,6 +446,7 @@ export default function App() {
             path="/spirits/whisky"
             element={
               <Spirits
+                categoryKey="whisky"
                 onAddToCart={addToCart}
                 onBack={() => goToPage("/")}
                 products={products}

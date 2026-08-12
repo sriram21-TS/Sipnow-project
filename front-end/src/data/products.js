@@ -233,6 +233,420 @@ export const products = [
   },
 
   {
+    image: "https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?auto=format&fit=crop&w=900&q=80",
+
+    badgeStyle: "plain",
+    icon: "liquor",
+    badgeText: "Best in Whisky",
+
+    category: "Scotch Whisky · 700mL",
+    categoryGroup: "spirits",
+    type: "Scotch Whisky",
+
+    name: "Ballantine's 7 Fuses Scottish",
+
+    rating: 4.8,
+    reviewCount: 210,
+    price: "$49.90",
+  },
+
+  {
+    image: "https://images.unsplash.com/photo-1532634922-8fe0b757fb13?auto=format&fit=crop&w=900&q=80",
+
+    badgeStyle: "plain",
+    icon: "liquor",
+    badgeText: "Best in Whisky",
+
+    category: "Scotch Whisky · 700mL",
+    categoryGroup: "spirits",
+    type: "Scotch Whisky",
+
+    name: "Highland Moss Reserve",
+
+    rating: 4.7,
+    reviewCount: 182,
+    price: "$46.00",
+  },
+
+  {
+    image: "https://images.unsplash.com/photo-1477764250597-dffe9f601ae8?auto=format&fit=crop&w=900&q=80",
+
+    badgeStyle: "plain",
+    icon: "liquor",
+    badgeText: "Best in Whisky",
+
+    category: "Scotch Whisky · 700mL",
+    categoryGroup: "spirits",
+    type: "Scotch Whisky",
+
+    name: "Isle of Skye Single Malt",
+
+    rating: 4.9,
+    reviewCount: 236,
+    price: "$58.50",
+  },
+
+  {
+    image: "https://images.unsplash.com/photo-1511988617509-a57c8a288659?auto=format&fit=crop&w=900&q=80",
+
+    badgeStyle: "plain",
+    icon: "liquor",
+    badgeText: "Best in Whisky",
+
+    category: "Scotch Whisky · 700mL",
+    categoryGroup: "spirits",
+    type: "Scotch Whisky",
+
+    name: "Lochlan Heritage",
+
+    rating: 4.6,
+    reviewCount: 171,
+    price: "$53.00",
+  },
+
+  {
+    image: "https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?auto=format&fit=crop&w=900&q=80",
+
+    badgeStyle: "plain",
+    icon: "liquor",
+    badgeText: "Best in Whisky",
+
+    category: "Other Whisky · 700mL",
+    categoryGroup: "spirits",
+    type: "Other Whisky",
+
+    name: "Velvet Oak Barrel",
+
+    rating: 4.4,
+    reviewCount: 126,
+    price: "$37.50",
+  },
+
+  {
+    image: "https://images.unsplash.com/photo-1532634922-8fe0b757fb13?auto=format&fit=crop&w=900&q=80",
+
+    badgeStyle: "plain",
+    icon: "liquor",
+    badgeText: "Best in Whisky",
+
+    category: "Other Whisky · 700mL",
+    categoryGroup: "spirits",
+    type: "Other Whisky",
+
+    name: "Aged Reserve Blend",
+
+    rating: 4.3,
+    reviewCount: 120,
+    price: "$35.00",
+  },
+
+  {
+    image: "https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?auto=format&fit=crop&w=900&q=80",
+
+    badgeStyle: "plain",
+    icon: "liquor",
+    badgeText: "Best in Whisky",
+
+    category: "Other Whisky · 700mL",
+    categoryGroup: "spirits",
+    type: "Other Whisky",
+
+    name: "Smoky Ember Reserve",
+
+    rating: 4.6,
+    reviewCount: 148,
+    price: "$41.00",
+  },
+
+  {
+    image: "https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?auto=format&fit=crop&w=900&q=80",
+
+    badgeStyle: "plain",
+    icon: "liquor",
+    badgeText: "Best in Whisky",
+
+    category: "Other Whisky · 700mL",
+    categoryGroup: "spirits",
+    type: "Other Whisky",
+
+    name: "Barrel House No. 7",
+
+    rating: 4.2,
+    reviewCount: 111,
+    price: "$33.90",
+  },
+
+  {
+    image: "https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?auto=format&fit=crop&w=900&q=80",
+
+    badgeStyle: "plain",
+    icon: "liquor",
+    badgeText: "Best in Whisky",
+
+    category: "Other Whisky · 700mL",
+    categoryGroup: "spirits",
+    type: "Other Whisky",
+
+    name: "Golden Ember Blend",
+
+    rating: 4.5,
+    reviewCount: 138,
+    price: "$39.00",
+  },
+
+  {
+    image: "https://images.unsplash.com/photo-1532634922-8fe0b757fb13?auto=format&fit=crop&w=900&q=80",
+
+    badgeStyle: "plain",
+    icon: "liquor",
+    badgeText: "Best in Whisky",
+
+    category: "Other Whisky · 700mL",
+    categoryGroup: "spirits",
+    type: "Other Whisky",
+
+    name: "Heritage Cask Select",
+
+    rating: 4.7,
+    reviewCount: 160,
+    price: "$43.50",
+  },
+
+  {
+    image: "https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?auto=format&fit=crop&w=900&q=80",
+
+    badgeStyle: "plain",
+    icon: "liquor",
+    badgeText: "Best in Whisky",
+
+    category: "Japanese Whisky · 700mL",
+    categoryGroup: "spirits",
+    type: "Japanese Whisky",
+
+    name: "Sakura Reserve",
+
+    rating: 4.8,
+    reviewCount: 210,
+    price: "$52.00",
+  },
+
+  {
+    image: "https://images.unsplash.com/photo-1532634922-8fe0b757fb13?auto=format&fit=crop&w=900&q=80",
+
+    badgeStyle: "plain",
+    icon: "liquor",
+    badgeText: "Best in Whisky",
+
+    category: "Japanese Whisky · 700mL",
+    categoryGroup: "spirits",
+    type: "Japanese Whisky",
+
+    name: "Yamashita Gold",
+
+    rating: 4.6,
+    reviewCount: 171,
+    price: "$46.90",
+  },
+
+  {
+    image: "https://images.unsplash.com/photo-1470337458703-46ad1756a187?auto=format&fit=crop&w=900&q=80",
+
+    badgeStyle: "plain",
+    icon: "liquor",
+    badgeText: "Best in Whisky",
+
+    category: "Japanese Whisky · 700mL",
+    categoryGroup: "spirits",
+    type: "Japanese Whisky",
+
+    name: "Hikari Nocturne",
+
+    rating: 4.7,
+    reviewCount: 188,
+    price: "$49.50",
+  },
+
+  {
+    image: "https://images.unsplash.com/photo-1523606772300-6e8b9f0e8787?auto=format&fit=crop&w=900&q=80",
+
+    badgeStyle: "plain",
+    icon: "liquor",
+    badgeText: "Best in Whisky",
+
+    category: "Japanese Whisky · 700mL",
+    categoryGroup: "spirits",
+    type: "Japanese Whisky",
+
+    name: "Kyoto Pearl",
+
+    rating: 4.5,
+    reviewCount: 147,
+    price: "$44.00",
+  },
+
+  {
+    image: "https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?auto=format&fit=crop&w=900&q=80",
+
+    badgeStyle: "plain",
+    icon: "liquor",
+    badgeText: "Best in Whisky",
+
+    category: "Irish Whisky · 700mL",
+    categoryGroup: "spirits",
+    type: "Irish Whisky",
+
+    name: "Emerald Isle Reserve",
+
+    rating: 4.7,
+    reviewCount: 180,
+    price: "$48.00",
+  },
+
+  {
+    image: "https://images.unsplash.com/photo-1532634922-8fe0b757fb13?auto=format&fit=crop&w=900&q=80",
+
+    badgeStyle: "plain",
+    icon: "liquor",
+    badgeText: "Best in Whisky",
+
+    category: "Irish Whisky · 700mL",
+    categoryGroup: "spirits",
+    type: "Irish Whisky",
+
+    name: "Clontarf Gold",
+
+    rating: 4.6,
+    reviewCount: 165,
+    price: "$45.50",
+  },
+
+  {
+    image: "https://images.unsplash.com/photo-1477764250597-dffe9f601ae8?auto=format&fit=crop&w=900&q=80",
+
+    badgeStyle: "plain",
+    icon: "liquor",
+    badgeText: "Best in Whisky",
+
+    category: "Irish Whisky · 700mL",
+    categoryGroup: "spirits",
+    type: "Irish Whisky",
+
+    name: "Bluewater Heritage",
+
+    rating: 4.5,
+    reviewCount: 152,
+    price: "$42.90",
+  },
+
+  {
+    image: "https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?auto=format&fit=crop&w=900&q=80",
+
+    badgeStyle: "plain",
+    icon: "liquor",
+    badgeText: "Best in Whisky",
+
+    category: "American Whisky · 700mL",
+    categoryGroup: "spirits",
+    type: "American Whisky",
+
+    name: "Stone Creek Reserve",
+
+    rating: 4.8,
+    reviewCount: 215,
+    price: "$58.00",
+  },
+
+  {
+    image: "https://images.unsplash.com/photo-1532634922-8fe0b757fb13?auto=format&fit=crop&w=900&q=80",
+
+    badgeStyle: "plain",
+    icon: "liquor",
+    badgeText: "Best in Whisky",
+
+    category: "American Whisky · 700mL",
+    categoryGroup: "spirits",
+    type: "American Whisky",
+
+    name: "Red Oak Bourbon",
+
+    rating: 4.6,
+    reviewCount: 172,
+    price: "$51.50",
+  },
+
+  {
+    image: "https://images.unsplash.com/photo-1511988617509-a57c8a288659?auto=format&fit=crop&w=900&q=80",
+
+    badgeStyle: "plain",
+    icon: "liquor",
+    badgeText: "Best in Whisky",
+
+    category: "American Whisky · 700mL",
+    categoryGroup: "spirits",
+    type: "American Whisky",
+
+    name: "Prairie Ember",
+
+    rating: 4.7,
+    reviewCount: 184,
+    price: "$54.90",
+  },
+
+  {
+    image: "https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?auto=format&fit=crop&w=900&q=80",
+
+    badgeStyle: "plain",
+    icon: "liquor",
+    badgeText: "Best in Whisky",
+
+    category: "Australian Whisky · 700mL",
+    categoryGroup: "spirits",
+    type: "Australian Whisky",
+
+    name: "Tasman Cove Reserve",
+
+    rating: 4.7,
+    reviewCount: 178,
+    price: "$47.00",
+  },
+
+  {
+    image: "https://images.unsplash.com/photo-1532634922-8fe0b757fb13?auto=format&fit=crop&w=900&q=80",
+
+    badgeStyle: "plain",
+    icon: "liquor",
+    badgeText: "Best in Whisky",
+
+    category: "Australian Whisky · 700mL",
+    categoryGroup: "spirits",
+    type: "Australian Whisky",
+
+    name: "Outback Ember",
+
+    rating: 4.5,
+    reviewCount: 151,
+    price: "$43.90",
+  },
+
+  {
+    image: "https://images.unsplash.com/photo-1511988617509-a57c8a288659?auto=format&fit=crop&w=900&q=80",
+
+    badgeStyle: "plain",
+    icon: "liquor",
+    badgeText: "Best in Whisky",
+
+    category: "Australian Whisky · 700mL",
+    categoryGroup: "spirits",
+    type: "Australian Whisky",
+
+    name: "Sunset Ridge",
+
+    rating: 4.6,
+    reviewCount: 162,
+    price: "$46.50",
+  },
+
+  {
     image: "https://media.sipnow.com.au/sipnow/products/rum-example.webp",
 
     badgeStyle: "plain",

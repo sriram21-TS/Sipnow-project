@@ -31,6 +31,7 @@ const SPIRIT_TYPES = {
     productType: "brandy & cognac",
   },
   "other-spirits": { label: "Other Spirits", productType: "other spirits" },
+  whisky: { label: "Whisky", productType: "whisky" },
   "other-whisky": { label: "Other Whisky", productType: "other whisky" },
   "scotch-whisky": { label: "Scotch Whisky", productType: "scotch whisky" },
   "japanese-whisky": {
@@ -84,9 +85,15 @@ export default function SpiritsLayout({
       return allSpirits;
     }
 
-    return allSpirits.filter(
-      (product) => product.type?.toLowerCase().trim() === spiritType.productType
-    );
+    return allSpirits.filter((product) => {
+      const productType = product.type?.toLowerCase().trim() ?? "";
+
+      if (spiritType.productType === "whisky") {
+        return productType.includes("whisky");
+      }
+
+      return productType === spiritType.productType;
+    });
   }, [products, spiritType]);
 
   const toggleType = (type) => {
