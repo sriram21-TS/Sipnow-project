@@ -1,10 +1,10 @@
 import { useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import PageHero from "../components/PageHero.jsx";
-import ProductFilters from "../components/ProductFilters.jsx";
-import ProductGrid from "../components/ProductGrid.jsx";
-import { useAddToCartFeedback } from "../hooks/useAddToCartFeedback.js";
-import { getSubtype, parsePrice } from "../utils/productHelpers.js";
+import PageHero from "../../components/PageHero.jsx";
+import ProductFilters from "../../components/ProductFilters.jsx";
+import ProductGrid from "../../components/ProductGrid.jsx";
+import { useAddToCartFeedback } from "../../hooks/useAddToCartFeedback.js";
+import { getSubtype, parsePrice } from "../../utils/productHelpers.js";
 
 const SORT_OPTIONS = [
   { key: "featured", label: "Featured" },
@@ -40,15 +40,22 @@ const WINE_PLACEHOLDERS = Array.from({ length: 6 }, (_, index) => ({
   isPlaceholder: true,
 }));
 
-export default function Wine({
+// Shared layout for the Wine section. The section-root page and every
+// dedicated subcategory page (shiraz.jsx, chardonnay.jsx, ...) render this
+// with a fixed `wineType`; a bare /wine/:wineType URL still works by
+// falling back to the route param.
+export default function WineLayout({
   title = "Wine",
   subtitle = "Explore our curated selection of wines for every occasion.",
+  wineType: wineTypeProp,
   onAddToCart,
   onBack,
   products = [],
   productsLoading = false,
 }) {
-  const { wineType } = useParams();
+  const { wineType: wineTypeParam } = useParams();
+  const wineType = wineTypeProp || wineTypeParam;
+
   const navigate = useNavigate();
   const handleBack = onBack || (() => navigate("/"));
 

@@ -12,6 +12,7 @@ const SPECIAL_CATEGORIES = {
     tag: "Offers & Services",
     description:
       "Discover our latest promotions, special offers, and exclusive deals.",
+    emptyMessage: "New promotions are on the way. Check back soon.",
   },
 
   "gift-cards": {
@@ -19,6 +20,7 @@ const SPECIAL_CATEGORIES = {
     tag: "Offers & Services",
     description:
       "Give the gift of choice with SipNow gift cards for every occasion.",
+    emptyMessage: "Gift card products are coming soon.",
   },
 
   members: {
@@ -26,6 +28,7 @@ const SPECIAL_CATEGORIES = {
     tag: "Offers & Services",
     description:
       "Enjoy exclusive benefits, offers, and rewards available to SipNow members.",
+    emptyMessage: "Exclusive member offers are coming soon.",
   },
 
   clearance: {
@@ -33,6 +36,7 @@ const SPECIAL_CATEGORIES = {
     tag: "Offers & Services",
     description:
       "Shop selected products at special clearance prices while stocks last.",
+    emptyMessage: "New clearance products are on the way. Check back soon.",
   },
 };
 
@@ -67,10 +71,19 @@ export default function CategoryPage({
     specialCategory?.description ||
     `Explore our curated selection of ${categoryName.toLowerCase()}, handpicked for every occasion.`;
 
-  // Normal product-category filtering.
-  const categoryProducts = products.filter(
-    (product) => product.categoryGroup === categoryKey
+  // Offers & Services sub-pages key products off `section`; everything
+  // else keys off `categoryGroup`.
+  const categoryProducts = products.filter((product) =>
+    specialCategory
+      ? product.section === categoryKey
+      : product.categoryGroup === categoryKey
   );
+
+  const emptyMessage =
+    categoryProducts.length === 0
+      ? specialCategory?.emptyMessage ||
+        `New ${categoryName.toLowerCase()} arrivals are on the way. Check back soon.`
+      : "";
 
   return (
     <>
@@ -84,11 +97,7 @@ export default function CategoryPage({
       <Reveal className="px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
         <ProductGrid
           addedProduct={addedProduct}
-          emptyMessage={
-            categoryProducts.length === 0
-              ? `New ${categoryName.toLowerCase()} arrivals are on the way. Check back soon.`
-              : ""
-          }
+          emptyMessage={emptyMessage}
           onAddToCart={handleAddToCart}
           products={categoryProducts}
         />

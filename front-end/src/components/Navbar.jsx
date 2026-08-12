@@ -10,7 +10,7 @@ import sipnowLogo from "../assets/sipnow-logo.png";
 
 const TOP_LEVEL_ROUTES = {
   "Offers & Services": "/offers",
-  "Beer & Cider": "/beer-cider/pilsner",
+  "Beer & Cider": "/beer-cider",
   Premix: "/premix",
   Spirits: "/spirits",
   Wine: "/wine",
@@ -100,7 +100,7 @@ function getMenuItemRoute(menuLabel, columnHeading, item) {
         : `/spirits/whisky/${itemSlug}`;
     }
 
-    return `/spirits?type=${encodeURIComponent(spiritType)}`;
+    return `/spirits/${itemSlug}`;
   }
 
   // ======================================
@@ -437,17 +437,17 @@ export default function Navbar({ cartCount = 0, products = [], user }) {
         <div className="flex items-center gap-4 lg:gap-6 xl:gap-10 min-w-0">
           {/* LOGO */}
 
-   <Link
-  to="/"
-  className="relative z-10 flex items-center shrink-0"
-  onClick={closeMenus}
->
-  <img
-    src={sipnowLogo}
-    alt="SipNow Logo"
-    className="h-10 md:h-12 w-auto object-contain brightness-110"
-  />
-</Link>
+          <Link
+            to="/"
+            className="relative z-10 flex items-center shrink-0"
+            onClick={closeMenus}
+          >
+            <img
+              src={sipnowLogo}
+              alt="SipNow Logo"
+              className="h-10 md:h-12 w-auto object-contain brightness-110"
+            />
+          </Link>
 
           {/* DESKTOP NAV */}
 
@@ -468,13 +468,7 @@ export default function Navbar({ cartCount = 0, products = [], user }) {
                       ? "text-primary"
                       : "text-on-surface/80 hover:text-primary"
                   }`}
-                  onClick={(e) => {
-                    if (menu.label === "Beer & Cider") {
-                      e.preventDefault();
-                    } else {
-                      closeMenus();
-                    }
-                  }}
+                  onClick={closeMenus}
                 >
                   {menu.label}
 
@@ -640,13 +634,7 @@ export default function Navbar({ cartCount = 0, products = [], user }) {
             <Link
               className="block font-label-md text-label-md text-on-surface/80 hover:text-primary transition-colors tracking-wide"
               key={link}
-              onClick={(e) => {
-                if (link === "Beer & Cider") {
-                  e.preventDefault();
-                } else {
-                  closeMenus();
-                }
-              }}
+              onClick={closeMenus}
               to={TOP_LEVEL_ROUTES[link] || `/${slugify(link)}`}
             >
               {link}

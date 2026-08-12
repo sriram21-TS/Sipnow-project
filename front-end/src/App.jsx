@@ -12,24 +12,25 @@ import Footer from "./components/Footer.jsx";
 import Navbar from "./components/Navbar.jsx";
 import QuizModal from "./components/QuizModal.jsx";
 import { useProducts } from "./hooks/useProducts.js";
-import Wine from "./pages/Wine.jsx";
 
-import Auth from "./pages/Auth.jsx";
-import Cart from "./pages/Cart.jsx";
-import CategoryPage from "./pages/CategoryPage.jsx";
-import Checkout from "./pages/Checkout.jsx";
-import Clearance from "./pages/Clearance.jsx";
-import GeneralPromotions from "./pages/GeneralPromotions.jsx";
-import GiftCards from "./pages/GiftCards.jsx";
-import Home from "./pages/Home.jsx";
-import InStorePromotions from "./pages/InStorePromotions.jsx";
-import Members from "./pages/Members.jsx";
-import PremixPage from "./pages/PremixPage.jsx";
-import Profile from "./pages/Profile.jsx";
-import ShopAll from "./pages/ShopAll.jsx";
-import ZeroCategoryPage from "./pages/ZeroCategoryPage.jsx";
+import Auth from "./pages/auth.jsx";
+import Cart from "./pages/cart.jsx";
+import CategoryPage from "./pages/category.jsx";
+import Checkout from "./pages/checkout.jsx";
+import Home from "./pages/home.jsx";
+import InStorePromotions from "./pages/in-store-promotions.jsx";
+import Profile from "./pages/profile.jsx";
+import ShopAll from "./pages/shop-all.jsx";
 
-import Spirits from "./pages/Spirits.jsx";
+// Each of these owns one nav section (Beer & Cider, Premix, Spirits, Wine,
+// Zero % Alcohol) and every one of its subcategories from a single file —
+// the URL slug picks the subcategory internally instead of needing a
+// dedicated file per subcategory.
+import BeerCider from "./pages/beer-cider/Layout.jsx";
+import Premix from "./pages/premix/Layout.jsx";
+import Spirits from "./pages/spirits/Layout.jsx";
+import Wine from "./pages/wine/Layout.jsx";
+import ZeroAlcohol from "./pages/zero-alcohol/Layout.jsx";
 
 // Safely read JSON data from localStorage. If the key is missing or
 // contains invalid JSON, return the provided fallback value.
@@ -193,49 +194,6 @@ export default function App() {
             }
           />
           <Route
-            path="/offers/general-promotions"
-            element={
-              <GeneralPromotions
-                onAddToCart={addToCart}
-                onBack={goHome}
-                products={products}
-              />
-            }
-          />
-
-          <Route
-            path="/offers/gift-cards"
-            element={
-              <GiftCards
-                onAddToCart={addToCart}
-                onBack={goHome}
-                products={products}
-              />
-            }
-          />
-
-          <Route
-            path="/offers/members"
-            element={
-              <Members
-                onAddToCart={addToCart}
-                onBack={goHome}
-                products={products}
-              />
-            }
-          />
-
-          <Route
-            path="/offers/clearance"
-            element={
-              <Clearance
-                onAddToCart={addToCart}
-                onBack={goHome}
-                products={products}
-              />
-            }
-          />
-          <Route
             path="/profile"
             element={
               user ? (
@@ -292,10 +250,7 @@ export default function App() {
           <Route
             path="/in-store-promotions"
             element={
-              <InStorePromotions
-                onAddToCart={addToCart}
-                onBack={goHome}
-              />
+              <InStorePromotions onAddToCart={addToCart} onBack={goHome} />
             }
           />
 
@@ -303,7 +258,7 @@ export default function App() {
           <Route
             path="/zero-alcohol/:subcategory"
             element={
-              <ZeroCategoryPage
+              <ZeroAlcohol
                 onAddToCart={addToCart}
                 onBack={goHome}
                 products={products}
@@ -315,7 +270,7 @@ export default function App() {
           <Route
             path="/zero/:subcategory"
             element={
-              <ZeroCategoryPage
+              <ZeroAlcohol
                 onAddToCart={addToCart}
                 onBack={goHome}
                 products={products}
@@ -327,7 +282,7 @@ export default function App() {
           <Route
             path="/zero-alcohol"
             element={
-              <ZeroCategoryPage
+              <ZeroAlcohol
                 subcategory="wine"
                 onAddToCart={addToCart}
                 onBack={goHome}
@@ -340,7 +295,7 @@ export default function App() {
           <Route
             path="/zero-wine"
             element={
-              <ZeroCategoryPage
+              <ZeroAlcohol
                 subcategory="wine"
                 onAddToCart={addToCart}
                 onBack={goHome}
@@ -353,7 +308,7 @@ export default function App() {
           <Route
             path="/zero-beer"
             element={
-              <ZeroCategoryPage
+              <ZeroAlcohol
                 subcategory="beer"
                 onAddToCart={addToCart}
                 onBack={goHome}
@@ -366,7 +321,7 @@ export default function App() {
           <Route
             path="/zero-spirits"
             element={
-              <ZeroCategoryPage
+              <ZeroAlcohol
                 subcategory="spirits"
                 onAddToCart={addToCart}
                 onBack={goHome}
@@ -379,7 +334,7 @@ export default function App() {
           <Route
             path="/zero-premix"
             element={
-              <ZeroCategoryPage
+              <ZeroAlcohol
                 subcategory="premix"
                 onAddToCart={addToCart}
                 onBack={goHome}
@@ -392,7 +347,7 @@ export default function App() {
           <Route
             path="/zero-cider"
             element={
-              <ZeroCategoryPage
+              <ZeroAlcohol
                 subcategory="cider"
                 onAddToCart={addToCart}
                 onBack={goHome}
@@ -430,16 +385,24 @@ export default function App() {
 
           <Route
             path="/beer-cider"
-            element={<Navigate to="/beer-cider/pilsner" replace />}
+            element={
+              <BeerCider
+                onAddToCart={addToCart}
+                onBack={goHome}
+                products={products}
+                productsLoading={productsLoading}
+              />
+            }
           />
 
           <Route
             path="/beer-cider/:categoryKey"
             element={
-              <CategoryPage
+              <BeerCider
                 onAddToCart={addToCart}
                 onBack={goHome}
                 products={products}
+                productsLoading={productsLoading}
               />
             }
           />
@@ -447,7 +410,7 @@ export default function App() {
           <Route
             path="/premix"
             element={
-              <PremixPage
+              <Premix
                 onAddToCart={addToCart}
                 products={products}
                 productsLoading={productsLoading}
@@ -459,7 +422,7 @@ export default function App() {
           <Route
             path="/premix/:categoryKey"
             element={
-              <PremixPage
+              <Premix
                 onAddToCart={addToCart}
                 products={products}
                 productsLoading={productsLoading}
@@ -480,12 +443,25 @@ export default function App() {
           />
 
           <Route
+            path="/spirits/whisky"
+            element={
+              <Spirits
+                onAddToCart={addToCart}
+                onBack={() => goToPage("/")}
+                products={products}
+                productsLoading={productsLoading}
+              />
+            }
+          />
+
+          <Route
             path="/spirits/whisky/:categoryKey"
             element={
-              <CategoryPage
+              <Spirits
                 onAddToCart={addToCart}
                 onBack={goHome}
                 products={products}
+                productsLoading={productsLoading}
               />
             }
           />
@@ -493,10 +469,11 @@ export default function App() {
           <Route
             path="/spirits/:categoryKey"
             element={
-              <CategoryPage
+              <Spirits
                 onAddToCart={addToCart}
                 onBack={goHome}
                 products={products}
+                productsLoading={productsLoading}
               />
             }
           />
@@ -529,10 +506,7 @@ export default function App() {
 
       {!["/login", "/signup"].includes(location.pathname) && <Footer />}
 
-      <QuizModal
-        isOpen={quizOpen}
-        onClose={() => setQuizOpen(false)}
-      />
+      <QuizModal isOpen={quizOpen} onClose={() => setQuizOpen(false)} />
     </>
   );
 }
