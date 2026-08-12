@@ -158,13 +158,13 @@ export default function Profile({ onLogout, onSave, onShopAll, user }) {
      */
     let cleanedValue = value;
 
-if (name === "name") {
-  cleanedValue = value.replace(/[^A-Za-z ]/g, "");
-}
+    if (name === "name") {
+      cleanedValue = value.replace(/[^A-Za-z ]/g, "");
+    }
 
-if (name === "mobile") {
-  cleanedValue = value.replace(/\D/g, "").slice(0, 9);
-}
+    if (name === "mobile") {
+      cleanedValue = value.replace(/\D/g, "").slice(0, 9);
+    }
     setValues((current) => ({
       ...current,
       [name]: cleanedValue,
@@ -276,17 +276,14 @@ if (name === "mobile") {
         {/* ====================================================
             PROFILE INFORMATION
             ==================================================== */}
-            <button
-  type="button"
-  onClick={() => navigate("/")}
-  className="mb-6 flex items-center gap-2 text-on-surface-variant hover:text-primary transition-colors"
->
-  <span className="material-symbols-outlined">
-    arrow_back
-  </span>
-
-  Back to home
-</button>
+        <button
+          type="button"
+          onClick={() => navigate("/")}
+          className="mb-6 flex items-center gap-2 text-on-surface-variant hover:text-primary transition-colors"
+        >
+          <span className="material-symbols-outlined">arrow_back</span>
+          Back to home
+        </button>
         <section className="glass-panel rounded-2xl p-6 sm:p-8">
           <div className="flex flex-wrap items-start justify-between gap-4">
             <div>
@@ -340,16 +337,16 @@ if (name === "mobile") {
                   </span>
 
                   <input
-  className={`w-full rounded-lg border bg-surface-container-high px-3 py-2 text-sm focus:border-primary focus:ring-0 ${
-    error ? "border-error" : "border-outline-variant/30"
-  }`}
-  name={name}
-  onChange={update}
-  type={type || "text"}
-  value={values[name]}
-  maxLength={name === "mobile" ? 9 : undefined}
-  inputMode={name === "mobile" ? "numeric" : undefined}
-/>
+                    className={`w-full rounded-lg border bg-surface-container-high px-3 py-2 text-sm focus:border-primary focus:ring-0 ${
+                      error ? "border-error" : "border-outline-variant/30"
+                    }`}
+                    name={name}
+                    onChange={update}
+                    type={type || "text"}
+                    value={values[name]}
+                    maxLength={name === "mobile" ? 9 : undefined}
+                    inputMode={name === "mobile" ? "numeric" : undefined}
+                  />
                 </label>
               ))}
 
