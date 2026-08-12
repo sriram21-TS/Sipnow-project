@@ -40,7 +40,6 @@ const KEY_ALIASES = {
 };
 
 const BEER_CIDER_SUBCATEGORIES = {
-<<<<<<< HEAD:front-end/src/pages/BeerCiderCategoryPage.jsx
   all: {
     key: "all",
     title: "All Beer & Cider",
@@ -68,8 +67,6 @@ const BEER_CIDER_SUBCATEGORIES = {
       "Cider",
     ],
   },
-=======
->>>>>>> 4b07a701d4eb5504d278e174a940bcf4311c59d5:front-end/src/components/BeerCiderCategoryPage.jsx
   lager: {
     key: "lager",
     title: "Lager",

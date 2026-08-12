@@ -199,20 +199,6 @@ export default function InStorePromotionsPreview({ onAddToCart, onNavigate }) {
             </button>
           </div>
 
-<<<<<<< HEAD
-          {/* View Promotions */}
-          {/* <div className="mt-6 flex justify-end">
-            <button
-              type="button"
-              onClick={() => onNavigate?.("in-store-promotions")}
-              className="inline-flex items-center font-label-md transition-opacity hover:opacity-80"
-            >
-              View All Promotions →
-            </button>
-          </div> */}
-
-=======
->>>>>>> 8dd56d27d66fa2f01c88489e709eec2212a29fd5
           {/* Empty State */}
           {products.length === 0 && (
             <div className="mt-8">

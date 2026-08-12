@@ -13,7 +13,6 @@ import Navbar from "./components/Navbar.jsx";
 import QuizModal from "./components/QuizModal.jsx";
 import { useProducts } from "./hooks/useProducts.js";
 import Wine from "./pages/Wine.jsx";
-import Spirits from "./pages/Spirits.jsx";
 
 import Auth from "./pages/Auth.jsx";
 import Cart from "./pages/Cart.jsx";
@@ -29,16 +28,8 @@ import PremixPage from "./pages/PremixPage.jsx";
 import Profile from "./pages/Profile.jsx";
 import ShopAll from "./pages/ShopAll.jsx";
 import ZeroCategoryPage from "./pages/ZeroCategoryPage.jsx";
-<<<<<<< HEAD
-import Members from "./pages/Members.jsx";
-import Whisky from "./pages/Whisky.jsx";
-import GiftCards from "./pages/GiftCards.jsx";
-import Clearance from "./pages/Clearance.jsx";
-import GeneralPromotions from "./pages/GeneralPromotions.jsx";
-=======
 
 import Spirits from "./pages/Spirits.jsx";
->>>>>>> 4b07a701d4eb5504d278e174a940bcf4311c59d5
 
 // Safely read JSON data from localStorage. If the key is missing or
 // contains invalid JSON, return the provided fallback value.
@@ -203,26 +194,47 @@ export default function App() {
           />
           <Route
             path="/offers/general-promotions"
-            element={<GeneralPromotions />}
+            element={
+              <GeneralPromotions
+                onAddToCart={addToCart}
+                onBack={goHome}
+                products={products}
+              />
+            }
           />
+
           <Route
-           path="/spirits/whisky"
-           element={
-              <Whisky
-           onAddToCart={addToCart}
-           onBack={goHome}
-           products={products}
-           productsLoading={productsLoading}
-        />
-        }
-        
-       />
+            path="/offers/gift-cards"
+            element={
+              <GiftCards
+                onAddToCart={addToCart}
+                onBack={goHome}
+                products={products}
+              />
+            }
+          />
 
-          <Route path="/offers/gift-cards" element={<GiftCards />} />
+          <Route
+            path="/offers/members"
+            element={
+              <Members
+                onAddToCart={addToCart}
+                onBack={goHome}
+                products={products}
+              />
+            }
+          />
 
-          <Route path="/offers/members" element={<Members />} />
-
-          <Route path="/offers/clearance" element={<Clearance />} />
+          <Route
+            path="/offers/clearance"
+            element={
+              <Clearance
+                onAddToCart={addToCart}
+                onBack={goHome}
+                products={products}
+              />
+            }
+          />
           <Route
             path="/profile"
             element={
@@ -468,57 +480,12 @@ export default function App() {
           />
 
           <Route
-<<<<<<< HEAD
-            path="/whisky/:categoryKey"
-            element={
-              <Whisky
-                onAddToCart={addToCart}
-                onBack={goHome}
-                products={products}
-                productsLoading={productsLoading}
-                cartItems={cartItems}
-                onRemove={removeFromCart}
-              />
-            }
-          />
-          <Route
-            path="/whisky"
-            element={
-              <Whisky
-                onAddToCart={addToCart}
-                onBack={goHome}
-                products={products}
-                productsLoading={productsLoading}
-                cartItems={cartItems}
-                onRemove={removeFromCart}
-              />
-            }
-          />
-          <Route
-=======
->>>>>>> 4b07a701d4eb5504d278e174a940bcf4311c59d5
             path="/spirits/whisky/:categoryKey"
             element={
-              <Whisky
+              <CategoryPage
                 onAddToCart={addToCart}
                 onBack={goHome}
                 products={products}
-                productsLoading={productsLoading}
-                cartItems={cartItems}
-                onRemove={removeFromCart}
-              />
-            }
-          />
-          <Route
-            path="/spirits/whisky"
-            element={
-              <Whisky
-                onAddToCart={addToCart}
-                onBack={goHome}
-                products={products}
-                productsLoading={productsLoading}
-                cartItems={cartItems}
-                onRemove={removeFromCart}
               />
             }
           />

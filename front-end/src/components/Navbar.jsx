@@ -80,7 +80,6 @@ function getMenuItemRoute(menuLabel, columnHeading, item) {
   // ======================================
 
   if (menuLabel === "Spirits") {
-<<<<<<< HEAD
     const spiritType = item.toLowerCase().trim();
 
     const whiskyTypes = [
@@ -102,9 +101,6 @@ function getMenuItemRoute(menuLabel, columnHeading, item) {
     }
 
     return `/spirits?type=${encodeURIComponent(spiritType)}`;
-=======
-    return `/spirits?type=${encodeURIComponent(item.toLowerCase().trim())}`;
->>>>>>> 4b07a701d4eb5504d278e174a940bcf4311c59d5
   }
 
   // ======================================
@@ -284,10 +280,7 @@ export default function Navbar({ cartCount = 0, products = [], user }) {
   const blurTimeoutRef = useRef(null);
 
   const menuTimeoutRef = useRef(null);
-<<<<<<< HEAD
-=======
 
->>>>>>> 4b07a701d4eb5504d278e174a940bcf4311c59d5
   const navigate = useNavigate();
 
   const { data: navMenus = [] } = useNavMenus();

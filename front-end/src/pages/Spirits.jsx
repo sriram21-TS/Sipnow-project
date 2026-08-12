@@ -80,18 +80,15 @@ export default function Spirits({
   const navigate = useNavigate();
 
   const selectedType = searchParams.get("type");
-<<<<<<< HEAD
   const normalizedSelectedType = selectedType?.toLowerCase().trim() || "";
 
   useEffect(() => {
     if (WHISKY_TYPE_REDIRECTS[normalizedSelectedType]) {
-      navigate(`/${WHISKY_TYPE_REDIRECTS[normalizedSelectedType]}`, {
+      navigate(WHISKY_TYPE_REDIRECTS[normalizedSelectedType], {
         replace: true,
       });
     }
   }, [normalizedSelectedType, navigate]);
-=======
->>>>>>> 4b07a701d4eb5504d278e174a940bcf4311c59d5
 
   // ===================================================
   // CART FEEDBACK
@@ -117,8 +114,6 @@ export default function Spirits({
   // CURRENT PAGE TITLE
   // ===================================================
 
-  const normalizedSelectedType = selectedType?.toLowerCase().trim();
-
   const pageTitle = SPIRIT_NAMES[normalizedSelectedType] || "Spirits";
 
   // ===================================================
@@ -133,16 +128,6 @@ export default function Spirits({
       (product) => product.categoryGroup === "spirits"
     );
 
-<<<<<<< HEAD
-    return [...existingSpirits, ...DUMMY_SPIRIT_PRODUCTS];
-  }, [products]);
-
-
-  // ===================================================
-  // GET AVAILABLE TYPES
-  // ===================================================
-
-=======
     // If user clicked only
     // "Spirits", show everything.
 
@@ -184,7 +169,6 @@ export default function Spirits({
       (product) => product.type?.toLowerCase().trim() === wantedType
     );
   }, [products, normalizedSelectedType]);
->>>>>>> 4b07a701d4eb5504d278e174a940bcf4311c59d5
 
   // ===================================================
   // TYPE FILTER
