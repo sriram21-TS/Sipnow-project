@@ -70,7 +70,7 @@ export default function Cart({
     0
   );
 
-   useEffect(() => {
+  useEffect(() => {
     window.scrollTo({
       top: 0,
       behavior: "smooth",

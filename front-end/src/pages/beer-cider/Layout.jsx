@@ -4,8 +4,8 @@ import PageHero from "../../components/PageHero.jsx";
 import ProductFilters from "../../components/ProductFilters.jsx";
 import ProductGrid from "../../components/ProductGrid.jsx";
 import Reveal from "../../components/Reveal.jsx";
+
 import { useAddToCartFeedback } from "../../hooks/useAddToCartFeedback.js";
-import { useNavMenus } from "../../hooks/useContent.js";
 import { getSubtype, parsePrice } from "../../utils/productHelpers.js";
 
 const SORT_OPTIONS = [
@@ -64,10 +64,6 @@ export default function BeerCiderLayout({
 
   const navigate = useNavigate();
   const handleBack = onBack || (() => navigate("/"));
-
-  const { data: navMenus = [] } = useNavMenus();
-  const subcategoryGroups =
-    navMenus.find((menu) => menu.label === "Beer & Cider")?.columns || [];
 
   const pageTitle = categoryKey
     ? SUBCATEGORY_LABELS[categoryKey] || humanizeSlug(categoryKey)
@@ -173,44 +169,6 @@ export default function BeerCiderLayout({
       />
 
       <Reveal className="px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
-        {/* SUBCATEGORY QUICK LINKS */}
-        {subcategoryGroups.length > 0 && (
-          <div className="flex flex-wrap gap-x-10 gap-y-4 mb-10 pb-8 border-b border-primary/10">
-            {subcategoryGroups.map((group) => (
-              <div className="space-y-2" key={group.heading}>
-                <p className="font-label-md uppercase tracking-[0.15em] text-[11px] text-primary">
-                  {group.heading}
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  {group.items?.map((item) => {
-                    const itemSlug = item
-                      .toLowerCase()
-                      .trim()
-                      .replace(/&/g, "and")
-                      .replace(/[^a-z0-9]+/g, "-")
-                      .replace(/^-+|-+$/g, "");
-                    const isActive = categoryKey === itemSlug;
-                    return (
-                      <button
-                        className={`px-3 py-1.5 rounded-full text-xs border transition-colors ${
-                          isActive
-                            ? "bg-primary text-on-primary border-primary"
-                            : "border-primary/20 text-on-surface-variant hover:border-primary/50 hover:text-on-surface"
-                        }`}
-                        key={item}
-                        onClick={() => navigate(`/beer-cider/${itemSlug}`)}
-                        type="button"
-                      >
-                        {item}
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
-
         <button
           className="lg:hidden w-full flex items-center justify-center gap-2 glass-panel rounded-lg px-4 py-3 mb-6 text-sm font-label-md uppercase tracking-widest border border-primary/20"
           onClick={() => setFiltersOpen((open) => !open)}
