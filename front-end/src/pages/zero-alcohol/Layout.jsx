@@ -245,7 +245,7 @@ export default function ZeroAlcoholLayout({
             Full Collection
           </div>
 
-          <h1 className="font-serif text-5xl md:text-6xl text-on-surface">
+          <h1 className="font-display-lg text-5xl md:text-6xl text-on-surface">
             {config.title}
           </h1>
 

@@ -165,9 +165,9 @@ export default function HeroCarousel() {
                           className="relative min-h-[210px] overflow-hidden rounded-2xl glass-panel border border-outline-variant/30 p-4 transition-transform duration-300 hover:-translate-y-1 lg:min-h-[250px] lg:p-5"
                           key={product.name}
                         >
-                          <span className="absolute left-3 top-3 z-10 rounded-full bg-primary px-2.5 py-1 text-[9px] font-bold uppercase tracking-wider text-on-primary">
-                            {product.badgeText}
-                          </span>
+                          <div className="promo-ribbon z-30">
+                           {product.badgeText}
+                          </div>
                           <img
                             alt={product.name}
                             className="h-28 w-full object-contain sm:h-36 lg:h-40 xl:h-44"
