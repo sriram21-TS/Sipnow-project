@@ -19,32 +19,15 @@ const NAME_PATTERN = /^[A-Za-z ]{2,50}$/;
 const CITY_PATTERN = /^[A-Za-z ]{2,50}$/;
 
 const VALID_CITIES = [
-  "Hyderabad",
-  "Chennai",
-  "Bangalore",
-  "Bengaluru",
-  "Mumbai",
-  "Delhi",
-  "New Delhi",
-  "Kolkata",
-  "Pune",
-  "Ahmedabad",
-  "Jaipur",
-  "Surat",
-  "Visakhapatnam",
-  "Vijayawada",
-  "Warangal",
-  "Guntur",
-  "Tirupati",
-  "Coimbatore",
-  "Kochi",
-  "Bhopal",
-  "Indore",
-  "Lucknow",
-  "Nagpur",
-  "Nashik",
+  "New South Wales",
+  "Victoria",
+  "Queensland",
+  "Western Australia",
+  "South Australia",
+  "Tasmania",
+  "Australian Capital Territory",
+  "Northern Territory",
 ];
-
 const ADDRESS_PATTERN = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z0-9\s,./#-]{10,100}$/;
 
 const COUPONS = {
@@ -418,7 +401,9 @@ export default function Checkout({ cartItems, user, onOrderComplete }) {
                 </div>
 
                 <p className="font-headline-md text-primary">
-                  {formatCurrency(parsePrice(product.price) * quantity)}
+                  {formatCurrency(
+                    parsePrice(product.price) * quantity
+                  )}
                 </p>
               </div>
             ))}
@@ -467,7 +452,9 @@ export default function Checkout({ cartItems, user, onOrderComplete }) {
               </button>
             </div>
 
-            {codeNotice && <p className="text-xs text-primary">{codeNotice}</p>}
+            {codeNotice && (
+              <p className="text-xs text-primary">{codeNotice}</p>
+            )}
           </div>
 
           {/* ====================================================
@@ -496,13 +483,17 @@ export default function Checkout({ cartItems, user, onOrderComplete }) {
                 />
 
                 {errors.name && (
-                  <span className="text-xs text-error">{errors.name}</span>
+                  <span className="text-xs text-error">
+                    {errors.name}
+                  </span>
                 )}
               </label>
 
               {/* Mobile */}
               <label>
-                <span className="mb-2 block text-sm">Mobile number</span>
+                <span className="mb-2 block text-sm">
+                  Mobile number
+                </span>
 
                 <input
                   className={inputClass("phone")}
@@ -514,7 +505,9 @@ export default function Checkout({ cartItems, user, onOrderComplete }) {
                 />
 
                 {errors.phone && (
-                  <span className="text-xs text-error">{errors.phone}</span>
+                  <span className="text-xs text-error">
+                    {errors.phone}
+                  </span>
                 )}
               </label>
             </div>
@@ -527,7 +520,9 @@ export default function Checkout({ cartItems, user, onOrderComplete }) {
               <div className="mt-4 grid gap-4 sm:grid-cols-2">
                 {/* Address */}
                 <label>
-                  <span className="mb-2 block text-sm">Delivery address</span>
+                  <span className="mb-2 block text-sm">
+                    Delivery address
+                  </span>
 
                   <input
                     className={inputClass("address")}
@@ -538,7 +533,9 @@ export default function Checkout({ cartItems, user, onOrderComplete }) {
                   />
 
                   {errors.address && (
-                    <span className="text-xs text-error">{errors.address}</span>
+                    <span className="text-xs text-error">
+                      {errors.address}
+                    </span>
                   )}
                 </label>
 
@@ -555,7 +552,9 @@ export default function Checkout({ cartItems, user, onOrderComplete }) {
                   />
 
                   {errors.city && (
-                    <span className="text-xs text-error">{errors.city}</span>
+                    <span className="text-xs text-error">
+                      {errors.city}
+                    </span>
                   )}
                 </label>
               </div>
@@ -587,7 +586,12 @@ export default function Checkout({ cartItems, user, onOrderComplete }) {
           <div className="mt-5 space-y-3">
             {[
               ["delivery", "local_shipping", "Delivery", "Paid by card"],
-              ["pickup", "storefront", "Pickup", "Pay cash or card in store"],
+              [
+                "pickup",
+                "storefront",
+                "Pickup",
+                "Pay cash or card in store",
+              ],
             ].map(([value, icon, title, text]) => (
               <button
                 aria-pressed={fulfilment === value}
@@ -641,7 +645,9 @@ export default function Checkout({ cartItems, user, onOrderComplete }) {
               <span>Delivery</span>
 
               <span>
-                {fulfilment === "delivery" ? "To be confirmed" : "Free"}
+                {fulfilment === "delivery"
+                  ? "To be confirmed"
+                  : "Free"}
               </span>
             </div>
 
@@ -649,7 +655,9 @@ export default function Checkout({ cartItems, user, onOrderComplete }) {
             <div className="flex justify-between border-t border-primary/10 pt-3 font-headline-md text-lg">
               <span>Total</span>
 
-              <span className="text-primary">{formatCurrency(total)}</span>
+              <span className="text-primary">
+                {formatCurrency(total)}
+              </span>
             </div>
           </div>
         </aside>
