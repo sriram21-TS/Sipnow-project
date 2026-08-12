@@ -13,20 +13,21 @@ import Navbar from "./components/Navbar.jsx";
 import QuizModal from "./components/QuizModal.jsx";
 import { useProducts } from "./hooks/useProducts.js";
 
+import AgeVerification from "./pages/age-verification.jsx";
 import Auth from "./pages/auth.jsx";
 import Cart from "./pages/cart.jsx";
-import CategoryPage from "./pages/category.jsx";
 import Checkout from "./pages/checkout.jsx";
 import Home from "./pages/home.jsx";
-import InStorePromotions from "./pages/in-store-promotions.jsx";
 import Profile from "./pages/profile.jsx";
-import ShopAll from "./pages/shop-all.jsx";
 
-// Each of these owns one nav section (Beer & Cider, Premix, Spirits, Wine,
-// Zero % Alcohol) and every one of its subcategories from a single file —
-// the URL slug picks the subcategory internally instead of needing a
-// dedicated file per subcategory.
+// Each of these owns one nav section (Offers & Services, Beer & Cider,
+// Premix, Spirits, Whisky, Wine, Zero % Alcohol) and every one of its
+// subcategories from a single folder — the URL slug picks the subcategory
+// internally instead of needing a dedicated file per subcategory.
 import BeerCider from "./pages/beer-cider/Layout.jsx";
+import InStorePromotions from "./pages/offers-services/InStorePromotions.jsx";
+import OffersServices from "./pages/offers-services/Layout.jsx";
+import ShopAll from "./pages/offers-services/ShopAll.jsx";
 import Premix from "./pages/premix/Layout.jsx";
 import Spirits from "./pages/spirits/Layout.jsx";
 import Whisky from "./pages/whisky/Layout.jsx";
@@ -44,6 +45,9 @@ function readStored(key, fallback) {
 }
 
 export default function App() {
+  const [ageVerified, setAgeVerified] = useState(() =>
+    readStored("sipnow-age-verified", false)
+  );
   const [quizOpen, setQuizOpen] = useState(false);
   const [cartItems, setCartItems] = useState(() =>
     readStored("sipnow-cart", [])
@@ -146,6 +150,18 @@ export default function App() {
     setUser(null);
     goHome();
   };
+
+  // Confirming age is remembered so returning visitors aren't re-gated.
+  const confirmAge = () => {
+    window.localStorage.setItem("sipnow-age-verified", JSON.stringify(true));
+    setAgeVerified(true);
+  };
+
+  // Block the entire site behind the age gate until it's confirmed — this
+  // runs like a landing page rather than a modal layered over the site.
+  if (!ageVerified) {
+    return <AgeVerification onConfirm={confirmAge} />;
+  }
 
   return (
     <>
@@ -358,14 +374,10 @@ export default function App() {
             }
           />
 
-          {/* Category browsing: one generic page keyed off the URL, covering
-              every mega-menu destination (offers, beer & cider, premix,
-              spirits, wine and their sub-categories). */}
           <Route
             path="/offers"
             element={
-              <CategoryPage
-                categoryKey="offers"
+              <OffersServices
                 onAddToCart={addToCart}
                 onBack={goHome}
                 products={products}
@@ -376,7 +388,7 @@ export default function App() {
           <Route
             path="/offers/:categoryKey"
             element={
-              <CategoryPage
+              <OffersServices
                 onAddToCart={addToCart}
                 onBack={goHome}
                 products={products}

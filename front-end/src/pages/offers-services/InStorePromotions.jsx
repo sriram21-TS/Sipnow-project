@@ -1,8 +1,8 @@
-import PageHero from "../components/PageHero.jsx";
-import ProductGrid from "../components/ProductGrid.jsx";
-import Reveal from "../components/Reveal.jsx";
-import { useAddToCartFeedback } from "../hooks/useAddToCartFeedback.js";
-import { useInStorePromotions } from "../hooks/useContent.js";
+import PageHero from "../../components/PageHero.jsx";
+import ProductGrid from "../../components/ProductGrid.jsx";
+import Reveal from "../../components/Reveal.jsx";
+import { useAddToCartFeedback } from "../../hooks/useAddToCartFeedback.js";
+import { useInStorePromotions } from "../../hooks/useContent.js";
 
 export default function InStorePromotions({ onAddToCart, onBack }) {
   const { addedProduct, handleAddToCart } = useAddToCartFeedback(onAddToCart);
