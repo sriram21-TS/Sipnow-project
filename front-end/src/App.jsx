@@ -29,6 +29,7 @@ import ShopAll from "./pages/shop-all.jsx";
 import BeerCider from "./pages/beer-cider/Layout.jsx";
 import Premix from "./pages/premix/Layout.jsx";
 import Spirits from "./pages/spirits/Layout.jsx";
+import Whisky from "./pages/whisky/Layout.jsx";
 import Wine from "./pages/wine/Layout.jsx";
 import ZeroAlcohol from "./pages/zero-alcohol/Layout.jsx";
 
@@ -443,19 +444,7 @@ export default function App() {
           />
 
           <Route
-            path="/spirits/whisky"
-            element={
-              <Spirits
-                onAddToCart={addToCart}
-                onBack={() => goToPage("/")}
-                products={products}
-                productsLoading={productsLoading}
-              />
-            }
-          />
-
-          <Route
-            path="/spirits/whisky/:categoryKey"
+            path="/spirits/:categoryKey"
             element={
               <Spirits
                 onAddToCart={addToCart}
@@ -467,9 +456,21 @@ export default function App() {
           />
 
           <Route
-            path="/spirits/:categoryKey"
+            path="/whisky"
             element={
-              <Spirits
+              <Whisky
+                onAddToCart={addToCart}
+                onBack={() => goToPage("/")}
+                products={products}
+                productsLoading={productsLoading}
+              />
+            }
+          />
+
+          <Route
+            path="/whisky/:categoryKey"
+            element={
+              <Whisky
                 onAddToCart={addToCart}
                 onBack={goHome}
                 products={products}

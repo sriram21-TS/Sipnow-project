@@ -19,35 +19,33 @@ const RATING_THRESHOLDS = { all: 0, 4: 4, 3: 3 };
 
 // slug -> { label, productType } — productType is matched case-insensitively
 // against product.type in the catalog.
-const SPIRIT_TYPES = {
-  gin: { label: "Gin", productType: "gin" },
-  rum: { label: "Rum", productType: "rum" },
-  vodka: { label: "Vodka", productType: "vodka" },
-  bourbon: { label: "Bourbon", productType: "bourbon" },
-  tequilla: { label: "Tequila", productType: "tequilla" },
-  liquerus: { label: "Liqueurs", productType: "liquerus" },
-  "brandy-and-cognac": {
-    label: "Brandy & Cognac",
-    productType: "brandy & cognac",
+const WHISKY_TYPES = {
+  "other-whisky": { label: "Other Whisky", productType: "other whisky" },
+  "scotch-whisky": { label: "Scotch Whisky", productType: "scotch whisky" },
+  "japanese-whisky": {
+    label: "Japanese Whisky",
+    productType: "japanese whisky",
   },
-  "other-spirits": { label: "Other Spirits", productType: "other spirits" },
+  "irish-whisky": { label: "Irish Whisky", productType: "irish whisky" },
+  "american-whisky": {
+    label: "American Whisky",
+    productType: "american whisky",
+  },
+  "australian-whisky": {
+    label: "Australian Whisky",
+    productType: "australian whisky",
+  },
 };
 
-const WHISKY_PRODUCT_TYPES = new Set([
-  "other whisky",
-  "scotch whisky",
-  "japanese whisky",
-  "irish whisky",
-  "american whisky",
-  "australian whisky",
-]);
+const WHISKY_PRODUCT_TYPES = new Set(
+  Object.values(WHISKY_TYPES).map((entry) => entry.productType)
+);
 
-// Shared layout for the Spirits section. The section-root page and every
-// dedicated subcategory page (gin.jsx, bourbon.jsx, ...) render this with a
-// fixed `categoryKey`; a bare /spirits/:categoryKey URL still works by
-// falling back to the route param. Whisky has its own section — see
-// ../whisky/Layout.jsx.
-export default function SpiritsLayout({
+// Dedicated layout for the Whisky section (and its subcategories). The
+// section-root page and every subcategory page render this with a fixed
+// `categoryKey`; a bare /whisky/:categoryKey URL still works by falling
+// back to the route param.
+export default function WhiskyLayout({
   categoryKey: categoryKeyProp,
   onAddToCart,
   onBack,
@@ -59,8 +57,8 @@ export default function SpiritsLayout({
     .toLowerCase()
     .trim();
 
-  const spiritType = SPIRIT_TYPES[categoryKey];
-  const pageTitle = spiritType?.label || "Spirits";
+  const whiskyType = WHISKY_TYPES[categoryKey];
+  const pageTitle = whiskyType?.label || "Whisky";
 
   const { addedProduct, handleAddToCart } = useAddToCartFeedback(onAddToCart);
 
@@ -70,21 +68,19 @@ export default function SpiritsLayout({
   const [sort, setSort] = useState("featured");
   const [filtersOpen, setFiltersOpen] = useState(false);
 
-  const spiritProducts = useMemo(() => {
-    const allSpirits = products.filter(
-      (product) =>
-        product.categoryGroup === "spirits" &&
-        !WHISKY_PRODUCT_TYPES.has(product.type?.toLowerCase().trim())
+  const whiskyProducts = useMemo(() => {
+    const allWhisky = products.filter((product) =>
+      WHISKY_PRODUCT_TYPES.has(product.type?.toLowerCase().trim())
     );
 
-    if (!spiritType) {
-      return allSpirits;
+    if (!whiskyType) {
+      return allWhisky;
     }
 
-    return allSpirits.filter(
-      (product) => product.type?.toLowerCase().trim() === spiritType.productType
+    return allWhisky.filter(
+      (product) => product.type?.toLowerCase().trim() === whiskyType.productType
     );
-  }, [products, spiritType]);
+  }, [products, whiskyType]);
 
   const toggleType = (type) => {
     setSelectedTypes((current) =>
@@ -101,7 +97,7 @@ export default function SpiritsLayout({
   };
 
   const filteredProducts = useMemo(() => {
-    let result = [...spiritProducts];
+    let result = [...whiskyProducts];
 
     if (selectedTypes.length > 0) {
       result = result.filter((product) => selectedTypes.includes(product.type));
@@ -127,18 +123,18 @@ export default function SpiritsLayout({
     }
 
     return result;
-  }, [spiritProducts, selectedTypes, priceRange, rating, sort]);
+  }, [whiskyProducts, selectedTypes, priceRange, rating, sort]);
 
-  const pageDescription = spiritType
+  const pageDescription = whiskyType
     ? `Explore our curated selection of ${pageTitle.toLowerCase()}, handpicked for every occasion.`
-    : "Explore our complete selection of spirits, including gin, rum, vodka, bourbon, tequila, liqueurs, brandy, cognac and more.";
+    : "Explore our complete selection of whisky, including scotch, Japanese, Irish, American and Australian whisky.";
 
   return (
     <>
       <PageHero
         description={pageDescription}
         onBack={onBack}
-        tag="Spirits"
+        tag="Whisky"
         title={pageTitle}
       />
 
@@ -165,7 +161,7 @@ export default function SpiritsLayout({
                 onRatingChange={setRating}
                 onToggleSubtype={toggleType}
                 priceRange={priceRange}
-                products={spiritProducts}
+                products={whiskyProducts}
                 rating={rating}
                 resultCount={filteredProducts.length}
                 selectedSubtypes={selectedTypes}
@@ -178,7 +174,7 @@ export default function SpiritsLayout({
               <p className="text-sm text-on-surface-variant">
                 {productsLoading
                   ? "Loading products…"
-                  : `Showing ${filteredProducts.length} of ${spiritProducts.length} products`}
+                  : `Showing ${filteredProducts.length} of ${whiskyProducts.length} products`}
               </p>
 
               <label className="flex items-center gap-2 text-sm text-on-surface-variant">
@@ -199,9 +195,9 @@ export default function SpiritsLayout({
             <ProductGrid
               addedProduct={addedProduct}
               emptyMessage={
-                spiritType
+                whiskyType
                   ? `No ${pageTitle.toLowerCase()} products are available right now.`
-                  : "New spirits are on the way. Check back soon."
+                  : "New whisky is on the way. Check back soon."
               }
               onAddToCart={handleAddToCart}
               products={filteredProducts}

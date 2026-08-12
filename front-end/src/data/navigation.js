@@ -1,4 +1,8 @@
-import { BEER_FEATURED_URL, WINE_FEATURED_URL } from "./images.js";
+import {
+  BEER_FEATURED_URL,
+  WINE_FEATURED_URL,
+  YAMAZAKI_URL,
+} from "./images.js";
 
 export const navMenus = [
   {
@@ -56,6 +60,15 @@ export const navMenus = [
           "Other Spirits",
         ],
       },
+    ],
+    featured: {
+      type: "image-only",
+      image: WINE_FEATURED_URL,
+    },
+  },
+  {
+    label: "Whisky",
+    columns: [
       {
         heading: "Whisky",
         items: [
@@ -69,8 +82,10 @@ export const navMenus = [
       },
     ],
     featured: {
-      type: "image-only",
-      image: WINE_FEATURED_URL,
+      type: "image",
+      image: YAMAZAKI_URL,
+      tag: "Featured",
+      title: "Japanese Whisky Collection",
     },
   },
   {
