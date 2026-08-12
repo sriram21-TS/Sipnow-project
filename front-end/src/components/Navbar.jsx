@@ -13,6 +13,7 @@ const TOP_LEVEL_ROUTES = {
   "Beer & Cider": "/beer-cider",
   Premix: "/premix",
   Spirits: "/spirits",
+  Whisky: "/whisky",
   Wine: "/wine",
   "Shop All": "/shop-all",
   "In-Store promotions": "/in-store-promotions",
@@ -24,6 +25,7 @@ const mobileNavLinks = [
   "Premix",
   "Wine",
   "Spirits",
+  "Whisky",
 ];
 
 // ========================================
@@ -80,27 +82,19 @@ function getMenuItemRoute(menuLabel, columnHeading, item) {
   // ======================================
 
   if (menuLabel === "Spirits") {
-    const spiritType = item.toLowerCase().trim();
-
-    const whiskyTypes = [
-      "whisky",
-      "whiskey",
-      "other whisky",
-      "scotch whisky",
-      "japanese whisky",
-      "irish whisky",
-      "american whisky",
-      "australian whisky",
-      "austrialian whisky",
-    ];
-
-    if (whiskyTypes.includes(spiritType)) {
-      return spiritType === "whisky" || spiritType === "whiskey"
-        ? "/spirits/whisky"
-        : `/spirits/whisky/${itemSlug}`;
-    }
-
     return `/spirits/${itemSlug}`;
+  }
+
+  // ======================================
+  // WHISKY
+  // ======================================
+
+  if (menuLabel === "Whisky") {
+    const whiskyType = item.toLowerCase().trim();
+
+    return whiskyType === "whisky" || whiskyType === "whiskey"
+      ? "/whisky"
+      : `/whisky/${itemSlug}`;
   }
 
   // ======================================
@@ -459,16 +453,20 @@ export default function Navbar({ cartCount = 0, products = [], user }) {
                 onMouseEnter={() => handleMenuEnter(menu.label)}
                 onMouseLeave={handleMenuLeave}
               >
-                {/* TOP LEVEL LINK */}
+                {/* TOP LEVEL LABEL (opens the dropdown, does not navigate) */}
 
-                <Link
-                  to={TOP_LEVEL_ROUTES[menu.label] || `/${slugify(menu.label)}`}
+                <button
+                  type="button"
                   className={`flex items-center gap-1.5 whitespace-nowrap font-label-md text-label-md transition-colors tracking-wide cursor-default ${
                     openMenu === menu.label
                       ? "text-primary"
                       : "text-on-surface/80 hover:text-primary"
                   }`}
-                  onClick={closeMenus}
+                  onClick={() =>
+                    setOpenMenu((current) =>
+                      current === menu.label ? null : menu.label
+                    )
+                  }
                 >
                   {menu.label}
 
@@ -479,7 +477,7 @@ export default function Navbar({ cartCount = 0, products = [], user }) {
                   >
                     expand_more
                   </span>
-                </Link>
+                </button>
 
                 {openMenu === menu.label && (
                   <div className="mega-menu absolute left-margin-desktop right-margin-desktop top-[100%] pt-4">
