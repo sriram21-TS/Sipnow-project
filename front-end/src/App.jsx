@@ -69,9 +69,17 @@ export default function App() {
   // Home's child components (category cards, in-store-promotions banner)
   // still speak the old "page key" navigation vocabulary; translate it to routes.
   const goToPage = (target) => {
-    const path = target.startsWith("category:")
-      ? `/${target.slice("category:".length)}`
-      : `/${target}`;
+    const key = target.startsWith("category:")
+      ? target.slice("category:".length)
+      : target;
+
+    let path = `/${key}`;
+    if (key === "beer") {
+      path = "/beer-cider";
+    } else if (key === "zero-proof" || key === "zero") {
+      path = "/zero-alcohol";
+    }
+
     navigate(path);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
@@ -280,10 +288,36 @@ export default function App() {
           />
 
           <Route
+            path="/zero-proof"
+            element={
+              <ZeroAlcohol
+                subcategory="all"
+                onAddToCart={addToCart}
+                onBack={goHome}
+                products={products}
+                productsLoading={productsLoading}
+              />
+            }
+          />
+
+          <Route
+            path="/zero"
+            element={
+              <ZeroAlcohol
+                subcategory="all"
+                onAddToCart={addToCart}
+                onBack={goHome}
+                products={products}
+                productsLoading={productsLoading}
+              />
+            }
+          />
+
+          <Route
             path="/zero-alcohol"
             element={
               <ZeroAlcohol
-                subcategory="wine"
+                subcategory="all"
                 onAddToCart={addToCart}
                 onBack={goHome}
                 products={products}
@@ -381,6 +415,11 @@ export default function App() {
                 products={products}
               />
             }
+          />
+
+          <Route
+            path="/beer"
+            element={<Navigate to="/beer-cider" replace />}
           />
 
           <Route
